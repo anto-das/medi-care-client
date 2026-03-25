@@ -1,10 +1,16 @@
+import { Navbar5 } from "@/components/navbar5";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 export default function Home() {
   return (
     <main>
-      <h1 className="text-4xl font-bold text-center mt-10">Welcome to My Medi Store!</h1>
+      <div className="max-w-11/12 border mx-auto">
+        <Navbar5></Navbar5>
+      </div>
+      <h1 className="text-4xl font-bold text-center mt-10">
+        Welcome to My Medi Store!
+      </h1>
       <Button variant="default" className="mt-5">
         Shop Now
       </Button>
