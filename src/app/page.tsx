@@ -1,12 +1,12 @@
-import { Navbar5 } from "@/components/navbar5";
+// import { Navbar5 } from "@/components/navbar5";
+import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 
 export default function Home() {
   return (
     <main>
       <div className="max-w-11/12 border mx-auto">
-        <Navbar5></Navbar5>
+        <Navbar></Navbar>
       </div>
       <h1 className="text-4xl font-bold text-center mt-10">
         Welcome to My Medi Store!
