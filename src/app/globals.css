@@ -128,3 +128,8 @@
     @apply font-sans;
   }
 }
+@layer components {
+  .active {
+    @apply text-[#1f6b5d] bg-[#e6f4f1];
+  }
+}

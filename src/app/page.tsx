@@ -1,5 +1,5 @@
 // import { Navbar5 } from "@/components/navbar5";
-import { Navbar } from "@/components/Navbar";
+
 import { Button } from "@/components/ui/button";
 
 export default function Home() {

@@ -28,8 +28,9 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 // import mediLogo from "../assets/medicine.png";
 import { StaticImageData } from "next/image";
-import Logo from "./ui/logo";
-
+import Logo from "../ui/logo";
+import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 interface MenuItem {
   title: string;
   url: string;
@@ -61,12 +62,6 @@ interface Navbar1Props {
 }
 
 const Navbar = ({
-  // logo = {
-  //   url: "/",
-  //   // src: mediLogo,
-  //   alt: "logo",
-  //   title: "medicare.com",
-  // },
   menu = [
     { title: "Home", url: "/" },
     {
@@ -78,13 +73,13 @@ const Navbar = ({
       url: "/blog",
     },
     {
-      title: "offers",
+      title: "Offers",
       url: "/offers",
     },
   ],
   auth = {
-    login: { title: "Login", url: "#" },
-    signup: { title: "Sign up", url: "#" },
+    login: { title: "Sign in", url: "/sign-in" },
+    signup: { title: "Join Free", url: "/sign-up" },
   },
   className,
 }: Navbar1Props) => {
@@ -109,13 +104,13 @@ const Navbar = ({
               href={auth.login.url}
               className="rounded-md capitalize bg-white text-[#42534e] border border-[#ddeae7] hover:border-[#12725c] hover:text-[#12725c] px-4 py-1.5 text-sm font-bold font-[Sans-serif]"
             >
-              sign in
+              {auth.login.title}
             </Link>
             <Link
               href={auth.signup.url}
               className="rounded-md capitalize bg-[#0b5e4e] hover:bg-[#0e856d] px-4 py-1.5 text-sm font-bold text-[#fafcfb] font-[Sans-serif]"
             >
-              sign up
+              {auth.signup.title}
             </Link>
           </div>
         </nav>
@@ -145,13 +140,19 @@ const Navbar = ({
                     {menu.map((item) => renderMobileMenuItem(item))}
                   </Accordion>
 
-                  <div className="flex flex-col gap-3">
-                    <Button asChild variant="outline">
-                      <a href={auth.login.url}>{auth.login.title}</a>
-                    </Button>
-                    <Button asChild>
-                      <a href={auth.signup.url}>{auth.signup.title}</a>
-                    </Button>
+                  <div className="flex items-center w-full gap-3">
+                    <Link
+                      href={auth.login.url}
+                      className="rounded-md capitalize bg-white text-[#42534e] border border-[#ddeae7] hover:border-[#12725c] hover:text-[#12725c] px-4 py-1.5 text-sm font-bold w-full font-[Sans-serif] text-center"
+                    >
+                      {auth.login.title}
+                    </Link>
+                    <Link
+                      href={auth.signup.url}
+                      className="rounded-md capitalize bg-[#0b5e4e] hover:bg-[#0e856d] px-4 py-1.5 text-sm font-bold text-[#fafcfb] font-[Sans-serif] text-center w-full"
+                    >
+                      {auth.signup.title}
+                    </Link>
                   </div>
                 </div>
               </SheetContent>
@@ -164,26 +165,25 @@ const Navbar = ({
 };
 
 const renderMenuItem = (item: MenuItem) => {
+  const pathname = usePathname();
+  // console.log("Current Pathname:", pathname);
   if (item.items) {
     return (
       <NavigationMenuItem key={item.title}>
         <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>
-        <NavigationMenuContent className="bg-popover text-popover-foreground">
-          {item.items.map((subItem) => (
-            <NavigationMenuLink asChild key={subItem.title} className="w-80">
-              <SubMenuLink item={subItem} />
-            </NavigationMenuLink>
-          ))}
-        </NavigationMenuContent>
       </NavigationMenuItem>
     );
   }
+  const baseClasses =
+    "inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-md font-medium transition-colors duration-300";
+  const inactiveClasses =
+    "text-[#7a8d8d] hover:text-[#1f6b5d] hover:bg-[#e6f4f1]";
 
   return (
     <NavigationMenuItem key={item.title}>
       <Link
         href={item.url}
-        className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground"
+        className={`${baseClasses} ${pathname === item.url ? "px-4 py-2 text-md font-medium text-[#1f6b5d] bg-[#e6f4f1]" : inactiveClasses}`}
       >
         {item.title}
       </Link>
@@ -192,44 +192,21 @@ const renderMenuItem = (item: MenuItem) => {
 };
 
 const renderMobileMenuItem = (item: MenuItem) => {
-  if (item.items) {
-    return (
-      <AccordionItem key={item.title} value={item.title} className="border-b-0">
-        <AccordionTrigger className="text-md py-0 font-semibold hover:no-underline">
-          {item.title}
-        </AccordionTrigger>
-        <AccordionContent className="mt-2">
-          {item.items.map((subItem) => (
-            <SubMenuLink key={subItem.title} item={subItem} />
-          ))}
-        </AccordionContent>
-      </AccordionItem>
-    );
-  }
+  const pathname = usePathname();
+  const baseClasses =
+    "inline-flex h-10 items-center justify-start rounded-md px-4 py-2 text-md font-medium transition-colors duration-300 w-full";
+  const inactiveClasses =
+    "text-[#7a8d8d] hover:text-[#1f6b5d] hover:bg-[#e6f4f1]";
 
   return (
-    <Link key={item.title} href={item.url} className="text-md font-semibold">
-      {item.title}
-    </Link>
-  );
-};
-
-const SubMenuLink = ({ item }: { item: MenuItem }) => {
-  return (
-    <Link
-      className="flex min-w-80 flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground"
-      href={item.url}
-    >
-      <div className="text-foreground">{item.icon}</div>
-      <div>
-        <div className="text-sm font-semibold">{item.title}</div>
-        {item.description && (
-          <p className="text-sm leading-snug text-muted-foreground">
-            {item.description}
-          </p>
-        )}
-      </div>
-    </Link>
+    <NavigationMenuItem key={item.title}>
+      <Link
+        href={item.url}
+        className={`${baseClasses} ${pathname === item.url ? "px-4 py-2 text-md font-medium text-[#1f6b5d] bg-[#e6f4f1]" : inactiveClasses}`}
+      >
+        {item.title}
+      </Link>
+    </NavigationMenuItem>
   );
 };
 
