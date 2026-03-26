@@ -5,9 +5,6 @@ import { Button } from "@/components/ui/button";
 export default function Home() {
   return (
     <main>
-      <div className="max-w-11/12 border mx-auto">
-        <Navbar></Navbar>
-      </div>
       <h1 className="text-4xl font-bold text-center mt-10">
         Welcome to My Medi Store!
       </h1>

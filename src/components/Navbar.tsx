@@ -25,6 +25,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
+// import mediLogo from "../assets/medicine.png";
+import { StaticImageData } from "next/image";
+import Logo from "./ui/logo";
 
 interface MenuItem {
   title: string;
@@ -38,7 +42,7 @@ interface Navbar1Props {
   className?: string;
   logo?: {
     url: string;
-    src: string;
+    src: StaticImageData | string;
     alt: string;
     title: string;
     className?: string;
@@ -57,82 +61,25 @@ interface Navbar1Props {
 }
 
 const Navbar = ({
-  logo = {
-    url: "https://www.shadcnblocks.com",
-    src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg",
-    alt: "logo",
-    title: "Shadcnblocks.com",
-  },
+  // logo = {
+  //   url: "/",
+  //   // src: mediLogo,
+  //   alt: "logo",
+  //   title: "medicare.com",
+  // },
   menu = [
-    { title: "Home", url: "#" },
+    { title: "Home", url: "/" },
     {
-      title: "Products",
-      url: "#",
-      items: [
-        {
-          title: "Blog",
-          description: "The latest industry news, updates, and info",
-          icon: <Book className="size-5 shrink-0" />,
-          url: "#",
-        },
-        {
-          title: "Company",
-          description: "Our mission is to innovate and empower the world",
-          icon: <Trees className="size-5 shrink-0" />,
-          url: "#",
-        },
-        {
-          title: "Careers",
-          description: "Browse job listing and discover our workspace",
-          icon: <Sunset className="size-5 shrink-0" />,
-          url: "#",
-        },
-        {
-          title: "Support",
-          description:
-            "Get in touch with our support team or visit our community forums",
-          icon: <Zap className="size-5 shrink-0" />,
-          url: "#",
-        },
-      ],
+      title: "Medicines",
+      url: "/medicines",
     },
     {
-      title: "Resources",
-      url: "#",
-      items: [
-        {
-          title: "Help Center",
-          description: "Get all the answers you need right here",
-          icon: <Zap className="size-5 shrink-0" />,
-          url: "#",
-        },
-        {
-          title: "Contact Us",
-          description: "We are here to help you with any questions you have",
-          icon: <Sunset className="size-5 shrink-0" />,
-          url: "#",
-        },
-        {
-          title: "Status",
-          description: "Check the current status of our services and APIs",
-          icon: <Trees className="size-5 shrink-0" />,
-          url: "#",
-        },
-        {
-          title: "Terms of Service",
-          description: "Our terms and conditions for using our services",
-          icon: <Book className="size-5 shrink-0" />,
-          url: "#",
-        },
-      ],
+      title: "Health Blog",
+      url: "/blog",
     },
     {
-      title: "Pricing",
-      url: "#",
-    },
-    {
-      title: "Blog",
-      url: "#",
+      title: "offers",
+      url: "/offers",
     },
   ],
   auth = {
@@ -143,21 +90,12 @@ const Navbar = ({
 }: Navbar1Props) => {
   return (
     <section className={cn("py-4", className)}>
-      <div className="">
+      <div className="w-11/12 mx-auto">
         {/* Desktop Menu */}
         <nav className="hidden items-center justify-between lg:flex">
           <div className="flex items-center gap-6">
             {/* Logo */}
-            <a href={logo.url} className="flex items-center gap-2">
-              <img
-                src={logo.src}
-                className="max-h-8 dark:invert"
-                alt={logo.alt}
-              />
-              <span className="text-lg font-semibold tracking-tighter">
-                {logo.title}
-              </span>
-            </a>
+            <Logo></Logo>
             <div className="flex items-center">
               <NavigationMenu>
                 <NavigationMenuList>
@@ -166,27 +104,26 @@ const Navbar = ({
               </NavigationMenu>
             </div>
           </div>
-          <div className="flex gap-2">
-            <Button asChild variant="outline" size="sm">
-              <a href={auth.login.url}>{auth.login.title}</a>
-            </Button>
-            <Button asChild size="sm">
-              <a href={auth.signup.url}>{auth.signup.title}</a>
-            </Button>
+          <div className="flex gap-5 items-center ">
+            <Link
+              href={auth.login.url}
+              className="rounded-md capitalize bg-white text-[#42534e] border border-[#ddeae7] hover:border-[#12725c] hover:text-[#12725c] px-4 py-1.5 text-sm font-bold font-[Sans-serif]"
+            >
+              sign in
+            </Link>
+            <Link
+              href={auth.signup.url}
+              className="rounded-md capitalize bg-[#0b5e4e] hover:bg-[#0e856d] px-4 py-1.5 text-sm font-bold text-[#fafcfb] font-[Sans-serif]"
+            >
+              sign up
+            </Link>
           </div>
         </nav>
 
         {/* Mobile Menu */}
         <div className="block lg:hidden">
           <div className="flex items-center justify-between">
-            {/* Logo */}
-            <a href={logo.url} className="flex items-center gap-2">
-              <img
-                src={logo.src}
-                className="max-h-8 dark:invert"
-                alt={logo.alt}
-              />
-            </a>
+            <Logo></Logo>
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="outline" size="icon">
@@ -196,13 +133,7 @@ const Navbar = ({
               <SheetContent className="overflow-y-auto">
                 <SheetHeader>
                   <SheetTitle>
-                    <a href={logo.url} className="flex items-center gap-2">
-                      <img
-                        src={logo.src}
-                        className="max-h-8 dark:invert"
-                        alt={logo.alt}
-                      />
-                    </a>
+                    <Logo></Logo>
                   </SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col gap-6 p-4">
@@ -250,12 +181,12 @@ const renderMenuItem = (item: MenuItem) => {
 
   return (
     <NavigationMenuItem key={item.title}>
-      <NavigationMenuLink
+      <Link
         href={item.url}
         className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground"
       >
         {item.title}
-      </NavigationMenuLink>
+      </Link>
     </NavigationMenuItem>
   );
 };
@@ -277,15 +208,15 @@ const renderMobileMenuItem = (item: MenuItem) => {
   }
 
   return (
-    <a key={item.title} href={item.url} className="text-md font-semibold">
+    <Link key={item.title} href={item.url} className="text-md font-semibold">
       {item.title}
-    </a>
+    </Link>
   );
 };
 
 const SubMenuLink = ({ item }: { item: MenuItem }) => {
   return (
-    <a
+    <Link
       className="flex min-w-80 flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground"
       href={item.url}
     >
@@ -298,7 +229,7 @@ const SubMenuLink = ({ item }: { item: MenuItem }) => {
           </p>
         )}
       </div>
-    </a>
+    </Link>
   );
 };
 
