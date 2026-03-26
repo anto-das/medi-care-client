@@ -175,7 +175,7 @@ const renderMenuItem = (item: MenuItem) => {
     );
   }
   const baseClasses =
-    "inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-md font-medium transition-colors duration-300";
+    "inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-md font-medium transition-colors duration-300 mx-1";
   const inactiveClasses =
     "text-[#7a8d8d] hover:text-[#1f6b5d] hover:bg-[#e6f4f1]";
 
