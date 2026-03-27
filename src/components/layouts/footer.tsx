@@ -2,7 +2,6 @@ import React from "react";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 
 import { cn } from "@/lib/utils";
-import Logo from "./ui/logo";
 import Link from "next/link";
 
 interface Footer7Props {
@@ -88,7 +87,7 @@ const Footer = ({
   className,
 }: Footer7Props) => {
   return (
-    <section className={cn("py-32", className)}>
+    <section className={cn("pt-32", className)}>
       <div className="w-full lg:px-20 py-16 px-6 bg-[#0f1f1b]">
         <div className="flex w-full flex-col justify-between gap-10 lg:flex-row lg:items-start lg:text-left">
           <div className="flex w-full flex-col justify-between gap-6 lg:items-start">
