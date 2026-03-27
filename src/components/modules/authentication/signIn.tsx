@@ -1,11 +1,13 @@
 "use client";
 
+import Divider from "@/components/separator-with-text-1";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { FaGoogle } from "react-icons/fa";
 
 interface Signup2Props {
   heading?: string;
@@ -85,6 +87,13 @@ const SignInPage = ({
             <Button type="submit" className="w-full">
               {buttonText}
             </Button>
+          </div>
+          <Divider />
+          <div className="w-11/15 mx-auto">
+            <button className="flex items-center gap-2 border border-[#0c705d] text-[#0c705d] hover:bg-[#0c705d] hover:text-white transition-colors duration-300 rounded-md px-4 py-2 w-full justify-center text-lg font-bold hover:text-lg hover:font-bold">
+              {" "}
+              <FaGoogle /> Google{""}
+            </button>
           </div>
           <div className="flex justify-center items-center gap-1 text-sm text-muted-foreground pb-5">
             <p>{signupText}</p>

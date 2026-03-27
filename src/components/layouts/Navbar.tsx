@@ -31,6 +31,7 @@ import { StaticImageData } from "next/image";
 import Logo from "../ui/logo";
 import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
+import { Input } from "../ui/input";
 interface MenuItem {
   title: string;
   url: string;
@@ -84,7 +85,7 @@ const Navbar = ({
   className,
 }: Navbar1Props) => {
   return (
-    <section className={cn("py-4", className)}>
+    <section className={cn("py-4 z-10 sticky top-0 bg-[#f8fdfbc2]", className)}>
       <div className="w-11/12 mx-auto">
         {/* Desktop Menu */}
         <nav className="hidden items-center justify-between lg:flex">
@@ -99,16 +100,21 @@ const Navbar = ({
               </NavigationMenu>
             </div>
           </div>
-          <div className="flex gap-5 items-center ">
+
+          <div className="flex gap-5 items-center justify-end w-1/2">
+            <Input
+              placeholder="🔍Search medicines,brands and more..."
+              className="w-1/2 rounded-md bg-[#f8fdfb] border focus:shadow-none focus:text-lg placeholder:text-lg p-5"
+            />
             <Link
               href={auth.login.url}
-              className="rounded-md capitalize bg-white text-[#42534e] border border-[#ddeae7] hover:border-[#12725c] hover:text-[#12725c] px-4 py-1.5 text-sm font-bold font-[Sans-serif]"
+              className="rounded-md capitalize bg-white text-[#42534e] border border-[#ddeae7] hover:border-[#12725c] hover:text-[#12725c] px-4 py-2 text-sm font-bold font-[Sans-serif]"
             >
               {auth.login.title}
             </Link>
             <Link
               href={auth.signup.url}
-              className="rounded-md capitalize bg-[#0b5e4e] hover:bg-[#0e856d] px-4 py-1.5 text-sm font-bold text-[#fafcfb] font-[Sans-serif]"
+              className="rounded-md capitalize bg-[#0b5e4e] hover:bg-[#0e856d] px-4 py-2 text-sm font-bold text-[#fafcfb] font-[Sans-serif]"
             >
               {auth.signup.title}
             </Link>

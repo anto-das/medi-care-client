@@ -1,5 +1,6 @@
 "use client";
 
+import Divider from "@/components/separator-with-text-1";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,6 +8,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { FaGoogle } from "react-icons/fa";
 
 interface Signup2Props {
   heading?: string;
@@ -59,7 +61,9 @@ const Signup = ({
 
           {/* join holder div */}
           <div className="w-11/12 mx-auto px-8 rounded-md">
-            <h1 className="py-2 text-[#52421b] text-sm font-semibold">I want to join as</h1>
+            <h1 className="py-2 text-[#52421b] text-sm font-semibold">
+              I want to join as
+            </h1>
             <div className="flex items-center justify-around gap-4 ">
               <div
                 onClick={() => setUserType("customer")}
@@ -123,6 +127,16 @@ const Signup = ({
               {buttonText}
             </Button>
           </div>
+
+          <Divider />
+
+          <div className="w-11/15 mx-auto">
+            <button className="flex items-center gap-2 border border-[#0c705d] text-[#0c705d] hover:bg-[#0c705d] hover:text-white transition-colors duration-300 rounded-md px-4 py-2 w-full justify-center text-lg font-bold hover:text-lg hover:font-bold">
+              {" "}
+              <FaGoogle /> Google{""}
+            </button>
+          </div>
+
           <div className="flex justify-center items-center gap-1 text-sm text-muted-foreground pb-5">
             <p>{signupText}</p>
             <Link
