@@ -7,12 +7,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html suppressHydrationWarning>
-      <body className="min-h-full flex flex-col">
-        <Navbar />
-        {children}
-        <Footer></Footer>
-      </body>
-    </html>
+    <div>
+      <Navbar />
+      {children}
+      <Footer></Footer>
+    </div>
   );
 }

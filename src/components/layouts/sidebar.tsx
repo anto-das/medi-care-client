@@ -1,3 +1,5 @@
+"use client";
+
 import {
   BarChart3,
   ClipboardList,
@@ -32,6 +34,8 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
+import Logo from "../ui/logo";
+import Link from "next/link";
 
 type NavItem = {
   label: string;
@@ -46,23 +50,11 @@ type NavGroup = {
 };
 
 type SidebarData = {
-  logo: {
-    src: string;
-    alt: string;
-    title: string;
-    description: string;
-  };
   navGroups: NavGroup[];
   footerGroup: NavGroup;
 };
 
 const sidebarData: SidebarData = {
-  logo: {
-    src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblocks-logo.svg",
-    alt: "Shadcnblocks",
-    title: "Shadcnblocks",
-    description: "Build your app",
-  },
   navGroups: [
     {
       title: "Overview",
@@ -87,24 +79,12 @@ const sidebarData: SidebarData = {
   },
 };
 
-const SidebarLogo = ({ logo }: { logo: SidebarData["logo"] }) => {
+const SidebarLogo = () => {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
         <SidebarMenuButton size="lg">
-          <div className="flex aspect-square size-8 items-center justify-center rounded-sm bg-primary">
-            <img
-              src={logo.src}
-              alt={logo.alt}
-              className="size-6 text-primary-foreground invert dark:invert-0"
-            />
-          </div>
-          <div className="flex flex-col gap-0.5 leading-none">
-            <span className="font-medium">{logo.title}</span>
-            <span className="text-xs text-muted-foreground">
-              {logo.description}
-            </span>
-          </div>
+          <Logo></Logo>
         </SidebarMenuButton>
       </SidebarMenuItem>
     </SidebarMenu>
@@ -115,7 +95,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        <SidebarLogo logo={sidebarData.logo} />
+        <SidebarLogo  />
       </SidebarHeader>
       <SidebarContent>
         {sidebarData.navGroups.map((group) => (
@@ -126,7 +106,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
                 {group.items.map((item) => (
                   <SidebarMenuItem key={item.label}>
                     <SidebarMenuButton asChild isActive={item.isActive}>
-                      <a href={item.href}>{item.label}</a>
+                      <Link href={item.href}>{item.label}</Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}

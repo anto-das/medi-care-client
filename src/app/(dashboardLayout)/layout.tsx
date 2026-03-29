@@ -6,11 +6,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html suppressHydrationWarning>
-      <body className="min-h-full flex flex-col">
+    <div suppressHydrationWarning={true}>
+      <div className="min-h-full flex flex-col">
         <Sidebar1 />
         {children}
-      </body>
-    </html>
+      </div>
+    </div>
   );
 }
