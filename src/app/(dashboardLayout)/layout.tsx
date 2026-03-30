@@ -8,8 +8,7 @@ export default function RootLayout({
   return (
     <div suppressHydrationWarning={true}>
       <div className="min-h-full flex flex-col">
-        <Sidebar1 />
-        {children}
+          <Sidebar1>{children}</Sidebar1>
       </div>
     </div>
   );

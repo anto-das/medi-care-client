@@ -62,11 +62,11 @@ const sidebarData: SidebarData = {
         {
           label: "Dashboard",
           icon: LayoutDashboard,
-          href: "#",
+          href: "/dashboard",
           isActive: true,
         },
-        { label: "Tasks", icon: ClipboardList, href: "#" },
-        { label: "Roadmap", icon: BarChart3, href: "#" },
+        { label: "Tasks", icon: ClipboardList, href: "/dashboard/tasks" },
+        { label: "Roadmap", icon: BarChart3, href: "/dashboard/roadmap" },
       ],
     },
   ],
@@ -95,7 +95,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        <SidebarLogo  />
+        <SidebarLogo />
       </SidebarHeader>
       <SidebarContent>
         {sidebarData.navGroups.map((group) => (
@@ -140,9 +140,9 @@ interface Sidebar1Props {
   className?: string;
 }
 
-const Sidebar1 = ({ className }: Sidebar1Props) => {
+const Sidebar1 = ({ children }: { children: React.ReactNode }) => {
   return (
-    <SidebarProvider className={cn(className)}>
+    <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
@@ -164,7 +164,10 @@ const Sidebar1 = ({ className }: Sidebar1Props) => {
           </Breadcrumb>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
-          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+          <div className="min-h-[100vh] flex-1 rounded-xl  md:min-h-min">
+            {/* Content goes here */}
+            {children}
+          </div>
         </div>
       </SidebarInset>
     </SidebarProvider>

@@ -1,14 +1,9 @@
-import { Sidebar1 } from "@/components/layouts/sidebar";
 import React from "react";
 
-const DashboardPage = () => {
-  return (
-    <div>
-      <h1 className="text-2xl font-bold">this is Dashboard</h1>
-
-      <Sidebar1></Sidebar1>
-    </div>
-  );
+const dashboardPage = () => {
+  return <div>
+    hello this is dashboard page
+  </div>;
 };
 
-export default DashboardPage;
+export default dashboardPage;
