@@ -36,6 +36,7 @@ import {
 import { cn } from "@/lib/utils";
 import Logo from "../ui/logo";
 import Link from "next/link";
+import { Button } from "../ui/button";
 
 type NavItem = {
   label: string;
@@ -62,10 +63,10 @@ const sidebarData: SidebarData = {
         {
           label: "Dashboard",
           icon: LayoutDashboard,
-          href: "/dashboard",
+          href: "/",
           isActive: true,
         },
-        { label: "Tasks", icon: ClipboardList, href: "/dashboard/tasks" },
+        { label: "Medicines", icon: ClipboardList, href: "/medicines" },
         { label: "Roadmap", icon: BarChart3, href: "/dashboard/roadmap" },
       ],
     },
@@ -79,6 +80,11 @@ const sidebarData: SidebarData = {
   },
 };
 
+const userInfo = {
+  name: "John Doe",
+  role: "customer",
+};
+
 const SidebarLogo = () => {
   return (
     <SidebarMenu>
@@ -86,6 +92,26 @@ const SidebarLogo = () => {
         <SidebarMenuButton size="lg">
           <Logo></Logo>
         </SidebarMenuButton>
+        <div className="flex justify-start gap-5 items-center py-4 border-t border-b my-6 bg-[#f7faf9]">
+          <Button
+            variant={"outline"}
+            className={`${userInfo.role === "customer" ? "bg-[#0b6e5c] text-white hover:bg-[#0b6e5c] border-none hover:text-white" : ""}`}
+          >
+            Customer
+          </Button>
+          <Button
+            variant={"outline"}
+            className={`${userInfo.role === "seller" ? "bg-[#0b6e5c] text-white hover:bg-[#0b6e5c] border-none hover:text-white" : ""}`}
+          >
+            Seller
+          </Button>
+          <Button
+            variant={"outline"}
+            className={`${userInfo.role === "admin" ? "bg-[#0b6e5c] text-white hover:bg-[#0b6e5c] border-none hover:text-white" : ""}`}
+          >
+            Admin
+          </Button>
+        </div>
       </SidebarMenuItem>
     </SidebarMenu>
   );
@@ -140,7 +166,11 @@ interface Sidebar1Props {
   className?: string;
 }
 
-const Sidebar1 = ({ children }: { children: React.ReactNode }) => {
+const Sidebar1 = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -151,17 +181,7 @@ const Sidebar1 = ({ children }: { children: React.ReactNode }) => {
             orientation="vertical"
             className="mr-2 data-[orientation=vertical]:h-4"
           />
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">Overview</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Dashboard</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+          <h1>Dashboard name</h1>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
           <div className="min-h-[100vh] flex-1 rounded-xl  md:min-h-min">
