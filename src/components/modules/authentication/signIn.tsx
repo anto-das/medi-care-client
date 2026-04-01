@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaGoogle } from "react-icons/fa";
@@ -33,6 +34,8 @@ const SignInPage = ({
       callbackURL: "http://localhost:3000",
     });
   };
+  const getSession = authClient.useSession();
+  console.log("User Session:", getSession.data);
 
   return (
     <section className={cn("h-screen bg-muted", className)}>
