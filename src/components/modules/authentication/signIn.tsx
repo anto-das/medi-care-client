@@ -4,6 +4,7 @@ import Divider from "@/components/separator-with-text-1";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -25,6 +26,14 @@ const SignInPage = ({
   className,
 }: Signup2Props) => {
   const pathname = usePathname();
+
+  const handleLoginWithGoogle = async () => {
+    const res = authClient.signIn.social({
+      provider: "google",
+      callbackURL: "http://localhost:3000",
+    });
+  };
+
   return (
     <section className={cn("h-screen bg-muted", className)}>
       <div className="flex h-full items-center justify-center">
@@ -90,7 +99,10 @@ const SignInPage = ({
           </div>
           <Divider />
           <div className="w-11/15 mx-auto">
-            <button className="flex items-center gap-2 border border-[#0c705d] text-[#0c705d] hover:bg-[#0c705d] hover:text-white transition-colors duration-300 rounded-md px-4 py-2 w-full justify-center text-lg font-bold hover:text-lg hover:font-bold">
+            <button
+              onClick={handleLoginWithGoogle}
+              className="flex items-center gap-2 border border-[#0c705d] text-[#0c705d] hover:bg-[#0c705d] hover:text-white transition-colors duration-300 rounded-md px-4 py-2 w-full justify-center text-lg font-bold hover:text-lg hover:font-bold"
+            >
               {" "}
               <FaGoogle /> Google{""}
             </button>

@@ -82,7 +82,7 @@ const sidebarData: SidebarData = {
 
 const userInfo = {
   name: "John Doe",
-  role: "customer",
+  role: "seller",
 };
 
 const SidebarLogo = () => {
