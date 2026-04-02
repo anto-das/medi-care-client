@@ -2,10 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
+import { userService } from "@/service/user.service";
 
 export default async function Home() {
-  const getUser = await authClient.getSession();
-  console.log("User Session:", getUser);
+  // const getUser = await userService.getSession(); // Call the getSession function to retrieve user session data
+  // console.log("User Session:", getUser.data?.session); // Log the session data to the console
 
   return (
     <main>

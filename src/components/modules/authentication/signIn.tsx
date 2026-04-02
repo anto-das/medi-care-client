@@ -34,8 +34,8 @@ const SignInPage = ({
       callbackURL: "http://localhost:3000",
     });
   };
-  const getSession = authClient.useSession();
-  console.log("User Session:", getSession.data);
+  // const getSession = authClient.useSession();
+  // console.log("User Session:", getSession.data);
 
   return (
     <section className={cn("h-screen bg-muted", className)}>
