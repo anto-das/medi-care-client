@@ -37,6 +37,9 @@ import { cn } from "@/lib/utils";
 import Logo from "../ui/logo";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { customerRoutes } from "@/routes/customerRoutes";
+import { sellerRoutes } from "@/routes/sellerRoutes";
+import { adminRoutes } from "@/routes/adminRoutes";
 
 type NavItem = {
   label: string;
@@ -52,7 +55,7 @@ type NavGroup = {
 
 type SidebarData = {
   navGroups: NavGroup[];
-  footerGroup: NavGroup;
+  // footerGroup: NavGroup;
 };
 
 const sidebarData: SidebarData = {
@@ -71,13 +74,13 @@ const sidebarData: SidebarData = {
       ],
     },
   ],
-  footerGroup: {
-    title: "Support",
-    items: [
-      { label: "Help Center", icon: HelpCircle, href: "#" },
-      { label: "Settings", icon: Settings, href: "#" },
-    ],
-  },
+  // footerGroup: {
+  //   title: "Support",
+  //   items: [
+  //     { label: "Help Center", icon: HelpCircle, href: "#" },
+  //     { label: "Settings", icon: Settings, href: "#" },
+  //   ],
+  // },
 };
 
 const userInfo = {
@@ -117,7 +120,25 @@ const SidebarLogo = () => {
   );
 };
 
-const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
+const AppSidebar = ({
+  userInfo,
+  ...props
+}: { userInfo: any } & React.ComponentProps<typeof Sidebar>) => {
+  let routes = [];
+  const role = userInfo.role;
+  switch (role) {
+    case "customer":
+      routes = customerRoutes;
+      break;
+    case "seller":
+      routes = sellerRoutes;
+      break;
+    case "admin":
+      routes = adminRoutes;
+      break;
+    default:
+      break;
+  }
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -141,7 +162,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
           </SidebarGroup>
         ))}
       </SidebarContent>
-      <SidebarFooter>
+      {/* <SidebarFooter>
         <SidebarGroup>
           <SidebarGroupLabel>{sidebarData.footerGroup.title}</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -149,31 +170,33 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
               {sidebarData.footerGroup.items.map((item) => (
                 <SidebarMenuItem key={item.label}>
                   <SidebarMenuButton asChild>
-                    <a href={item.href}>{item.label}</a>
+                    <Link href={item.href}>{item.label}</Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-      </SidebarFooter>
+      </SidebarFooter> */}
       <SidebarRail />
     </Sidebar>
   );
 };
 
-interface Sidebar1Props {
-  className?: string;
-}
+// interface Sidebar1Props {
+//   className?: string;
+// }
 
 const Sidebar1 = ({
   children,
+  userInfo,
 }: {
   children: React.ReactNode;
+  userInfo: any;
 }) => {
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar userInfo={userInfo} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
