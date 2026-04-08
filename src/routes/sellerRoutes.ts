@@ -1,15 +1,32 @@
-export const sellerRoutes = [
-  {
-    title: "Overview",
-    items: [
-      {
-        label: "Dashboard",
+import { Routes } from "@/types";
 
-        href: "/",
-        isActive: true,
-      },
-      { label: "Medicines", href: "/medicines" },
-      { label: "Roadmap", href: "/dashboard/roadmap" },
-    ],
-  },
-];
+export const sellerRoutes: Routes = {
+  title: "seller menu",
+  items: [
+    {
+      label: "📊 Dashboard",
+      href: "/seller-dashboard",
+    },
+    {
+      label: "💊 Medicines",
+      href: "/seller-dashboard/medicines",
+    },
+    {
+      label: "📋 Orders",
+      href: "/seller-dashboard/orders",
+    },
+    {
+      label: "💬 Reviews",
+      href: "/seller-dashboard/reviews",
+    },
+    {
+      label: "💳 Earnings",
+      href: "/seller-dashboard/earnings",
+    },
+    {
+      label: "👤 Profile",
+      href: "/seller-dashboard/profile",
+    },
+  ],
+};
+

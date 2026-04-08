@@ -1,14 +1,44 @@
-export const customerRoutes = [
-  {
-    title: "customer menu",
-    items: [
-      {
-        label: "Dashboard",
-        href: "/",
-        isActive: true,
-      },
-      { label: "Medicines", href: "/medicines" },
-      { label: "Roadmap", href: "/dashboard/roadmap" },
-    ],
-  },
-];
+import { Routes } from "@/types";
+
+export const customerRoutes: Routes = {
+  title: "customer menu",
+  items: [
+    {
+      label: "🏠 Browse",
+      href: "/customer-dashboard",
+    },
+    {
+      label: "🛒 My Cart",
+      href: "/customer-dashboard/cart",
+    },
+    {
+      label: "📦 My Orders",
+      href: "/customer-dashboard/orders",
+    },
+    {
+      label: "📋 Prescriptions",
+      href: "/customer-dashboard/prescriptions",
+    },
+
+    {
+      label: "❤️ Wishlist",
+      href: "/customer-dashboard/wishlist",
+    },
+    {
+      label: "👤 Profile",
+      href: "/customer-dashboard/profile",
+    },
+  ],
+};
+
+// Browse
+// 🛒
+// My Cart
+// 3
+// 📦
+// My Orders
+// 📋
+// Prescriptions
+// ❤️
+// Wishlist
+// 👤

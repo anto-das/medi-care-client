@@ -75,7 +75,8 @@ const Signup = ({
                 </p>
               </div>
               <div
-                onClick={() => setUserType("seller")}
+              
+              onClick={() => setUserType("seller")}
                 className={`group text-center rounded-md mx-2 py-4 text-2xl hover:border-2 hover:border-[#0c715e] w-1/4 border-2 transition-colors duration-300 hover:bg-[#f0faf8] ${userType === "seller" ? "border-[#0c715e] bg-[#f0faf8] text-[#0c715e]" : "border-gray-300"}`}
               >
                 <p>📦</p>

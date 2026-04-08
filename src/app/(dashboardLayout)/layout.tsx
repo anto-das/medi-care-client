@@ -1,7 +1,9 @@
 import { Sidebar1 } from "@/components/layouts/sidebar";
-import { role } from "better-auth/client";
+import { Roles } from "@/constants/Roles";
+import { userService } from "@/service/user.service";
+import { user } from "../utlis/user.info";
 
-export default function RootLayout({
+export default async function RootLayout({
   customerSlot,
   sellerSlot,
   adminSlot,
@@ -10,16 +12,18 @@ export default function RootLayout({
   sellerSlot: React.ReactNode;
   adminSlot: React.ReactNode;
 }>) {
-  const userInfo = {
-    role: "SELLER",
-  };
+  // const { data } = await userService.getSession();
+  // const userInfo = {
+  //   role: data?.user?.role,
+  // };
+  const userInfo = (await user()).user;
   return (
     <div suppressHydrationWarning={true}>
       <div className="min-h-full flex flex-col">
         <Sidebar1 userInfo={userInfo}>
-          {userInfo.role === "CUSTOMER" && customerSlot} 
-          {userInfo.role === "SELLER" && sellerSlot} 
-          {userInfo.role === "ADMIN" && adminSlot}
+          {userInfo.role === Roles.CUSTOMER && customerSlot}
+          {userInfo.role === Roles.SELLER && sellerSlot}
+          {userInfo.role === Roles.ADMIN && adminSlot}
         </Sidebar1>
       </div>
     </div>

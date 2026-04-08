@@ -7,7 +7,8 @@ import { userService } from "@/service/user.service";
 export default async function Home() {
   // const getUser = await userService.getSession(); // Call the getSession function to retrieve user session data
   // console.log("User Session:", getUser.data?.session); // Log the session data to the console
-
+  // const { data } = await userService.getSession();
+  // console.log("User Session:", data.user.role); // Log the session data to the console
   return (
     <main>
       <h1 className="text-4xl font-bold text-center mt-10">

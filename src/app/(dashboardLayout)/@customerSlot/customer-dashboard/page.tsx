@@ -1,11 +1,6 @@
-import React from 'react'
+const DashboardMedicinePage = async () => {
+  // await new Promise((resolve) => setTimeout(resolve, 2000));
+  return <div>this is dashboard medicine page</div>;
+};
 
-const DashboardMedicinePage = () => {
-  return (
-    <div>
-      this is dashboard medicine page
-    </div>
-  )
-}
-
-export default DashboardMedicinePage
+export default DashboardMedicinePage;

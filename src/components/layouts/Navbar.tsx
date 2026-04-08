@@ -79,7 +79,7 @@ const Navbar = ({
     },
     {
       title: "Dashboard",
-      url: "/dashboard",
+      url: "/customer-dashboard",
     },
   ],
   auth = {
@@ -176,7 +176,6 @@ const Navbar = ({
 
 const renderMenuItem = (item: MenuItem) => {
   const pathname = usePathname();
-  // console.log("Current Pathname:", pathname);
   if (item.items) {
     return (
       <NavigationMenuItem key={item.title}>
