@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useForm } from "@tanstack/react-form";
 import { FaGoogle } from "react-icons/fa";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import * as z from "zod";
 
 interface Signup2Props {
   heading?: string;
@@ -22,19 +23,27 @@ interface Signup2Props {
 }
 
 const SignInPage = ({
-  buttonText = "Create Account",
+  buttonText = "Sign In",
   signupText = "Don't have an account?",
   signupUrl = "/sign-up",
   className,
 }: Signup2Props) => {
+  const formSchema = z.object({
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+  });
   const form = useForm({
     defaultValues: {
-      name: "",
       email: "",
       password: "",
     },
-    onSubmit: ({ value }) => {
+    validators: {
+      onSubmit: formSchema,
+    },
+    onSubmit: async ({ value }) => {
       console.log("Form Values:", value);
+      const res = await authClient.signIn.email(value);
+      console.log("Sign In Response:", res);
       // Handle form submission logic here
     },
   });
@@ -44,8 +53,6 @@ const SignInPage = ({
       callbackURL: "http://localhost:3000",
     });
   };
-  // const getSession = authClient.useSession();
-  // console.log("User Session:", getSession.data);
 
   return (
     <section
@@ -54,9 +61,9 @@ const SignInPage = ({
         className,
       )}
     >
-      <div className="flex flex-col lg:flex-row md:flex-row items-center gap-6 lg:justify-evenly  shadow-md rounded-xl lg:rounded-2xl w-11/16 mx-auto bg-[#0c705d] my-10 ">
+      <div className=" items-center gap-6 lg:justify-evenly  shadow-md w-11/12 md:w-11/12 lg:w-1/4 mx-auto my-10 rounded-xl">
         {/* Logo */}
-        <div className="bg-[#0c705d] w-full rounded-lg space-y-5">
+        <div className="bg-[#0c705d] rounded-t-xl py-5 w-full space-y-5">
           <h1 className="text-4xl text-center">🌱</h1>
           <h2 className="text-3xl font-semibold text-center text-gray-200 py-5">
             Create Your Account{" "}
@@ -67,7 +74,7 @@ const SignInPage = ({
         </div>
         {/* sign up sign in button */}
 
-        <div className="bg-background p-10 w-full flex flex-col justify-center items-center rounded-b-lg lg:rounded-r-2xl space-y-5">
+        <div className="bg-background rounded-b-xl w-full flex flex-col justify-center items-center  space-y-5">
           {/* sign up form */}
           <form
             id="sign up form"
@@ -79,33 +86,20 @@ const SignInPage = ({
           >
             <FieldGroup className="flex w-full flex-col items-center gap-y-4 rounded-md px-0 py-3 justify-center">
               <form.Field
-                name="name"
-                children={(field) => {
-                  return (
-                    <Field className="w-11/16 flex-col gap-2">
-                      <FieldLabel className="text-lg font-bold">
-                        Name
-                      </FieldLabel>
-                      <Input
-                        type="text"
-                        placeholder="Name"
-                        className="w-full text-lg py-5 placeholder:text-lg focus:text-lg"
-                        onChange={(e) => field.handleChange(e.target.value)}
-                        required
-                      />
-                    </Field>
-                  );
-                }}
-              />
-              <form.Field
                 name="email"
                 children={(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
                   return (
-                    <Field className="w-11/16 flex-col gap-2">
-                      <FieldLabel className="text-lg font-bold">
+                    <Field
+                      data-invalid={isInvalid}
+                      className="w-11/16 flex-col gap-2"
+                    >
+                      <FieldLabel htmlFor="email" className="text-lg font-bold">
                         Email
                       </FieldLabel>
                       <Input
+                        id="email"
                         type="email"
                         placeholder="Email"
                         className="text-lg py-5 placeholder:text-lg focus:text-lg"
@@ -119,12 +113,22 @@ const SignInPage = ({
               <form.Field
                 name="password"
                 children={(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
+
                   return (
-                    <Field className="w-11/16 flex-col gap-2">
-                      <FieldLabel className="text-lg font-bold">
+                    <Field
+                      data-invalid={isInvalid}
+                      className="w-11/16 flex-col gap-2"
+                    >
+                      <FieldLabel
+                        htmlFor="password"
+                        className="text-lg font-bold"
+                      >
                         Password
                       </FieldLabel>
                       <Input
+                        id="password"
                         type="password"
                         placeholder="Password"
                         className="text-lg py-5 placeholder:text-lg focus:text-lg"
@@ -141,7 +145,6 @@ const SignInPage = ({
             {buttonText}
           </Button>
           <Divider />
-
           <div className="w-11/16 mx-auto">
             <button
               onClick={handleLoginWithGoogle}
