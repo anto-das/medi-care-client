@@ -12,6 +12,8 @@ import { useForm } from "@tanstack/react-form";
 import { FaGoogle } from "react-icons/fa";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import * as z from "zod";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface Signup2Props {
   heading?: string;
@@ -28,6 +30,8 @@ const SignInPage = ({
   signupUrl = "/sign-up",
   className,
 }: Signup2Props) => {
+  const router = useRouter();
+  console.log(router);
   const formSchema = z.object({
     email: z.string().email("Invalid email address"),
     password: z.string().min(8, "Password must be at least 8 characters"),
@@ -41,9 +45,19 @@ const SignInPage = ({
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log("Form Values:", value);
-      const res = await authClient.signIn.email(value);
-      console.log("Sign In Response:", res);
+      const toastId = toast.loading("Signing in...");
+      try {
+        const { data, error } = await authClient.signIn.email(value);
+        if (error) {
+          return toast.error(error.message, {
+            id: toastId,
+          });
+        }
+        toast.success("Signed in successfully!", { id: toastId });
+        router.push("/");
+      } catch (e) {
+        toast.error("Failed to sign in. Please try again.", { id: toastId });
+      }
       // Handle form submission logic here
     },
   });

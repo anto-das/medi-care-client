@@ -9,11 +9,13 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { useForm } from "@tanstack/react-form";
 import Link from "next/link";
 
 import { FaGoogle } from "react-icons/fa";
+import { toast } from "sonner";
 
 import * as z from "zod";
 
@@ -48,6 +50,15 @@ const Signup = ({
     },
     onSubmit: async ({ value }) => {
       console.log("Form Values:", value);
+      const { data, error } = await authClient.signUp.email(value);
+      const toasterId = toast.loading("Creating account...");
+      if (error) {
+        return toast.error(error.message, {
+          id: toasterId,
+        });
+      }
+      console.log("Sign Up Response:", data);
+      toast.success("Account created successfully!", { id: toasterId });
       // Handle form submission logic here
     },
   });

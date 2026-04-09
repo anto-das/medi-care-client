@@ -18,21 +18,15 @@ export async function proxy(request: NextRequest) {
   if (!isAuthenticated) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
-  if (
-    (isAdmin && pathname.startsWith("/customer-dashboard")) ||
-    pathname.startsWith("/seller-dashboard")
-  ) {
+  if (isAdmin && pathname.startsWith("/customer-dashboard")) {
     return NextResponse.redirect(new URL("/admin-dashboard", request.url));
   }
-  if (
-    (isSeller && pathname.startsWith("/customer-dashboard")) ||
-    pathname.startsWith("/admin-dashboard")
-  ) {
+  if (isSeller && pathname.startsWith("/customer-dashboard")) {
     return NextResponse.redirect(new URL("/seller-dashboard", request.url));
   }
   if (
-    (isCustomer && pathname.startsWith("/seller-dashboard")) ||
-    pathname.startsWith("/admin-dashboard")
+    (!isAdmin && pathname.startsWith("/admin-dashboard")) ||
+    (isCustomer && pathname.startsWith("/seller-dashboard"))
   ) {
     return NextResponse.redirect(new URL("/customer-dashboard", request.url));
   }

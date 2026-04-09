@@ -12,11 +12,11 @@ export default async function RootLayout({
   sellerSlot: React.ReactNode;
   adminSlot: React.ReactNode;
 }>) {
-  // const { data } = await userService.getSession();
-  // const userInfo = {
-  //   role: data?.user?.role,
-  // };
-  const userInfo = (await user()).user;
+  const { data } = await userService.getSession();
+  const userInfo = {
+    role: data?.user?.role,
+  };
+
   return (
     <div suppressHydrationWarning={true}>
       <div className="min-h-full flex flex-col">
