@@ -1,7 +1,6 @@
 import { Sidebar1 } from "@/components/layouts/sidebar";
 import { Roles } from "@/constants/Roles";
 import { userService } from "@/service/user.service";
-import { user } from "../utlis/user.info";
 
 export default async function RootLayout({
   customerSlot,

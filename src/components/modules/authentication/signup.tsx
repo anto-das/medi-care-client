@@ -13,6 +13,7 @@ import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { useForm } from "@tanstack/react-form";
 import Link from "next/link";
+import { redirect, useRouter } from "next/navigation";
 
 import { FaGoogle } from "react-icons/fa";
 import { toast } from "sonner";
@@ -34,6 +35,7 @@ const Signup = ({
   signupUrl = "/sign-in",
   className,
 }: Signup2Props) => {
+  const router = useRouter();
   const formSchema = z.object({
     name: z.string().min(5, "Name is required! must be at least 5 characters"),
     email: z.string().email("Invalid email address"),
@@ -50,18 +52,38 @@ const Signup = ({
     },
     onSubmit: async ({ value }) => {
       console.log("Form Values:", value);
-      const { data, error } = await authClient.signUp.email(value);
       const toasterId = toast.loading("Creating account...");
-      if (error) {
-        return toast.error(error.message, {
+      try {
+        const { data, error } = await authClient.signUp.email(value);
+        if (error) {
+          return toast.error(error.message, {
+            id: toasterId,
+          });
+        }
+        console.log("Sign Up Response:", data);
+        toast.success("Account created successfully!", { id: toasterId });
+        redirect(data ? "/" : "/sign-in");
+      } catch (error) {
+        toast.error("Failed to create account. Please try again.", {
           id: toasterId,
         });
       }
-      console.log("Sign Up Response:", data);
-      toast.success("Account created successfully!", { id: toasterId });
       // Handle form submission logic here
     },
   });
+  const handleLoginWithGoogle = async () => {
+    const toastId = toast.loading("Redirecting to Google...");
+    try {
+      const { data } = await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "http://localhost:3000",
+      });
+      // console.log("Google Sign-In Response:", data);
+      redirect("/");
+    } catch (error) {
+      toast.error("Failed to redirect to Google.", { id: toastId });
+    }
+  };
   return (
     <section
       className={cn(
@@ -188,7 +210,10 @@ const Signup = ({
           <Divider />
 
           <div className="w-11/16 mx-auto">
-            <button className="flex items-center gap-2 border border-[#0c705d] text-[#0c705d] hover:bg-[#0c705d] hover:text-white transition-colors duration-300 rounded-md px-4 py-2 w-full justify-center text-lg font-bold hover:text-lg hover:font-bold">
+            <button
+              onClick={handleLoginWithGoogle}
+              className="flex items-center gap-2 border border-[#0c705d] text-[#0c705d] hover:bg-[#0c705d] hover:text-white transition-colors duration-300 rounded-md px-4 py-2 w-full justify-center text-lg font-bold hover:text-lg hover:font-bold"
+            >
               {" "}
               <FaGoogle /> Google{""}
             </button>

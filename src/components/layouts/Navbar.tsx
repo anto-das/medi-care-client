@@ -1,19 +1,12 @@
 "use client";
 
-import { Book, Menu, Sunset, Trees, Zap } from "lucide-react";
+import { Menu } from "lucide-react";
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Accordion } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
@@ -29,9 +22,11 @@ import Link from "next/link";
 // import mediLogo from "../assets/medicine.png";
 import { StaticImageData } from "next/image";
 import Logo from "../ui/logo";
-import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
 import { Input } from "../ui/input";
+
+import { toast } from "sonner";
+import { authClient } from "@/lib/auth-client";
 interface MenuItem {
   title: string;
   url: string;
@@ -88,6 +83,26 @@ const Navbar = ({
   },
   className,
 }: Navbar1Props) => {
+  const { data: session } = authClient.useSession();
+  // console.log("Session Data in Navbar:", session);
+  const handleSignOut = async () => {
+    const toastId = toast.loading("Signing out...");
+    try {
+      const { data, error } = await authClient.signOut();
+      if (error) {
+        return toast.error("Failed to sign out. Please try again.", {
+          id: toastId,
+        });
+      }
+      toast.success("Signed out successfully!", { id: toastId });
+      //  setUser(null);
+    } catch (error) {
+      return toast.error("Failed to sign out. Please try again.", {
+        id: toastId,
+      });
+    }
+  };
+
   return (
     <section className={cn("py-4 z-10 sticky top-0 bg-[#f8fdfbc2]", className)}>
       <div className="w-11/12 mx-auto">
@@ -116,12 +131,23 @@ const Navbar = ({
             >
               {auth.login.title}
             </Link>
-            <Link
-              href={auth.signup.url}
-              className="rounded-md capitalize bg-[#0b5e4e] hover:bg-[#0e856d] px-4 py-2 text-sm font-bold text-[#fafcfb] font-[Sans-serif]"
-            >
-              {auth.signup.title}
-            </Link>
+            {session?.user ? (
+              <>
+                <button
+                  onClick={handleSignOut}
+                  className="rounded-md capitalize bg-[#e22929] px-4 py-2 text-sm font-bold text-[#e2fff0] font-[Sans-serif]"
+                >
+                  Sign Out
+                </button>
+              </>
+            ) : (
+              <Link
+                href={auth.signup.url}
+                className="rounded-md capitalize bg-[#0b5e4e] hover:bg-[#0e856d] px-4 py-2 text-sm font-bold text-[#fafcfb] font-[Sans-serif]"
+              >
+                {auth.signup.title}
+              </Link>
+            )}
           </div>
         </nav>
 
@@ -157,12 +183,23 @@ const Navbar = ({
                     >
                       {auth.login.title}
                     </Link>
-                    <Link
-                      href={auth.signup.url}
-                      className="rounded-md capitalize bg-[#0b5e4e] hover:bg-[#0e856d] px-4 py-1.5 text-sm font-bold text-[#fafcfb] font-[Sans-serif] text-center w-full"
-                    >
-                      {auth.signup.title}
-                    </Link>
+                    {session?.user ? (
+                      <>
+                        <button
+                          onClick={handleSignOut}
+                          className="rounded-md capitalize bg-[#e22929] px-4 py-2 text-sm w-full font-bold text-[#e2fff0] font-[Sans-serif]"
+                        >
+                          Sign Out
+                        </button>
+                      </>
+                    ) : (
+                      <Link
+                        href={auth.signup.url}
+                        className="rounded-md capitalize bg-[#0b5e4e] hover:bg-[#0e856d] px-4 py-2 text-sm font-bold text-[#fafcfb] font-[Sans-serif] w-full"
+                      >
+                        {auth.signup.title}
+                      </Link>
+                    )}
                   </div>
                 </div>
               </SheetContent>

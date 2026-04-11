@@ -13,7 +13,7 @@ import { FaGoogle } from "react-icons/fa";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import * as z from "zod";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 interface Signup2Props {
   heading?: string;
@@ -31,7 +31,7 @@ const SignInPage = ({
   className,
 }: Signup2Props) => {
   const router = useRouter();
-  console.log(router);
+  // console.log(router);
   const formSchema = z.object({
     email: z.string().email("Invalid email address"),
     password: z.string().min(8, "Password must be at least 8 characters"),
@@ -53,7 +53,9 @@ const SignInPage = ({
             id: toastId,
           });
         }
+        // console.log(data)
         toast.success("Signed in successfully!", { id: toastId });
+        router.refresh();
         router.push("/");
       } catch (e) {
         toast.error("Failed to sign in. Please try again.", { id: toastId });
@@ -66,6 +68,13 @@ const SignInPage = ({
       provider: "google",
       callbackURL: "http://localhost:3000",
     });
+    const toastId = toast.loading("Redirecting to Google...");
+    try {
+      const { data } = await res;
+      redirect("/");
+    } catch (error) {
+      toast.error("Failed to redirect to Google.", { id: toastId });
+    }
   };
 
   return (
