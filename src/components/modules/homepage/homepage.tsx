@@ -14,11 +14,12 @@ const Homepage = async () => {
   // console.log("Medicines:", data.data);
   return (
     <div>
-      <div className="w-full min-h-screen lg:h-170 relative">
+      <div className="w-full min-h-screen relative">
         <img src={banner.src} alt="Banner" className="w-full h-full" />
         <div className="absolute inset-0 bg-[#0b5e4e] bg-opacity-40"></div>
-        <div className="absolute inset-0 flex  items-center justify-between w-11/14 mx-auto">
-          <div className="grid space-y-5">
+        {/* hero section */}
+        <div className="absolute inset-0 flex flex-col lg:flex-row items-center justify-center  md:justify-between lg:justify-between w-11/14 mx-auto">
+          <div className="grid space-y-5 lg:py-5 w-full lg:w-1/2 mx-auto mt-10 lg:mt-0">
             <span className="p-3 rounded-xl text-sm font-bold text-white border bg-[#c1e4d32d] md:w-1/2 lg:w-1/3">
               🇧🇩 Bangladesh's Trusted Pharmacy Platform
             </span>
@@ -47,28 +48,52 @@ const Homepage = async () => {
               </div>
 
               {/* Action Buttons Row */}
-              <div className="flex gap-4">
+              <div className="flex flex-col lg:flex-row md:flex-row gap-4">
                 {/* Browse Button */}
-                <button className="flex items-center gap-2 rounded-xl bg-white px-7 py-4 font-bold text-[#062c1d] transition-transform active:scale-95">
+                <button className="flex items-center justify-center  p-4 rounded-xl bg-white  font-bold text-[#062c1d] transition-transform active:scale-95">
                   Browse Medicines &rarr;
                 </button>
 
                 {/* Upload Button */}
-                <button className="flex items-center gap-3 rounded-xl border border-white/20 bg-white/5 px-7 py-4 font-bold text-white transition-all hover:bg-white/10 active:scale-95">
-                  Upload Prescription
-                  <span className="text-xl">📋</span>
+                <button className="flex items-center justify-center rounded-xl border border-white/20 bg-white/5 p-4 font-bold text-white transition-all hover:bg-white/10 active:scale-95">
+                  Upload Prescription 📋
                 </button>
               </div>
             </div>
           </div>
-          <div>
-            <div className="border rounded-lg p-4 shadow-md">
-              <h2>"Napa"</h2>
-              <p>Manufacturer: "Square Pharmaceuticals"</p>
-              {/* <img src={medi_img} alt={medicine_name} /> */}
-              <p>Category: "Pain Relief"</p>
-              <p>Price: $2.99</p>
-              <p>Stock: 100</p>
+          {/* Featured Medicine */}
+          <div className="w-1/4 mx-auto relative mt-10 lg:mt-0 hidden lg:block">
+            <div className="border rounded-lg p-4 shadow-md bg-white space-y-2">
+              <div className="text-center py-8 text-6xl bg-[#e6f2ef] rounded-lg">
+                💊
+              </div>
+              <h1 className="text-xl font-bold">Napa</h1>
+              <h3 className="text-lg text-[#8da197]">Paracetamol 500mg</h3>
+              <div className="flex items-center gap-2 text-sm text-gray-600 justify-end">
+                <span className="h-2 w-2 rounded-full bg-green-500"></span>{" "}
+                {/* Custom Bullet */}
+                <p className="text-green-500 font-bold text-end capitalize ">
+                  {" "}
+                  in-stock
+                </p>
+              </div>
+              <button className="bg-[#10b981] w-full text-white py-2 px-4 rounded-lg hover:bg-[#0da371] mt-10">
+                Add to Cart
+              </button>
+            </div>
+          </div>
+           <div className="p-3  absolute top-9/16 right-80  rounded-lg bg-[#133d35]  flex items-center gap-4 ">
+            <span className="p-1 bg-[#507463] rounded-lg">🚴</span>
+            <div>
+              <h5 className="text-white font-bold text-sm">Out for delivery</h5>
+              <p className="text-[#507463] font-light">0.4km away</p>
+            </div>
+          </div>
+          <div className="p-3  absolute top-90 right-10  rounded-lg bg-[#133d35]  flex items-center gap-4 ">
+            <span className="p-1 bg-[#507463] rounded-lg">🚴</span>
+            <div>
+              <h5 className="text-white font-bold text-sm">Out for delivery</h5>
+              <p className="text-[#507463] font-light">0.4km away</p>
             </div>
           </div>
         </div>
