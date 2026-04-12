@@ -82,14 +82,14 @@ const Homepage = async () => {
               </button>
             </div>
           </div>
-           <div className="p-3  absolute top-9/16 right-80  rounded-lg bg-[#133d35]  flex items-center gap-4 ">
-            <span className="p-1 bg-[#507463] rounded-lg">🚴</span>
+          <div className="p-3 animate-float-slow hidden absolute top-9/16 right-80  rounded-lg bg-[#133d35]  lg:flex items-center gap-4 ">
+            <span className="p-1 bg-[#507463] rounded-lg">✅</span>
             <div>
-              <h5 className="text-white font-bold text-sm">Out for delivery</h5>
-              <p className="text-[#507463] font-light">0.4km away</p>
+              <h5 className="text-white font-bold text-sm">Order confirmed!</h5>
+              <p className="text-[#507463] font-light">Delivery in 2 hours</p>
             </div>
           </div>
-          <div className="p-3  absolute top-90 right-10  rounded-lg bg-[#133d35]  flex items-center gap-4 ">
+          <div className="p-3 animate-float-slow absolute top-90 right-10  rounded-lg bg-[#133d35] hidden lg:flex items-center gap-4 ">
             <span className="p-1 bg-[#507463] rounded-lg">🚴</span>
             <div>
               <h5 className="text-white font-bold text-sm">Out for delivery</h5>

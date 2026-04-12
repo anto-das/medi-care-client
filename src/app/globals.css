@@ -133,3 +133,20 @@
     @apply text-[#1f6b5d] bg-[#e6f4f1];
   }
 }
+
+@layer utilities {
+  .animate-float-slow {
+    /* 3s মানে ৩ সেকেন্ড পর পর লুপ হবে, infinite মানে কখনও থামবে না */
+    animation: float-slow 5s ease-in-out infinite;
+  }
+
+  @keyframes float-slow {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-12px); /* ৮ পিক্সেল পর্যন্ত উপরে উঠবে */
+    }
+  }
+}
