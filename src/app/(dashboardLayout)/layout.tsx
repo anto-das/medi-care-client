@@ -1,8 +1,10 @@
+import DashboardLayout from "@/components/layouts/dashboardLayout";
 import { Sidebar1 } from "@/components/layouts/sidebar";
 import { Roles } from "@/constants/Roles";
 import { userService } from "@/service/user.service";
+import { Suspense } from "react";
 
-export default async function RootLayout({
+export default function RootLayout({
   customerSlot,
   sellerSlot,
   adminSlot,
@@ -11,20 +13,15 @@ export default async function RootLayout({
   sellerSlot: React.ReactNode;
   adminSlot: React.ReactNode;
 }>) {
-  const { data } = await userService.getSession();
-  const userInfo = {
-    role: data?.user?.role,
-  };
-
   return (
     <div suppressHydrationWarning={true}>
-      <div className="min-h-full flex flex-col">
-        <Sidebar1 userInfo={userInfo}>
-          {userInfo.role === Roles.CUSTOMER && customerSlot}
-          {userInfo.role === Roles.SELLER && sellerSlot}
-          {userInfo.role === Roles.ADMIN && adminSlot}
-        </Sidebar1>
-      </div>
+      <Suspense fallback={<div>Loading....</div>}>
+        <DashboardLayout
+          customerSlot={customerSlot}
+          sellerSlot={sellerSlot}
+          adminSlot={adminSlot}
+        />
+      </Suspense>
     </div>
   );
 }

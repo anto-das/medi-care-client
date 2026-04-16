@@ -8,8 +8,6 @@ import Medicines from "./medicines";
 const Homepage = () => {
   return (
     <div>
-      <Banner />
-
       {/* medicine card items */}
       <Medicines />
       {/* why mediCare */}

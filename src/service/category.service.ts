@@ -1,12 +1,37 @@
 import { env } from "@/env";
 
-export const categoryService = {
-  getCategory: async () => {
-    try {
-      const res = await fetch("http://localhost:5000/api/category");
-      const data = await res.json();
+interface params {
+  search?: string;
+  category_name?: string;
+  price: string;
+}
 
-      return data.data;
+interface options {
+  cache?: RequestCache;
+  revalidate?: number;
+}
+
+export const categoryService = {
+  getCategory: async (params?: params, options?: options) => {
+    try {
+      const url = new URL(`${env.BACKEND_URL}/api/category`);
+      if (params) {
+        Object.entries(params).forEach(([key, value]) => {
+          if (value !== undefined && value !== null && value !== "") {
+            url.searchParams.append(key, value);
+          }
+        });
+      }
+      const config: RequestInit = {};
+      if (options?.cache) {
+        config.cache = options.cache;
+      }
+      if (options?.revalidate) {
+        config.next = { revalidate: options.revalidate };
+      }
+      const res = await fetch(url.toString(), config);
+      const { data } = await res.json();
+      return { data, error: null };
     } catch (error) {
       return {
         data: null,

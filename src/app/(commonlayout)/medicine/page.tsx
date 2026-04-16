@@ -1,28 +1,35 @@
 "use client";
+import { getCategories } from "@/app/actions/category.action";
 import { getMedicines } from "@/app/actions/medicine.action";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldGroup } from "@/components/ui/field";
 import MediCard from "@/components/ui/mediCard";
-import { medicineService } from "@/service/medicine.service";
-import { Medicine } from "@/types";
-import React, { useEffect, useState } from "react";
 
-const categories = [
-  { name: "tablet", id: "Tablet" },
-  { name: "syrup", id: "Syrup" },
-  { name: "capsule", id: "Capsule" },
-];
+import { Medicine } from "@/types";
+import { useEffect, useState } from "react";
+
+interface categories {
+  category_id: string;
+  category_type: string;
+}
 
 const MedicinePage = () => {
   const [data, setData] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<categories[]>([]);
   useEffect(() => {
     (async () => {
       const { data } = await getMedicines();
       setData(data);
     })();
   }, []);
-  // console.log(selectedCategories)
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await getCategories();
+      setCategories(data);
+    })();
+  }, []);
 
   const handleCategories = (categoryId: string, checked: boolean) => {
     if (checked) {
@@ -31,9 +38,6 @@ const MedicinePage = () => {
       setSelectedCategories((prev) => prev.filter((id) => id !== categoryId));
     }
   };
-
-  // console.log("Medicines:", data); // Log the entire response data to the console
-  // console.log("Medicines:", data.data); // Log the medicines data to the console
   return (
     <div>
       <h1 className="text-3xl w-11/14 mx-auto lg:py-8  md:text-4xl lg:text-5xl font-bold">
@@ -50,19 +54,21 @@ const MedicinePage = () => {
                 {categories.map((category, index) => (
                   <Field orientation="horizontal" key={index}>
                     <Checkbox
-                      id={category.name}
-                      name={category.name}
-                      checked={selectedCategories.includes(category.id)}
+                      id={category.category_type}
+                      name={category.category_type}
+                      checked={selectedCategories.includes(
+                        category.category_type,
+                      )}
                       onCheckedChange={(checked: boolean) =>
-                        handleCategories(category.id, checked)
+                        handleCategories(category.category_type, checked)
                       }
                       className="data-[state=checked]:bg-[#0b5e4e] data-[state=checked]:border-[#0b5e4e] data-[state=checked]:text-white"
                     />
                     <label
-                      htmlFor={category.name}
+                      htmlFor={category.category_type}
                       className="text-md text-gray-500"
                     >
-                      {category.name}
+                      {category.category_type}
                     </label>
                   </Field>
                 ))}

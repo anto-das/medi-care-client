@@ -11,8 +11,8 @@ const MediCard = ({ medicine }: { medicine: Medicine }) => {
     stock_quantity,
   } = medicine;
   return (
-    <div className="border relative border-[#c1e6db] rounded-2xl  shadow-md">
-      <p className="text-center text-5xl py-14 rounded-t-2xl flex items-center justify-center bg-[#e8f6f2]">
+    <div className="border relative border-[#c1e6db] rounded-2xl  shadow-md hover:shadow-xl transition duration-500 hover:scale-102">
+      <p className="text-center text-5xl py-14 rounded-t-2xl flex items-center justify-center bg-[#e8f6f2] ">
         💊
       </p>
       <div className="p-4 space-y-2">
@@ -40,25 +40,25 @@ const MediCard = ({ medicine }: { medicine: Medicine }) => {
           </button>
         </div>
         <div>
-            {" "}
-            {Number(stock_quantity) > 10 ? (
-              <div className="flex items-center gap-2 text-sm text-gray-600 justify-end bg-[#dcfce7] p-2 rounded absolute top-5 right-5">
-                <span className="h-2 w-2 rounded-full bg-green-500"></span>{" "}
-                <p className="text-green-500 font-bold text-end capitalize ">
-                  {" "}
-                  in-stock
-                </p>
-              </div>
-            ) : (
-              <div className="flex items-center gap-2 text-sm text-gray-600 justify-end bg-[#fdecea] py-1 px-2 rounded absolute top-5 right-5">
-                <span className="h-2 w-2 rounded-full bg-red-500 "></span>{" "}
-                <p className="text-red-500 font-bold text-end capitalize ">
-                  {" "}
-                  out
-                </p>
-              </div>
-            )}{" "}
-          </div>
+          {" "}
+          {Number(stock_quantity) > 10 ? (
+            <div className="flex items-center gap-2 text-sm text-gray-600 justify-end bg-[#dcfce7] p-2 rounded absolute top-5 right-5">
+              <span className="h-2 w-2 rounded-full bg-green-500"></span>{" "}
+              <p className="text-green-500 font-bold text-end capitalize ">
+                {" "}
+                in-stock
+              </p>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 text-sm text-gray-600 justify-end bg-[#fdecea] py-1 px-2 rounded absolute top-5 right-5">
+              <span className="h-2 w-2 rounded-full bg-red-500 "></span>{" "}
+              <p className="text-red-500 font-bold text-end capitalize ">
+                {" "}
+                out
+              </p>
+            </div>
+          )}{" "}
+        </div>
       </div>
     </div>
   );

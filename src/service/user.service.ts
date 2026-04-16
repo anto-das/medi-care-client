@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
-
+import { cache } from "react";
 
 export const userService = {
-  getSession: async () => {
+  getSession: cache(async () => {
     try {
       const cookieStore = await cookies();
       const res = await fetch("http://localhost:5000/api/auth/get-session", {
@@ -22,5 +22,5 @@ export const userService = {
         error: { message: "Failed to fetch user session", details: error },
       };
     }
-  },
+  }),
 };
