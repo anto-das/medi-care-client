@@ -1,6 +1,6 @@
 "use client";
 import { getCategories } from "@/app/actions/category.action";
-import { getMedicines } from "@/app/actions/medicine.action";
+import { getMedicine } from "@/app/actions/medicine.action";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldGroup } from "@/components/ui/field";
 import MediCard from "@/components/ui/mediCard";
@@ -8,36 +8,52 @@ import MediCard from "@/components/ui/mediCard";
 import { Medicine } from "@/types";
 import { useEffect, useState } from "react";
 
-interface categories {
+interface Categories {
   category_id: string;
   category_type: string;
 }
 
 const MedicinePage = () => {
-  const [data, setData] = useState([]);
+  const [medicines, setMedicines] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [categories, setCategories] = useState<categories[]>([]);
-  useEffect(() => {
-    (async () => {
-      const { data } = await getMedicines();
-      setData(data);
-    })();
-  }, []);
+  const [categories, setCategories] = useState<Categories[]>([]);
+
+  const payload = {
+    search: "",
+    category_name: "",
+  };
+  const config = {
+    revalidate: 10,
+  };
 
   useEffect(() => {
     (async () => {
-      const { data } = await getCategories();
-      setCategories(data);
+      if (selectedCategories.length > 0) {
+        selectedCategories.forEach((cateName) => {
+          payload.category_name = cateName;
+        });
+      }
+      const { data } = await getMedicine(payload, config);
+      setMedicines(data);
+    })();
+  }, [selectedCategories]);
+
+  useEffect(() => {
+    (async () => {
+      const data = await getCategories();
+      setCategories(data.data);
     })();
   }, []);
 
-  const handleCategories = (categoryId: string, checked: boolean) => {
+  const handleCategories = (categoryType: string, checked: boolean) => {
     if (checked) {
-      setSelectedCategories((prev) => [...prev, categoryId]);
+      setSelectedCategories((prev) => [...prev, categoryType]);
     } else {
-      setSelectedCategories((prev) => prev.filter((id) => id !== categoryId));
+      setSelectedCategories((prev) => prev.filter((id) => id !== categoryType));
     }
   };
+  // const { data: categories } = await categoryService.getCategory();
+  // const { data } = await medicineService.getMedicines();
   return (
     <div>
       <h1 className="text-3xl w-11/14 mx-auto lg:py-8  md:text-4xl lg:text-5xl font-bold">
@@ -51,7 +67,7 @@ const MedicinePage = () => {
             <div className="space-y-4">
               <h1 className="text-lg font-bold">Categories</h1>
               <FieldGroup>
-                {categories.map((category, index) => (
+                {categories?.map((category: any, index: any) => (
                   <Field orientation="horizontal" key={index}>
                     <Checkbox
                       id={category.category_type}
@@ -77,7 +93,7 @@ const MedicinePage = () => {
           </div>
           {/* medicine list */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4  w-11/14 mx-auto">
-            {data?.map((medicine: Medicine) => (
+            {medicines?.map((medicine: Medicine) => (
               <MediCard key={medicine.medicine_id} medicine={medicine} />
             ))}
           </div>

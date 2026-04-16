@@ -3,7 +3,7 @@ import { env } from "@/env";
 interface params {
   search?: string;
   category_name?: string;
-  price: string;
+  price?: string;
 }
 
 interface options {
@@ -22,6 +22,7 @@ export const medicineService = {
           }
         });
       }
+      console.log("url", url);
       const config: RequestInit = {};
       if (options?.cache) {
         config.cache = options.cache;

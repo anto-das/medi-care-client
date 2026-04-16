@@ -1,10 +1,5 @@
 import { env } from "@/env";
 
-interface params {
-  search?: string;
-  category_name?: string;
-  price: string;
-}
 
 interface options {
   cache?: RequestCache;
@@ -12,16 +7,16 @@ interface options {
 }
 
 export const categoryService = {
-  getCategory: async (params?: params, options?: options) => {
+  getCategory: async (options?: options) => {
     try {
       const url = new URL(`${env.BACKEND_URL}/api/category`);
-      if (params) {
-        Object.entries(params).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== "") {
-            url.searchParams.append(key, value);
-          }
-        });
-      }
+      // if (params) {
+      //   Object.entries(params).forEach(([key, value]) => {
+      //     if (value !== undefined && value !== null && value !== "") {
+      //       url.searchParams.append(key, value);
+      //     }
+      //   });
+      // }
       const config: RequestInit = {};
       if (options?.cache) {
         config.cache = options.cache;

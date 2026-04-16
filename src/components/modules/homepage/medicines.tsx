@@ -1,12 +1,13 @@
-import { getMedicines } from "@/app/actions/medicine.action";
+import { getMedicine } from "@/app/actions/medicine.action";
 import MediCard from "@/components/ui/mediCard";
+import { medicineService } from "@/service/medicine.service";
 
 import { Medicine } from "@/types";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
 
 const Medicines = async () => {
-  const { data } = await getMedicines();
+  const { data } = await medicineService.getMedicines();
 
   return (
     <div className="py-8 bg-[#faf8f4] my-10 border">
@@ -19,7 +20,10 @@ const Medicines = async () => {
         </p>
       </div>
       <div className="flex justify-end w-11/18 mx-auto">
-        <Link href={'/medicine'} className="flex items-center text-[#838a85] border-[#dde8e2] rounded bg-[#faf8f4] gap-2 p-2 border">
+        <Link
+          href={"/medicine"}
+          className="flex items-center text-[#838a85] border-[#dde8e2] rounded bg-[#faf8f4] gap-2 p-2 border"
+        >
           view all <FaArrowRight />{" "}
         </Link>
       </div>

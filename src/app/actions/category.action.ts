@@ -13,6 +13,6 @@ interface options {
   revalidate?: number;
 }
 
-export const getCategories = async (param?: params, options?: options) => {
-  return await categoryService.getCategory(param, options);
+export const getCategories = async (options?: options) => {
+  return await categoryService.getCategory(options);
 };
