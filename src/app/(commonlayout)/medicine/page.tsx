@@ -22,9 +22,6 @@ const MedicinePage = () => {
     search: "",
     category_name: "",
   };
-  const config = {
-    revalidate: 10,
-  };
 
   useEffect(() => {
     (async () => {
@@ -33,14 +30,14 @@ const MedicinePage = () => {
           payload.category_name = cateName;
         });
       }
-      const { data } = await getMedicine(payload, config);
+      const { data } = await getMedicine(payload, { cache: "no-store" });
       setMedicines(data);
     })();
   }, [selectedCategories]);
 
   useEffect(() => {
     (async () => {
-      const data = await getCategories();
+      const data = await getCategories({ cache: "no-store" });
       setCategories(data.data);
     })();
   }, []);
@@ -52,8 +49,6 @@ const MedicinePage = () => {
       setSelectedCategories((prev) => prev.filter((id) => id !== categoryType));
     }
   };
-  // const { data: categories } = await categoryService.getCategory();
-  // const { data } = await medicineService.getMedicines();
   return (
     <div>
       <h1 className="text-3xl w-11/14 mx-auto lg:py-8  md:text-4xl lg:text-5xl font-bold">
@@ -82,7 +77,7 @@ const MedicinePage = () => {
                     />
                     <label
                       htmlFor={category.category_type}
-                      className="text-md text-gray-500"
+                      className="text-md text-gray-500 uppercase"
                     >
                       {category.category_type}
                     </label>

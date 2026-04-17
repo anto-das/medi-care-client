@@ -27,6 +27,8 @@ import { Input } from "../ui/input";
 
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
+import { BsCart3 } from "react-icons/bs";
+
 interface MenuItem {
   title: string;
   url: string;
@@ -57,6 +59,10 @@ interface Navbar1Props {
   };
 }
 
+const baseClasses =
+  "inline-flex h-10 items-center justify-start rounded-md px-4 py-2 text-md font-medium transition-colors duration-300 w-full";
+const inactiveClasses =
+  "text-[#7a8d8d] hover:text-[#1f6b5d] hover:bg-[#e6f4f1]";
 const Navbar = ({
   menu = [
     { title: "Home", url: "/" },
@@ -102,9 +108,9 @@ const Navbar = ({
       });
     }
   };
-
+const pathname = usePathname();
   return (
-    <section className={cn("py-4 z-10 sticky top-0 bg-[#f8fdfbc2]", className)}>
+    <section className={cn("py-4 z-10 sticky top-0 bg-[#f8f8f8ef]", className)}>
       <div className="w-11/12 mx-auto">
         {/* Desktop Menu */}
         <nav className="hidden items-center justify-between lg:flex">
@@ -125,6 +131,7 @@ const Navbar = ({
               placeholder="🔍Search medicines,brands and more..."
               className="w-1/2 rounded-md bg-[#f8fdfb] border focus:shadow-none focus:text-lg placeholder:text-lg p-5"
             />
+            <a className="border p-1 rounded-md text-xl"> 🛒</a>
             <Link
               href={auth.login.url}
               className="rounded-md capitalize bg-white text-[#42534e] border border-[#ddeae7] hover:border-[#12725c] hover:text-[#12725c] px-4 py-2 text-sm font-bold font-[Sans-serif]"
@@ -176,6 +183,11 @@ const Navbar = ({
                     {menu.map((item) => renderMobileMenuItem(item))}
                   </Accordion>
 
+                  <a
+                    className={`${baseClasses} ${pathname === "/cart" ? "px-4 py-2 text-md font-medium text-[#1f6b5d] bg-[#e6f4f1]" : inactiveClasses}`}
+                  >
+                    🛒 My cart
+                  </a>
                   <div className="flex items-center w-full gap-3">
                     <Link
                       href={auth.login.url}
@@ -212,7 +224,7 @@ const Navbar = ({
 };
 
 const renderMenuItem = (item: MenuItem) => {
-  const pathname = usePathname();
+  // const pathname = usePathname();
   if (item.items) {
     return (
       <NavigationMenuItem key={item.title}>
@@ -220,11 +232,12 @@ const renderMenuItem = (item: MenuItem) => {
       </NavigationMenuItem>
     );
   }
-  const baseClasses =
-    "inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-md font-medium transition-colors duration-300 mx-1";
-  const inactiveClasses =
-    "text-[#7a8d8d] hover:text-[#1f6b5d] hover:bg-[#e6f4f1]";
+  // const baseClasses =
+  //   "inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-md font-medium transition-colors duration-300 mx-1";
+  // const inactiveClasses =
+  //   "text-[#7a8d8d] hover:text-[#1f6b5d] hover:bg-[#e6f4f1]";
 
+  const pathname = usePathname();
   return (
     <NavigationMenuItem key={item.title}>
       <Link
@@ -239,11 +252,6 @@ const renderMenuItem = (item: MenuItem) => {
 
 const renderMobileMenuItem = (item: MenuItem) => {
   const pathname = usePathname();
-  const baseClasses =
-    "inline-flex h-10 items-center justify-start rounded-md px-4 py-2 text-md font-medium transition-colors duration-300 w-full";
-  const inactiveClasses =
-    "text-[#7a8d8d] hover:text-[#1f6b5d] hover:bg-[#e6f4f1]";
-
   return (
     <NavigationMenuItem key={item.title}>
       <Link

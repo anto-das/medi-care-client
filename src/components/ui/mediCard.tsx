@@ -1,19 +1,22 @@
+"use client";
+import { handleAddToCart } from "@/app/utlis/handleAddToCart";
 import { Medicine } from "@/types";
-import React from "react";
 
 const MediCard = ({ medicine }: { medicine: Medicine }) => {
   const {
     medicine_name,
     manufacturer,
     medi_img,
+    generic_name,
     category_name,
     price,
     stock_quantity,
   } = medicine;
+
   return (
-    <div className="border relative border-[#c1e6db] rounded-2xl  shadow-md hover:shadow-xl transition duration-500 hover:scale-102">
+    <div className="border relative border-[#c1e6db] rounded-2xl  shadow-md hover:shadow-xl transition duration-500 hover:scale-101  antialiased will-change-contents transform-gpu">
       <p className="text-center text-5xl py-14 rounded-t-2xl flex items-center justify-center bg-[#e8f6f2] ">
-        💊
+        {medi_img}
       </p>
       <div className="p-4 space-y-2">
         <h2 className="text-lg font-bold capitalize">{medicine_name}</h2>
@@ -21,7 +24,7 @@ const MediCard = ({ medicine }: { medicine: Medicine }) => {
         {/* <img src={medi_img} alt={medicine_name} /> */}
         <p className="text-[#8da197] capitalize"> {category_name}</p>
         <p className="text-xl font-bold text-green-700 capitalize">
-          ${price} / unit_type{" "}
+          ${price} / {generic_name}{" "}
         </p>
         <p className="text-[#8da197] capitalize">
           Stock: {Number("0") ? stock_quantity : "Out of Stock"}
@@ -35,7 +38,10 @@ const MediCard = ({ medicine }: { medicine: Medicine }) => {
               ? `${stock_quantity} left`
               : "unavailable"}{" "}
           </p>
-          <button className="bg-[#0b5e4e] hover:bg-[#098169] text-white font-bold py-2 px-4 rounded">
+          <button
+            onClick={() => handleAddToCart(medicine.medicine_id)}
+            className="bg-[#0b5e4e] hover:bg-[#098169] text-white font-bold py-2 px-4 rounded"
+          >
             Add to Cart
           </button>
         </div>

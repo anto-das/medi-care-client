@@ -22,7 +22,7 @@ export const medicineService = {
           }
         });
       }
-      console.log("url", url);
+      // console.log("url", url);
       const config: RequestInit = {};
       if (options?.cache) {
         config.cache = options.cache;
