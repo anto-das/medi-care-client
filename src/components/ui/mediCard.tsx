@@ -1,8 +1,18 @@
 "use client";
-import { handleAddToCart } from "@/app/utlis/handleAddToCart";
+
+import { addCart } from "@/app/actions/cart.action";
+import { env } from "@/env";
 import { Medicine } from "@/types";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const MediCard = ({ medicine }: { medicine: Medicine }) => {
+  const [mediId, setMediId] = useState<string>("");
+  useEffect(() => {
+    (async () => {
+      await addCart(mediId);
+    })();
+  }, [mediId]);
   const {
     medicine_name,
     manufacturer,
@@ -39,7 +49,7 @@ const MediCard = ({ medicine }: { medicine: Medicine }) => {
               : "unavailable"}{" "}
           </p>
           <button
-            onClick={() => handleAddToCart(medicine.medicine_id)}
+            onClick={() => setMediId(medicine.medicine_id)}
             className="bg-[#0b5e4e] hover:bg-[#098169] text-white font-bold py-2 px-4 rounded"
           >
             Add to Cart
