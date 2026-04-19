@@ -1,16 +1,21 @@
 "use client";
 
 import { addCart } from "@/app/actions/cart.action";
-import { env } from "@/env";
 import { Medicine } from "@/types";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 
 const MediCard = ({ medicine }: { medicine: Medicine }) => {
   const [mediId, setMediId] = useState<string>("");
   useEffect(() => {
     (async () => {
-      await addCart(mediId);
+      const payload: {
+        id: string;
+        guest_id?: string;
+      } = {
+        id: mediId,
+        guest_id: localStorage.getItem("guest_id") as string,
+      };
+      await addCart(payload);
     })();
   }, [mediId]);
   const {

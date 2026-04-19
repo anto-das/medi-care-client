@@ -28,6 +28,9 @@ import { Input } from "../ui/input";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { BsCart3 } from "react-icons/bs";
+// import { guestHandler } from "@/app/utlis/guestHanlder";
+import { v4 as uuid } from "uuid";
+import { useEffect } from "react";
 
 interface MenuItem {
   title: string;
@@ -108,7 +111,13 @@ const Navbar = ({
       });
     }
   };
-const pathname = usePathname();
+  const pathname = usePathname();
+  useEffect(() => {
+    const existingId = localStorage.getItem("guest_id");
+    if (!existingId) {
+      localStorage.setItem("guest_id", uuid());
+    }
+  }, []);
   return (
     <section className={cn("py-4 z-10 sticky top-0 bg-[#f8f8f8ef]", className)}>
       <div className="w-11/12 mx-auto">
