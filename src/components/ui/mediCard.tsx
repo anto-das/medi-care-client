@@ -7,16 +7,21 @@ import { useEffect, useState } from "react";
 const MediCard = ({ medicine }: { medicine: Medicine }) => {
   const [mediId, setMediId] = useState<string>("");
   useEffect(() => {
-    (async () => {
-      const payload: {
-        id: string;
-        guest_id?: string;
-      } = {
-        id: mediId,
-        guest_id: localStorage.getItem("guest_id") as string,
-      };
-      await addCart(payload);
-    })();
+    if (!mediId) return;
+    const syncCart = async () => {
+      try {
+        const guestId = localStorage.getItem("guest_id");
+        const payload = {
+          id: mediId,
+          guest_id: guestId || undefined,
+        };
+        await addCart(payload);
+      } catch (error) {
+        console.error("Cart error:", error);
+      }
+    };
+
+    syncCart();
   }, [mediId]);
   const {
     medicine_name,

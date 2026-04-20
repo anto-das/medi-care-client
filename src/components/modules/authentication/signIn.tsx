@@ -53,9 +53,7 @@ const SignInPage = ({
             id: toastId,
           });
         }
-        // console.log(data)
         toast.success("Signed in successfully!", { id: toastId });
-        router.refresh();
         router.push("/");
       } catch (e) {
         toast.error("Failed to sign in. Please try again.", { id: toastId });

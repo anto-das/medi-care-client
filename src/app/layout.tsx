@@ -36,7 +36,8 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        {children} <Toaster richColors position="top-right" />{" "}
+        {children}{" "}
+        <Toaster duration={2000} richColors position="top-right" />{" "}
       </body>
     </html>
   );

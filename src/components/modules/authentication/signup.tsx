@@ -13,7 +13,7 @@ import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { useForm } from "@tanstack/react-form";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { FaGoogle } from "react-icons/fa";
 import { toast } from "sonner";
@@ -51,24 +51,20 @@ const Signup = ({
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log("Form Values:", value);
-      const toasterId = toast.loading("Creating account...");
+      const toastId = toast.loading("Creating User");
       try {
         const { data, error } = await authClient.signUp.email(value);
         if (error) {
-          return toast.error(error.message, {
-            id: toasterId,
-          });
+          toast.error(error.message, { id: toastId });
+          return;
         }
-        console.log("Sign Up Response:", data);
-        toast.success("Account created successfully!", { id: toasterId });
-        redirect(data ? "/" : "/sign-in");
+        toast.success("user created successfully.", { id: toastId });
+        if (data.user) {
+          router.push("sign-in");
+        }
       } catch (error) {
-        toast.error("Failed to create account. Please try again.", {
-          id: toasterId,
-        });
+        toast.error("something went wrong please try again.", { id: toastId });
       }
-      // Handle form submission logic here
     },
   });
   const handleLoginWithGoogle = async () => {
@@ -79,7 +75,9 @@ const Signup = ({
         callbackURL: "http://localhost:3000",
       });
       // console.log("Google Sign-In Response:", data);
-      redirect("/");
+      if (data) {
+        router.push("/");
+      }
     } catch (error) {
       toast.error("Failed to redirect to Google.", { id: toastId });
     }
