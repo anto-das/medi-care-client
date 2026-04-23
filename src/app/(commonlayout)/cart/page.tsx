@@ -1,11 +1,8 @@
-import React from 'react'
+import CartPage from "@/components/modules/Cart/CartPage";
+import React from "react";
 
-const Cart = () => {
-  return (
-    <div>
-      <h1 className='text-3xl font-bold'>this is cart route....</h1>
-    </div>
-  )
-}
+const page = () => {
+  return <CartPage />;
+};
 
-export default Cart
+export default page;

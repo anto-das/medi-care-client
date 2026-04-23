@@ -1,20 +1,32 @@
-import React from "react";
+import { medicineService } from "@/service/medicine.service";
+import { Medicine } from "@/types";
 
-const FeaturedProduct = () => {
+const FeaturedProduct = async () => {
+  const { data } = await medicineService.getMedicines({}, { revalidate: 3600 });
+  const featuredProduct: Medicine = data?.reduce(
+    (prev: Medicine, curr: Medicine) =>
+      parseFloat(prev.price) < parseFloat(curr.price) ? prev : curr,
+  );
+  if (!featuredProduct) {
+    return null;
+  }
   return (
     <>
       <div className="w-1/4 mx-auto relative mt-10 lg:mt-0 hidden lg:block">
         <div className="border rounded-lg p-4 shadow-md bg-white space-y-2">
           <div className="text-center py-8 text-6xl bg-[#e6f2ef] rounded-lg">
-            💊
+            {featuredProduct.medi_img}
           </div>
-          <h1 className="text-xl font-bold">Napa</h1>
-          <h3 className="text-lg text-[#8da197]">Paracetamol 500mg</h3>
+          <h1 className="text-xl font-bold">{featuredProduct.medicine_name}</h1>
+          <h3 className="text-lg text-[#8da197]">
+            {" "}
+            {featuredProduct.manufacturer}{" "}
+          </h3>
           <div className="flex items-center gap-2 text-sm text-gray-600 justify-end">
             <span className="h-2 w-2 rounded-full bg-green-500"></span>{" "}
             <p className="text-green-500 font-bold text-end capitalize ">
               {" "}
-              in-stock
+              {featuredProduct.stock_quantity && "in stock"}
             </p>
           </div>
           <button className="bg-[#10b981] w-full text-white py-2 px-4 rounded-lg hover:bg-[#0da371] mt-10">

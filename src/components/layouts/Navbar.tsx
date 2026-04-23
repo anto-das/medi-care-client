@@ -1,7 +1,6 @@
 "use client";
 
 import { Menu } from "lucide-react";
-
 import { Accordion } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,48 +18,14 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-// import mediLogo from "../assets/medicine.png";
-import { StaticImageData } from "next/image";
 import Logo from "../ui/logo";
 import { usePathname } from "next/navigation";
 import { Input } from "../ui/input";
-
-import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
-import { BsCart3 } from "react-icons/bs";
-// import { guestHandler } from "@/app/utlis/guestHanlder";
 import { v4 as uuid } from "uuid";
 import { useEffect } from "react";
-
-interface MenuItem {
-  title: string;
-  url: string;
-  description?: string;
-  icon?: React.ReactNode;
-  items?: MenuItem[];
-}
-
-interface Navbar1Props {
-  className?: string;
-  logo?: {
-    url: string;
-    src: StaticImageData | string;
-    alt: string;
-    title: string;
-    className?: string;
-  };
-  menu?: MenuItem[];
-  auth?: {
-    login: {
-      title: string;
-      url: string;
-    };
-    signup: {
-      title: string;
-      url: string;
-    };
-  };
-}
+import { handleSignOut } from "@/app/utlis/handleSignOUt";
+import { MenuItem, Navbar1Props } from "@/types";
 
 const baseClasses =
   "inline-flex h-10 items-center justify-start rounded-md px-4 py-2 text-md font-medium transition-colors duration-300 w-full";
@@ -93,24 +58,7 @@ const Navbar = ({
   className,
 }: Navbar1Props) => {
   const { data: session } = authClient.useSession();
-  // console.log("Session Data in Navbar:", session);
-  const handleSignOut = async () => {
-    const toastId = toast.loading("Signing out...");
-    try {
-      const { data, error } = await authClient.signOut();
-      if (error) {
-        return toast.error("Failed to sign out. Please try again.", {
-          id: toastId,
-        });
-      }
-      toast.success("Signed out successfully!", { id: toastId });
-      //  setUser(null);
-    } catch (error) {
-      return toast.error("Failed to sign out. Please try again.", {
-        id: toastId,
-      });
-    }
-  };
+
   const pathname = usePathname();
   useEffect(() => {
     const existingId = localStorage.getItem("guest_id");
@@ -140,7 +88,10 @@ const Navbar = ({
               placeholder="🔍Search medicines,brands and more..."
               className="w-1/2 rounded-md bg-[#f8fdfb] border focus:shadow-none focus:text-lg placeholder:text-lg p-5"
             />
-            <a className="border p-1 rounded-md text-xl"> 🛒</a>
+            <Link href={"/cart"} className="border p-1 rounded-md text-xl">
+              {" "}
+              🛒
+            </Link>
             <Link
               href={auth.login.url}
               className="rounded-md capitalize bg-white text-[#42534e] border border-[#ddeae7] hover:border-[#12725c] hover:text-[#12725c] px-4 py-2 text-sm font-bold font-[Sans-serif]"
@@ -233,7 +184,6 @@ const Navbar = ({
 };
 
 const renderMenuItem = (item: MenuItem) => {
-  // const pathname = usePathname();
   if (item.items) {
     return (
       <NavigationMenuItem key={item.title}>
@@ -241,10 +191,6 @@ const renderMenuItem = (item: MenuItem) => {
       </NavigationMenuItem>
     );
   }
-  // const baseClasses =
-  //   "inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-md font-medium transition-colors duration-300 mx-1";
-  // const inactiveClasses =
-  //   "text-[#7a8d8d] hover:text-[#1f6b5d] hover:bg-[#e6f4f1]";
 
   const pathname = usePathname();
   return (

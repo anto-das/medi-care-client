@@ -24,23 +24,25 @@ const MedicinePage = () => {
   };
 
   useEffect(() => {
-    (async () => {
+    const fetchData = async () => {
+      const categoryPromise = getCategories({ cache: "no-store" });
+      const currentPayload = { ...payload };
       if (selectedCategories.length > 0) {
-        selectedCategories.forEach((cateName) => {
-          payload.category_name = cateName;
-        });
+        currentPayload.category_name = selectedCategories.join(",");
       }
-      const { data } = await getMedicine(payload, { cache: "no-store" });
-      setMedicines(data);
-    })();
-  }, [selectedCategories]);
+      const medicinePromise = getMedicine(currentPayload, {
+        cache: "no-store",
+      });
+      const [catRes, medRes] = await Promise.all([
+        categoryPromise,
+        medicinePromise,
+      ]);
+      setCategories(catRes.data);
+      setMedicines(medRes.data);
+    };
 
-  useEffect(() => {
-    (async () => {
-      const data = await getCategories({ cache: "no-store" });
-      setCategories(data.data);
-    })();
-  }, []);
+    fetchData();
+  }, [selectedCategories]); // শুধু ক্যাটাগরি চেঞ্জ হলে রি-রান হবে
 
   const handleCategories = (categoryType: string, checked: boolean) => {
     if (checked) {

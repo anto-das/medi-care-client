@@ -2,28 +2,23 @@
 
 import { addCart } from "@/app/actions/cart.action";
 import { Medicine } from "@/types";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const MediCard = ({ medicine }: { medicine: Medicine }) => {
-  const [mediId, setMediId] = useState<string>("");
-  useEffect(() => {
-    if (!mediId) return;
-    const syncCart = async () => {
-      try {
-        const guestId = localStorage.getItem("guest_id");
-        const payload = {
-          id: mediId,
-          guest_id: guestId || undefined,
-        };
-        await addCart(payload);
-      } catch (error) {
-        console.error("Cart error:", error);
-      }
-    };
+  const handleAddToCart = async (id: string) => {
+    const guest_id = localStorage.getItem("guest_id");
+    const toastId = toast.loading("added");
+    try {
+      const res = await addCart({ id: id, guest_id: guest_id as string });
+      toast.success(res.message, { id: toastId });
+    } catch (error: any) {
+      toast.error(error.message, { id: toastId });
+    }
+  };
 
-    syncCart();
-  }, [mediId]);
   const {
+    medicine_id,
     medicine_name,
     manufacturer,
     medi_img,
@@ -32,9 +27,17 @@ const MediCard = ({ medicine }: { medicine: Medicine }) => {
     price,
     stock_quantity,
   } = medicine;
+  const router = useRouter();
+
+  const handleCardClick = (medicine_id: string) => {
+    router.push(`/medicine/${medicine_id}`); // আপনার ডিটেইল পেজের পাথ দিন
+  };
 
   return (
-    <div className="border relative border-[#c1e6db] rounded-2xl  shadow-md hover:shadow-xl transition duration-500 hover:scale-101  antialiased will-change-contents transform-gpu">
+    <div
+      onClick={() => handleCardClick(medicine_id)}
+      className="border relative border-[#c1e6db] rounded-2xl  shadow-md hover:shadow-xl transition duration-500 hover:scale-101  antialiased will-change-contents transform-gpu"
+    >
       <p className="text-center text-5xl py-14 rounded-t-2xl flex items-center justify-center bg-[#e8f6f2] ">
         {medi_img}
       </p>
@@ -44,7 +47,7 @@ const MediCard = ({ medicine }: { medicine: Medicine }) => {
         {/* <img src={medi_img} alt={medicine_name} /> */}
         <p className="text-[#8da197] capitalize"> {category_name}</p>
         <p className="text-xl font-bold text-green-700 capitalize">
-          ${price} / {generic_name}{" "}
+          ৳{price} / {generic_name}{" "}
         </p>
         <p className="text-[#8da197] capitalize">
           Stock: {Number("0") ? stock_quantity : "Out of Stock"}
@@ -58,12 +61,24 @@ const MediCard = ({ medicine }: { medicine: Medicine }) => {
               ? `${stock_quantity} left`
               : "unavailable"}{" "}
           </p>
-          <button
-            onClick={() => setMediId(medicine.medicine_id)}
-            className="bg-[#0b5e4e] hover:bg-[#098169] text-white font-bold py-2 px-4 rounded"
-          >
-            Add to Cart
-          </button>
+          {stock_quantity ? (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAddToCart(medicine_id);
+              }}
+              className="bg-[#0b5e4e] hover:bg-[#098169] text-white font-bold py-2 px-4 rounded"
+            >
+              Add to Cart
+            </button>
+          ) : (
+            <button
+              disabled
+              className="bg-[#0b5e4e] opacity-50 cursor-not-allowed text-white font-bold py-2 px-4 rounded"
+            >
+              Add to Cart
+            </button>
+          )}
         </div>
         <div>
           {" "}

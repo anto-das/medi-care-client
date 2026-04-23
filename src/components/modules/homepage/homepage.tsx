@@ -3,13 +3,22 @@ import Prescription from "@/components/ui/prescription";
 
 import Banner from "@/components/ui/banner";
 import Medicines from "./medicines";
+import { Suspense } from "react";
 
 // import { Medicine } from "@/types/medicine.type";
 const Homepage = () => {
   return (
     <div>
       {/* medicine card items */}
-      <Medicines />
+      <Suspense
+        fallback={
+          <div className="grid grid-cols-4 gap-4 w-11/12 mx-auto">
+            Loading...
+          </div>
+        }
+      >
+        <Medicines />
+      </Suspense>
       {/* why mediCare */}
       <div className="my-10">
         <h1 className="text-center text-2xl md:text-3xl lg:text-5xl font-bold">

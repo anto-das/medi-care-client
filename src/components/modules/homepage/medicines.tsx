@@ -7,7 +7,7 @@ import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
 
 const Medicines = async () => {
-  const { data } = await medicineService.getMedicines();
+  const { data } = await medicineService.getMedicines({}, { revalidate: 1000 });
 
   return (
     <div className="py-8 bg-[#faf8f4] my-10 border">
