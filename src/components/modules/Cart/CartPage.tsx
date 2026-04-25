@@ -55,6 +55,8 @@ const CartPage = () => {
     fetchCart();
   }, [guest_id, user_id]);
   const debouncedCarts = useDebounce(carts, 700);
+
+
   const handleQuantityChange = async (cart_id: string, action: string) => {
     setCartsItems((prevCarts) =>
       prevCarts.map((item) => {
@@ -78,6 +80,16 @@ const CartPage = () => {
         : Math.max(1, (item?.quantity as number) - 1);
     setPendingUpdate({ cart_id: cart_id, quantity: quantity });
   };
+
+  // update quantity useEffect
+  useEffect(() => {
+    if (debouncedCarts.length > 0) {
+      updateCartQuantity(
+        pendingUpdate?.cart_id as string,
+        pendingUpdate?.quantity as number,
+      );
+    }
+  }, [debouncedCarts]);
 
   const handleDeleteItem = async (id: string) => {
     const payload = { user_id: user_id, guest_id: guest_id as string };
@@ -103,15 +115,7 @@ const CartPage = () => {
     }
   };
 
-  // update quantity useEffect
-  useEffect(() => {
-    if (debouncedCarts.length > 0) {
-      updateCartQuantity(
-        pendingUpdate?.cart_id as string,
-        pendingUpdate?.quantity as number,
-      );
-    }
-  }, [debouncedCarts]);
+  
 
   // Calculations
   const subtotal = useMemo(() => {

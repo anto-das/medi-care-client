@@ -1,22 +1,12 @@
 "use client";
 
 import { addCart } from "@/app/actions/cart.action";
+import { handleAddToCart } from "@/app/utlis/handleAddToCart";
 import { Medicine } from "@/types";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 const MediCard = ({ medicine }: { medicine: Medicine }) => {
-  const handleAddToCart = async (id: string) => {
-    const guest_id = localStorage.getItem("guest_id");
-    const toastId = toast.loading("added");
-    try {
-      const res = await addCart({ id: id, guest_id: guest_id as string });
-      toast.success(res.message, { id: toastId });
-    } catch (error: any) {
-      toast.error(error.message, { id: toastId });
-    }
-  };
-
   const {
     medicine_id,
     medicine_name,
@@ -65,7 +55,7 @@ const MediCard = ({ medicine }: { medicine: Medicine }) => {
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                handleAddToCart(medicine_id);
+                handleAddToCart(medicine_id,1);
               }}
               className="bg-[#0b5e4e] hover:bg-[#098169] text-white font-bold py-2 px-4 rounded"
             >

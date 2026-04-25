@@ -3,10 +3,12 @@ import { getCategories } from "@/app/actions/category.action";
 import { getMedicine } from "@/app/actions/medicine.action";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldGroup } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 import MediCard from "@/components/ui/mediCard";
 
 import { Medicine } from "@/types";
 import { useEffect, useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 
 interface Categories {
   category_id: string;
@@ -15,8 +17,9 @@ interface Categories {
 
 const MedicinePage = () => {
   const [medicines, setMedicines] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string>("");
   const [categories, setCategories] = useState<Categories[]>([]);
+  const [searchMedi, setSearchMedi] = useState<string>("");
 
   const payload = {
     search: "",
@@ -28,7 +31,10 @@ const MedicinePage = () => {
       const categoryPromise = getCategories({ cache: "no-store" });
       const currentPayload = { ...payload };
       if (selectedCategories.length > 0) {
-        currentPayload.category_name = selectedCategories.join(",");
+        currentPayload.category_name = selectedCategories;
+      }
+      if (searchMedi) {
+        currentPayload.search = searchMedi;
       }
       const medicinePromise = getMedicine(currentPayload, {
         cache: "no-store",
@@ -42,15 +48,19 @@ const MedicinePage = () => {
     };
 
     fetchData();
-  }, [selectedCategories]); // শুধু ক্যাটাগরি চেঞ্জ হলে রি-রান হবে
+  }, [selectedCategories || searchMedi]);
 
   const handleCategories = (categoryType: string, checked: boolean) => {
     if (checked) {
-      setSelectedCategories((prev) => [...prev, categoryType]);
+      setSelectedCategories(categoryType);
     } else {
-      setSelectedCategories((prev) => prev.filter((id) => id !== categoryType));
+      setSelectedCategories("");
     }
   };
+
+  const handleSearch = useDebouncedCallback((value: string) => {
+    setSearchMedi(value);
+  }, 400);
   return (
     <div>
       <h1 className="text-3xl w-11/14 mx-auto lg:py-8  md:text-4xl lg:text-5xl font-bold">
@@ -64,14 +74,17 @@ const MedicinePage = () => {
             <div className="space-y-4">
               <h1 className="text-lg font-bold">Categories</h1>
               <FieldGroup>
+                <Input
+                  placeholder="🔍Search medicines,brands and more..."
+                  onChange={(e) => handleSearch(e.target.value)}
+                  className=" rounded-md bg-[#f8fdfb] border focus:shadow-none focus:text-lg w-full placeholder:text-lg p-5"
+                />
                 {categories?.map((category: any, index: any) => (
                   <Field orientation="horizontal" key={index}>
                     <Checkbox
                       id={category.category_type}
                       name={category.category_type}
-                      checked={selectedCategories.includes(
-                        category.category_type,
-                      )}
+                      checked={selectedCategories === category.category_type}
                       onCheckedChange={(checked: boolean) =>
                         handleCategories(category.category_type, checked)
                       }

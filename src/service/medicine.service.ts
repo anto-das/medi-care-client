@@ -40,4 +40,8 @@ export const medicineService = {
       };
     }
   },
+  getMedicineById: async (id: string) => {
+    const res = await fetch(`${env.BACKEND_URL}/api/medicine/${id}`);
+    return await res.json();
+  },
 };

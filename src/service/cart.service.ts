@@ -5,6 +5,7 @@ export const cartService = {
     id: string;
     guest_id?: string;
     user_id?: string;
+    quantity: number;
   }) => {
     try {
       const result = fetch(`${env.BACKEND_URL}/api/cart`, {

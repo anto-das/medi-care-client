@@ -1,4 +1,5 @@
 import { AlertCircle, ArrowRight, ShieldCheck } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 const CheckOutAside = ({
@@ -58,9 +59,12 @@ const CheckOutAside = ({
           </button>
         </div>
 
-        <button className="w-full bg-[#0b5e4e] text-white py-3 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 hover:bg-[#0d866e] shadow-xl shadow-green-900/20 active:scale-[0.98] transition-all">
+        <Link
+          href={"/cart/checkout"}
+          className="w-full bg-[#0b5e4e] text-white py-3 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 hover:bg-[#0d866e] shadow-xl shadow-green-900/20 active:scale-[0.98] transition-all"
+        >
           Proceed to Checkout <ArrowRight size={20} />
-        </button>
+        </Link>
 
         <div className="mt-8 space-y-4">
           <div className="flex items-center gap-3 text-amber-600 bg-amber-50 p-3 rounded-xl border border-amber-100">

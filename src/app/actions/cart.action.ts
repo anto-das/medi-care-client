@@ -6,14 +6,16 @@ import { userService } from "@/service/user.service";
 export const addCart = async ({
   id,
   guest_id,
+  quantity,
 }: {
   id: string;
   guest_id?: string;
+  quantity: number;
 }) => {
   const { data } = await userService.getSession();
   const user_id = data?.user.id;
   console.log({ user_id, id, guest_id });
-  const create = cartService.addToCart({ id, guest_id, user_id });
+  const create = cartService.addToCart({ id, guest_id, user_id,quantity });
   return create;
 };
 

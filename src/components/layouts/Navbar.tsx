@@ -84,10 +84,6 @@ const Navbar = ({
           </div>
 
           <div className="flex gap-5 items-center justify-end w-1/2">
-            <Input
-              placeholder="🔍Search medicines,brands and more..."
-              className="w-1/2 rounded-md bg-[#f8fdfb] border focus:shadow-none focus:text-lg placeholder:text-lg p-5"
-            />
             <Link href={"/cart"} className="border p-1 rounded-md text-xl">
               {" "}
               🛒
