@@ -28,7 +28,7 @@ const MedicinePage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const categoryPromise = getCategories({ cache: "no-store" });
+      const categoryPromise = getCategories();
       const currentPayload = { ...payload };
       if (selectedCategories.length > 0) {
         currentPayload.category_name = selectedCategories;
@@ -37,7 +37,7 @@ const MedicinePage = () => {
         currentPayload.search = searchMedi;
       }
       const medicinePromise = getMedicine(currentPayload, {
-        cache: "no-store",
+        revalidate: 10,
       });
       const [catRes, medRes] = await Promise.all([
         categoryPromise,

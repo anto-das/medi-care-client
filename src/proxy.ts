@@ -30,7 +30,7 @@ export async function proxy(request: NextRequest) {
   ) {
     return NextResponse.redirect(new URL("/customer-dashboard", request.url));
   }
-  if (isCustomer && pathname.startsWith("/cart")) {
+  if (isCustomer && pathname.startsWith("/cart/checkout")) {
     return NextResponse.next();
   }
   return NextResponse.next();
@@ -46,6 +46,7 @@ export const config = {
     "/seller-dashboard",
     "/admin-dashboard/:path*",
     "/admin-dashboard",
-    "/cart",
+    "/cart/checkout",
+    // "/cart",
   ],
 };
