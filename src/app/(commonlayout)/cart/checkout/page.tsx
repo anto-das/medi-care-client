@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -18,19 +17,67 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  CheckCircle2,
-  Zap,
-  ShieldCheck,
-  ChevronRight,
-  CreditCard,
-  Wallet,
-  Banknote,
-} from "lucide-react";
-import Image from "next/image";
+import { CheckCircle2, Zap } from "lucide-react";
+
 import OrderSummary from "@/components/ui/orderSummary";
+import PaymentMethod from "@/components/ui/paymentMethod";
+import { useEffect, useMemo, useState } from "react";
+import { authClient } from "@/lib/auth-client";
+import { CartItem } from "@/types";
+import { getCart } from "@/app/actions/cart.action";
 
 const CheckoutPage = () => {
+  const { data: session } = authClient.useSession();
+  const user_id = session?.user.id;
+  const [guest_id, setGuestId] = useState<string | null>(null);
+  const [carts, setCartsItems] = useState<CartItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const user = session?.user;
+  useEffect(() => {
+    const id = localStorage.getItem("guest_id");
+    setGuestId(id);
+  }, []);
+
+  // get medicine useEffect
+  useEffect(() => {
+    const fetchCart = async () => {
+      if (!guest_id && !user_id) return;
+      try {
+        setLoading(true);
+        const payload = { user_id: user_id, guest_id: guest_id as string };
+        const res = await getCart(payload);
+        setCartsItems(res || []);
+        if (res) {
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("Cart fetch error:", error);
+      }
+    };
+    fetchCart();
+  }, [guest_id, user_id]);
+  // Calculations
+  const subtotal = useMemo(() => {
+    return (
+      carts?.reduce(
+        (acc, item) => acc + parseFloat(item.price) * item.quantity,
+        0,
+      ) || 0
+    );
+  }, [carts]);
+
+  const deliveryFee = carts.length > 0 ? 60 : 0;
+  const discount = carts.length > 0 ? 25 : 0;
+  const total = subtotal + deliveryFee - discount;
+
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center font-bold text-gray-400 animate-pulse">
+        Loading Cart...
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#FDFDFB] p-4 md:p-10 font-sans text-slate-900">
       <div className="max-w-6xl mx-auto">
@@ -59,11 +106,11 @@ const CheckoutPage = () => {
               <CardContent className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Input
-                    defaultValue="Rahim Ahmed"
+                    defaultValue={user?.name}
                     className="h-12 bg-[#F8F8F5] border-none"
                   />
                   <Input
-                    defaultValue="+880 1711-000000"
+                    defaultValue={user?.email}
                     className="h-12 bg-[#F8F8F5] border-none"
                   />
                 </div>
@@ -95,30 +142,10 @@ const CheckoutPage = () => {
               </CardContent>
             </Card>
 
-            {/* 2. Prescription Upload */}
-            <div className="flex items-center justify-between p-5 bg-white rounded-2xl shadow-sm border border-emerald-50">
-              <div className="flex items-center space-x-4">
-                <CheckCircle2 className="w-6 h-6 text-emerald-500" />
-                <div>
-                  <h3 className="font-bold text-slate-800">
-                    Prescription Upload
-                  </h3>
-                  <p className="text-xs text-slate-400 italic">
-                    Required for 1 item
-                  </p>
-                </div>
-              </div>
-            </div>
-
             {/* 3. Delivery Method */}
             <Card className="border-none shadow-sm rounded-2xl bg-white">
               <CardContent className="flex flex-row items-center space-x-4 pb-4">
-                <Accordion
-                  type="single"
-                  collapsible
-                  defaultValue="shipping"
-                  className="max-w-full"
-                >
+                <Accordion type="single" collapsible className="max-w-full">
                   <AccordionItem value="shipping">
                     <AccordionTrigger className="text-xl border font-bold hover:no-underline flex justify-start items-center gap-3">
                       <span className="bg-[#064E3B] text-white rounded-full w-8  flex items-center border justify-center font-bold">
@@ -150,94 +177,16 @@ const CheckoutPage = () => {
             </Card>
 
             {/* 4. Payment Method - Accordion Style */}
-            <Card className="border-none shadow-sm rounded-2xl bg-white overflow-hidden">
-              <CardHeader className="flex flex-row items-center space-x-4 pb-0">
-                <div className="bg-[#064E3B] text-white rounded-full w-8 h-8 flex items-center justify-center font-bold">
-                  4
-                </div>
-                <CardTitle className="text-xl font-bold">
-                  Payment Method
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-4">
-                <Accordion type="single" collapsible className="space-y-3">
-                  <AccordionItem
-                    value="bkash"
-                    className="border rounded-xl px-4 overflow-hidden bg-[#F8F8F5]"
-                  >
-                    <AccordionTrigger className="hover:no-underline py-4">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-pink-100 rounded flex items-center justify-center font-bold text-pink-600 text-[10px]">
-                          bkash
-                        </div>
-                        <span className="font-bold">bKash</span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pb-4 text-slate-500 text-sm">
-                      You will be redirected to bKash payment gateway to
-                      complete the transaction securely.
-                    </AccordionContent>
-                  </AccordionItem>
-
-                  <AccordionItem
-                    value="nagad"
-                    className="border rounded-xl px-4 overflow-hidden bg-[#F8F8F5]"
-                  >
-                    <AccordionTrigger className="hover:no-underline py-4">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-orange-100 rounded flex items-center justify-center font-bold text-orange-600 text-[10px]">
-                          Nagad
-                        </div>
-                        <span className="font-bold">Nagad</span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pb-4 text-slate-500 text-sm">
-                      Pay securely using your Nagad account.
-                    </AccordionContent>
-                  </AccordionItem>
-
-                  <AccordionItem
-                    value="card"
-                    className="border rounded-xl px-4 overflow-hidden bg-[#F8F8F5]"
-                  >
-                    <AccordionTrigger className="hover:no-underline py-4">
-                      <div className="flex items-center space-x-3">
-                        <CreditCard className="w-6 h-6 text-slate-400" />
-                        <span className="font-bold">Card / Net Banking</span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pb-4">
-                      <p className="text-slate-500 text-sm mb-3">
-                        Visa, Mastercard, DBBL Nexus etc.
-                      </p>
-                      <Input
-                        placeholder="Card Number"
-                        className="h-10 bg-white"
-                      />
-                    </AccordionContent>
-                  </AccordionItem>
-
-                  <AccordionItem
-                    value="cod"
-                    className="border rounded-xl px-4 overflow-hidden bg-[#F8F8F5]"
-                  >
-                    <AccordionTrigger className="hover:no-underline py-4">
-                      <div className="flex items-center space-x-3">
-                        <Banknote className="w-6 h-6 text-emerald-500" />
-                        <span className="font-bold">Cash on Delivery</span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pb-4 text-slate-500 text-sm">
-                      Pay with cash when your medicine arrives at your doorstep.
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              </CardContent>
-            </Card>
+            <PaymentMethod></PaymentMethod>
           </div>
 
           {/* Right Side: Sticky Order Summary */}
-          <OrderSummary />
+          <OrderSummary
+            subtotal={subtotal}
+            deliveryFee={deliveryFee}
+            discount={discount}
+            total={total}
+          />
         </div>
       </div>
     </div>
