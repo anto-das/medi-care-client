@@ -26,7 +26,14 @@ import { authClient } from "@/lib/auth-client";
 import { CartItem } from "@/types";
 import { getCart } from "@/app/actions/cart.action";
 
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { env } from "@/env";
+import { orderService } from "@/service/order.service";
+import { handleConfirmOrder } from "@/app/utlis/handleCreateOrder";
+
 const CheckoutPage = () => {
+  const router = useRouter();
   const { data: session } = authClient.useSession();
   const user_id = session?.user.id;
   const [guest_id, setGuestId] = useState<string | null>(null);
@@ -69,6 +76,12 @@ const CheckoutPage = () => {
   const deliveryFee = carts.length > 0 ? 60 : 0;
   const discount = carts.length > 0 ? 25 : 0;
   const total = subtotal + deliveryFee - discount;
+
+  const orderedItems = carts.map((item) => ({
+    medicine_id: item.medicine_id,
+    quantity: item.quantity,
+    price: Number(item.price),
+  }));
 
   if (loading) {
     return (
@@ -177,7 +190,10 @@ const CheckoutPage = () => {
             </Card>
 
             {/* 4. Payment Method - Accordion Style */}
-            <PaymentMethod></PaymentMethod>
+            <PaymentMethod
+              subtotal={subtotal}
+              orderedItems={orderedItems}
+            ></PaymentMethod>
           </div>
 
           {/* Right Side: Sticky Order Summary */}

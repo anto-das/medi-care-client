@@ -20,7 +20,6 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Logo from "../ui/logo";
 import { usePathname } from "next/navigation";
-import { Input } from "../ui/input";
 import { authClient } from "@/lib/auth-client";
 import { v4 as uuid } from "uuid";
 import { useEffect } from "react";

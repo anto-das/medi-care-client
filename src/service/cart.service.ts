@@ -18,10 +18,13 @@ export const cartService = {
       });
       return (await result).json();
     } catch (error) {
-      console.log(error);
+       return {
+        data: null,
+        error: { message: "Failed to fetch carts", details: error },
+      };
     }
   },
-  getCartItems: async (payload: { user_id?: string; guest_id: string }) => {
+  getCartItems: async (payload: { user_id?: string; guest_id?: string }) => {
     try {
       const url = new URL(`${env.BACKEND_URL}/api/cart`);
       if (payload) {
@@ -38,7 +41,10 @@ export const cartService = {
       const { data } = await res.json();
       return data;
     } catch (error) {
-      console.log(error);
+       return {
+        data: null,
+        error: { message: "Failed to fetch carts", details: error },
+      };
     }
   },
 
@@ -51,7 +57,10 @@ export const cartService = {
       });
       return await res.json();
     } catch (error) {
-      console.error("Failed to update quantity:", error);
+      return {
+        data: null,
+        error: { message: "Failed to update quantities", details: error },
+      };
     }
   },
 

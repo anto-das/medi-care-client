@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "./button";
 import { ChevronRight, ShieldCheck } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./card";
+import Link from "next/link";
 
 const OrderSummary = ({
   subtotal,
@@ -45,9 +46,11 @@ const OrderSummary = ({
             </span>
           </div>
 
-          <Button className="w-full h-14 text-lg font-bold bg-[#064E3B] hover:bg-[#043d2e] text-white rounded-2xl shadow-xl shadow-emerald-900/10">
-            Place Order ৳ {total} →
-          </Button>
+          {/* <Link href={"/cart/checkout/order-trek"}> */}
+            <Button className="w-full h-14 text-lg font-bold bg-[#064E3B] hover:bg-[#043d2e] text-white rounded-2xl shadow-xl shadow-emerald-900/10">
+              Place Order ৳ {total} →
+            </Button>
+          {/* </Link> */}
 
           <div className="flex items-center justify-center space-x-2 text-[10px] text-slate-400 font-bold uppercase tracking-widest pt-2">
             <ShieldCheck className="w-4 h-4" />

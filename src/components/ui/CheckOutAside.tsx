@@ -60,7 +60,7 @@ const CheckOutAside = ({
         </div>
 
         <Link
-          href={"/cart/checkout"}
+          href={`/cart/checkout`}
           className="w-full bg-[#0b5e4e] text-white py-3 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 hover:bg-[#0d866e] shadow-xl shadow-green-900/20 active:scale-[0.98] transition-all"
         >
           Proceed to Checkout <ArrowRight size={20} />

@@ -1,14 +1,21 @@
-import React from "react";
 import { Card, CardHeader } from "./card";
-
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "./accordion";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { handleConfirmOrder } from "@/app/utlis/handleCreateOrder";
 
-const PaymentMethod = () => {
+const PaymentMethod = ({
+  subtotal,
+  orderedItems,
+}: {
+  subtotal: number;
+  orderedItems: any;
+}) => {
   return (
     <div>
       <Card className="border-none shadow-sm rounded-2xl bg-white overflow-hidden">
@@ -22,35 +29,46 @@ const PaymentMethod = () => {
                 Payment Method
               </AccordionTrigger>
               <AccordionContent className="h-16">
-                <div className="flex items-center space-x-3 border rounded-xl px-4 bg-[#F8F8F5] h-16">
+                <div className="group flex items-center space-x-3 border rounded-xl px-4 bg-[#F8F8F5] h-16 hover:border-pink-500 transition duration-500">
                   <div className="w-8 h-8  rounded flex items-center justify-center font-bold text-lg">
                     📱
                   </div>
-                  <span className="font-bold">bKash</span>
+                  <span className="font-bold group-hover:text-pink-500 transition duration-500">
+                    bKash
+                  </span>
                 </div>
               </AccordionContent>
               <AccordionContent className="h-16 my-4">
-                <div className="flex items-center space-x-3 border rounded-xl px-4 bg-[#F8F8F5] h-16">
+                <div className="flex items-center space-x-3 border rounded-xl px-4 bg-[#F8F8F5] h-16 group hover:border-amber-500 transition duration-500">
                   <div className="w-8 h-8  rounded flex items-center justify-center font-bold text-lg">
                     💳
                   </div>
-                  <span className="font-bold">Nagad</span>
+                  <span className="font-bold group-hover:text-amber-800 transition duration-500">
+                    Nagad
+                  </span>
                 </div>
               </AccordionContent>
               <AccordionContent className="h-16 my-4">
-                <div className="flex items-center space-x-3 border rounded-xl px-4 bg-[#F8F8F5] h-16">
+                <div className="flex items-center space-x-3 border rounded-xl px-4 bg-[#F8F8F5] h-16 group hover:border-blue-500 transition duration-500">
                   <div className="w-8 h-8  rounded flex items-center justify-center font-bold text-lg">
                     🏦
                   </div>
-                  <span className="font-bold">Card/Net Banking</span>
+                  <span className="font-bold group-hover:text-blue-500 transition duration-500">
+                    Card/Net Banking
+                  </span>
                 </div>
               </AccordionContent>
               <AccordionContent className="h-16">
-                <div className="flex items-center space-x-3 border rounded-xl px-4 bg-[#F8F8F5] h-16">
+                <div
+                  onClick={() => handleConfirmOrder({ subtotal, orderedItems })}
+                  className="flex items-center space-x-3 border rounded-xl px-4 bg-[#F8F8F5] h-16 group hover:border-green-500 transition duration-500"
+                >
                   <div className="w-8 h-8  rounded flex items-center justify-center font-bold text-lg">
                     💵
                   </div>
-                  <span className="font-bold">Cash on Delivery</span>
+                  <span className="font-bold group-hover:text-green-600 transition duration-500">
+                    Cash on Delivery
+                  </span>
                 </div>
               </AccordionContent>
             </AccordionItem>
