@@ -1,3 +1,4 @@
+"use server";
 import { orderService } from "@/service/order.service";
 
 export const handleConfirmOrder = async ({

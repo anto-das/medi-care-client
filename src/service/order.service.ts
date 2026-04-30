@@ -10,7 +10,7 @@ interface orderedItems {
 export const orderService = {
   createOrder: async (subtotal: number, orderedItems: any) => {
     try {
-      const result = fetch(`${env.BACKEND_URL}/api/order`, {
+      const result = await fetch(`${env.BACKEND_URL}/api/order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -21,9 +21,10 @@ export const orderService = {
           ordereItems: orderedItems,
         }),
       });
+      console.log(result);
       return { result, error: null };
     } catch (error) {
-        console.log(error)
+      console.log(error);
       return { data: null };
     }
   },
