@@ -7,7 +7,7 @@ import {
 } from "./accordion";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { handleConfirmOrder } from "@/app/utlis/handleCreateOrder";
+import { createOrder } from "@/app/utlis/CreateOrder";
 
 const PaymentMethod = ({
   subtotal,
@@ -16,6 +16,28 @@ const PaymentMethod = ({
   subtotal: number;
   orderedItems: any;
 }) => {
+  const router = useRouter();
+
+  const handleConfirmOrder = async ({
+    subtotal,
+    orderedItems,
+  }: {
+    subtotal: number;
+    orderedItems: any;
+  }) => {
+    const loadingId = toast.loading("confirming your order..");
+    try {
+      const result = await createOrder({ subtotal, orderedItems });
+      if (result.success) {
+        toast.success(result.message, { id: loadingId });
+        router.push("/customer-dashboard");
+      } else {
+        toast.error("Failed to place order", { id: loadingId });
+      }
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  };
   return (
     <div>
       <Card className="border-none shadow-sm rounded-2xl bg-white overflow-hidden">

@@ -1,4 +1,5 @@
 import { env } from "@/env";
+import { cookies } from "next/headers";
 
 interface orderedItems {
   medicine_id: string;
@@ -9,20 +10,21 @@ interface orderedItems {
 
 export const orderService = {
   createOrder: async (subtotal: number, orderedItems: any) => {
+    const cookieStore = await cookies();
+    const allCookies = cookieStore.toString();
     try {
       const result = await fetch(`${env.BACKEND_URL}/api/order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Cookie: allCookies,
         },
-        credentials: "include",
         body: JSON.stringify({
           total_bill: subtotal,
-          ordereItems: orderedItems,
+          orderItems: orderedItems,
         }),
       });
-      console.log(result);
-      return { result, error: null };
+      return await result.json();
     } catch (error) {
       console.log(error);
       return { data: null };
