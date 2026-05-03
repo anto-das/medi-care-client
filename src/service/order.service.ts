@@ -1,4 +1,5 @@
 import { env } from "@/env";
+import next from "next";
 import { cookies } from "next/headers";
 
 interface orderedItems {
@@ -41,6 +42,7 @@ export const orderService = {
           "Content-Type": "application/json",
           Cookie: allCookies,
         },
+        next: { revalidate: 100 },
       });
       const data = await (await result).json();
       // console.log("service order response: ",await data)

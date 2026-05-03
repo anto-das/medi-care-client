@@ -18,7 +18,7 @@ export const cartService = {
       });
       return (await result).json();
     } catch (error) {
-       return {
+      return {
         data: null,
         error: { message: "Failed to fetch carts", details: error },
       };
@@ -35,13 +35,13 @@ export const cartService = {
         });
       }
 
-      console.log("url: ", url.toString());
+      // console.log("url: ", url.toString());
 
-      const res = await fetch(url.toString());
+      const res = await fetch(url.toString(), { next: { revalidate: 30 } });
       const { data } = await res.json();
       return data;
     } catch (error) {
-       return {
+      return {
         data: null,
         error: { message: "Failed to fetch carts", details: error },
       };
