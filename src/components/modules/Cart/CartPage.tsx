@@ -17,6 +17,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { toast } from "sonner";
 import { cartService } from "@/service/cart.service";
 import EmptyCart from "@/components/ui/emptyCart";
+import Loading from "@/components/ui/loading";
 
 // Types definition for better DX
 
@@ -44,7 +45,7 @@ const CartPage = () => {
         setLoading(true);
         const payload = { user_id: user_id, guest_id: guest_id as string };
         const res = await getCart(payload);
-        setCartsItems(res || []);
+        setCartsItems(res);
         if (res) {
           setLoading(false);
         }
@@ -55,7 +56,6 @@ const CartPage = () => {
     fetchCart();
   }, [guest_id, user_id]);
   const debouncedCarts = useDebounce(carts, 700);
-
 
   const handleQuantityChange = async (cart_id: string, action: string) => {
     setCartsItems((prevCarts) =>
@@ -92,12 +92,16 @@ const CartPage = () => {
   }, [debouncedCarts]);
 
   const handleDeleteItem = async (id: string) => {
-    const payload = { user_id: user_id, guest_id: guest_id as string };
     const toastId = toast.loading("deleting item");
-    const deleteRes = await deleteCartItem(id);
-    toast.success(deleteRes.message, { id: toastId });
-    const res = await getCart(payload);
-    setCartsItems(res || []);
+    try {
+      const payload = { user_id: user_id, guest_id: guest_id as string };
+      const deleteRes = await deleteCartItem(id);
+      toast.success(deleteRes.message, { id: toastId });
+      const res = await getCart(payload);
+      setCartsItems(res || []);
+    } catch (error: any) {
+      toast.error("failed to delete..", { id: toastId });
+    }
   };
 
   const handleDeleteAll = async (guest_id: string) => {
@@ -108,14 +112,12 @@ const CartPage = () => {
         const delAll = await deleteAll(payload);
         delAll.success && toast.success(delAll.message, { id: toastId });
         const res = await getCart(payload);
-        setCartsItems(res || []);
+        setCartsItems(res);
       }
     } catch (err: any) {
       toast.error(err.message, { id: toastId });
     }
   };
-
-  
 
   // Calculations
   const subtotal = useMemo(() => {
@@ -132,11 +134,7 @@ const CartPage = () => {
   const total = subtotal + deliveryFee - discount;
 
   if (loading) {
-    return (
-      <div className="h-screen flex items-center justify-center font-bold text-gray-400 animate-pulse">
-        Loading Cart...
-      </div>
-    );
+    return <Loading />;
   }
 
   if (carts.length === 0) {

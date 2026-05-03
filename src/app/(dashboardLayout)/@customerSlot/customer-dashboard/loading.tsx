@@ -1,4 +1,6 @@
-export default function Loading() {
+import Loading from "@/components/ui/loading";
+
+export default function DashboardLoading() {
   // Or a custom loading skeleton component
-  return <p>Loading...</p>
+  return <Loading />;
 }

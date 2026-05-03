@@ -16,7 +16,7 @@ import {
   SidebarRail,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
+import "../../app/globals.css";
 import Logo from "../ui/logo";
 import Link from "next/link";
 import { Button } from "../ui/button";
@@ -27,6 +27,13 @@ import { Roles } from "@/constants/Roles";
 import { Routes } from "@/types";
 import { Input } from "../ui/input";
 import { usePathname } from "next/navigation";
+import { Inter } from "next/font/google";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter", // Tailwind-এ ব্যবহারের জন্য CSS variable
+  display: "swap",
+});
 
 const SidebarLogo = ({ userInfo }: { userInfo: any }) => {
   return (
@@ -80,7 +87,7 @@ const AppSidebar = ({
       break;
   }
   const baseClasses =
-    "inline-flex h-10 w-full justify-start rounded-md px-4 py-2 text-md font-medium transition-colors duration-300 mx-1";
+    "inline-flex h-10 w-full justify-start rounded-md px-4 py-2 text-lg font-bold transition-colors duration-300 mx-1 text-md font-bold";
   const inactiveClasses =
     "text-[#7a8d8d] hover:text-[#1f6b5d] hover:bg-[#e6f4f1]";
   const pathname = usePathname();
@@ -91,15 +98,17 @@ const AppSidebar = ({
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup key={routes.title}>
-          <SidebarGroupLabel>{routes.title}</SidebarGroupLabel>
+          <SidebarGroupLabel className="font-bold tracking-widest uppercase">
+            {routes.title}
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {routes.items.map((item) => (
                 <SidebarMenuItem key={item.label}>
-                  <SidebarMenuButton asChild >
+                  <SidebarMenuButton asChild>
                     <Link
                       href={item.href}
-                      className={`${baseClasses} ${pathname === item.href ? "px-4 py-2 text-md font-medium text-[#1f6b5d] bg-[#e6f4f1]" : inactiveClasses}`}
+                      className={`${baseClasses} ${inter.variable} ${pathname === item.href ? "px-4 py-2 text-md text-[#1f6b5d] bg-[#e6f4f1]" : inactiveClasses}`}
                     >
                       {item.label}
                     </Link>

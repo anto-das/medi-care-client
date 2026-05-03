@@ -1,11 +1,7 @@
-import React from 'react'
+import Loading from "@/components/ui/loading";
 
 const DashboardLoading = () => {
-  return (
-    <div>
-      hello dashboard loading....
-    </div>
-  )
-}
+  return <Loading />;
+};
 
-export default DashboardLoading
+export default DashboardLoading;

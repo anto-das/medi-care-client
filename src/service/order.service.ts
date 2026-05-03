@@ -30,4 +30,23 @@ export const orderService = {
       return { data: null };
     }
   },
+
+  getOrders: async () => {
+    const cookieStore = await cookies();
+    const allCookies = cookieStore.toString();
+    try {
+      const result = fetch(`${env.BACKEND_URL}/api/order`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: allCookies,
+        },
+      });
+      const data = await (await result).json();
+      // console.log("service order response: ",await data)
+      return { data, error: null };
+    } catch (error: any) {
+      return { data: null, error: error };
+    }
+  },
 };

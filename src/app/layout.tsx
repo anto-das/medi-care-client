@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/layouts/Navbar";
-import { Footer } from "@/components/layouts/footer";
 import { Toaster } from "sonner";
 
 const geistSans = Geist({
@@ -23,6 +21,11 @@ export const metadata: Metadata = {
     icon: "/medicine.png",
   },
 };
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter", // Tailwind-এ ব্যবহারের জন্য CSS variable
+  display: "swap",
+});
 
 export default function RootLayout({
   children,
@@ -32,10 +35,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
+      <body className={`min-h-full flex flex-col `}>
         {children}{" "}
         <Toaster duration={2000} richColors position="top-right" />{" "}
       </body>

@@ -23,7 +23,7 @@ const FeaturedProduct = async () => {
             {featuredProduct.manufacturer}{" "}
           </h3>
           <div className="flex items-center gap-2 text-sm text-gray-600 justify-end">
-            <span className="h-2 w-2 rounded-full bg-green-500"></span>{" "}
+            <span className="h-1 w-1 rounded-full bg-green-500"></span>{" "}
             <p className="text-green-500 font-bold text-end capitalize ">
               {" "}
               {featuredProduct.stock_quantity && "in stock"}

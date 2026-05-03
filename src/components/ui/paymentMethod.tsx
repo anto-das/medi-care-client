@@ -30,7 +30,7 @@ const PaymentMethod = ({
       const result = await createOrder({ subtotal, orderedItems });
       if (result.success) {
         toast.success(result.message, { id: loadingId });
-        router.push("/customer-dashboard");
+        router.push("/cart/checkout/order-trek");
       } else {
         toast.error("Failed to place order", { id: loadingId });
       }

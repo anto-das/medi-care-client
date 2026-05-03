@@ -30,7 +30,6 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { env } from "@/env";
 import { orderService } from "@/service/order.service";
-import { handleConfirmOrder } from "@/app/utlis/handleCreateOrder";
 
 const CheckoutPage = () => {
   const router = useRouter();

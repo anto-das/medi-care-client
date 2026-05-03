@@ -49,12 +49,18 @@ const CheckOutAside = ({
         </div>
 
         <div className="relative mb-8 group">
-          <input
-            type="text"
-            placeholder="Enter promo code"
-            className="w-full bg-gray-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-green-500 outline-none transition-all"
-          />
-          <button className="absolute right-2 top-2 bottom-2 bg-gray-900 text-white px-5 rounded-xl font-bold hover:bg-black transition-colors">
+          <form className="w-full focus:border-green-500 outline-none">
+            <input
+              type="text"
+              placeholder="Enter promo code"
+              className="w-full bg-gray-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-green-500 outline-none transition-all"
+            />
+          </form>
+          <button
+            type="submit"
+            form="submit"
+            className="absolute right-2 top-2 bottom-2 bg-gray-900 text-white px-5 rounded-xl font-bold hover:bg-black transition-colors"
+          >
             Apply
           </button>
         </div>
