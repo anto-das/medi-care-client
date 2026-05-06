@@ -17,6 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { orderService } from "@/service/order.service";
 import { Order } from "@/types";
+import Link from "next/link";
 
 export default async function OrderManagement() {
   const { data } = await orderService.getOrders();
@@ -68,14 +69,17 @@ export default async function OrderManagement() {
               <TableHead className="font-bold text-[11px] uppercase tracking-wider text-slate-500">
                 Status
               </TableHead>
-              {/* <TableHead className="font-bold text-[11px] uppercase tracking-wider text-slate-500">
+              <TableHead className="font-bold text-[11px] uppercase tracking-wider text-slate-500">
                 Action
-              </TableHead> */}
+              </TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
+          <TableBody className="my-9">
             {orders.map((order: Order) => (
               <TableRow key={order.order_id} className="hover:bg-slate-50/50">
+                <TableCell className="font-bold text-slate-900">
+                  {order.order_id}
+                </TableCell>
                 <TableCell className="text-slate-600">
                   {order.customer_email}
                 </TableCell>
@@ -86,7 +90,14 @@ export default async function OrderManagement() {
                   ৳{order.total_bill}
                 </TableCell>
                 <TableCell className="text-slate-600">
-                  {order.order_date}
+                  {new Date(order.order_date).toLocaleString("en-GB", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                  })}
                 </TableCell>
                 <TableCell>
                   <Badge
@@ -97,9 +108,12 @@ export default async function OrderManagement() {
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  <Button className="bg-[#00695C] hover:bg-[#004D40] font-serif text-white h-8 px-4 rounded-md">
-                    Confirm
-                  </Button>
+                  <Link
+                    href={"/cart/checkout/order-trek"}
+                    className=" border text-gray-600 hover:border-green-700 font-serif py-2 px-4 rounded-md"
+                  >
+                    Trek
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}

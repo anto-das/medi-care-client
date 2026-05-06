@@ -1,3 +1,4 @@
+"use client";
 import { Card, CardHeader } from "./card";
 import {
   Accordion,
@@ -8,6 +9,8 @@ import {
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { createOrder } from "@/app/utlis/CreateOrder";
+import { ReviewModal } from "./ReviewModal";
+import { useState } from "react";
 
 const PaymentMethod = ({
   subtotal,
@@ -17,6 +20,7 @@ const PaymentMethod = ({
   orderedItems: any;
 }) => {
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleConfirmOrder = async ({
     subtotal,
@@ -29,8 +33,9 @@ const PaymentMethod = ({
     try {
       const result = await createOrder({ subtotal, orderedItems });
       if (result.success) {
+        setIsModalOpen(true);
         toast.success(result.message, { id: loadingId });
-        router.push("/cart/checkout/order-trek");
+        // router.push("/customer-dashboard/orders");
       } else {
         toast.error("Failed to place order", { id: loadingId });
       }
@@ -50,7 +55,7 @@ const PaymentMethod = ({
                 </span>
                 Payment Method
               </AccordionTrigger>
-              <AccordionContent className="h-16">
+              {/* <AccordionContent className="h-16">
                 <div className="group flex items-center space-x-3 border rounded-xl px-4 bg-[#F8F8F5] h-16 hover:border-pink-500 transition duration-500">
                   <div className="w-8 h-8  rounded flex items-center justify-center font-bold text-lg">
                     📱
@@ -79,7 +84,7 @@ const PaymentMethod = ({
                     Card/Net Banking
                   </span>
                 </div>
-              </AccordionContent>
+              </AccordionContent> */}
               <AccordionContent className="h-16">
                 <div
                   onClick={() => handleConfirmOrder({ subtotal, orderedItems })}
@@ -93,6 +98,7 @@ const PaymentMethod = ({
                   </span>
                 </div>
               </AccordionContent>
+              <ReviewModal open={isModalOpen} onOpenChange={setIsModalOpen} />
             </AccordionItem>
           </Accordion>
         </CardHeader>

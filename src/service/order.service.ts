@@ -42,7 +42,7 @@ export const orderService = {
           "Content-Type": "application/json",
           Cookie: allCookies,
         },
-        next: { revalidate: 100 },
+        cache: "no-store",
       });
       const data = await (await result).json();
       // console.log("service order response: ",await data)

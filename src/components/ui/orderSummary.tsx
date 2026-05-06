@@ -47,7 +47,7 @@ const OrderSummary = ({
           </div>
 
           {/* <Link href={"/cart/checkout/order-trek"}> */}
-            <Button className="w-full h-14 text-lg font-bold bg-[#064E3B] hover:bg-[#043d2e] text-white rounded-2xl shadow-xl shadow-emerald-900/10">
+            <Button disabled className="w-full h-14 text-lg font-bold bg-[#064E3B] hover:bg-[#043d2e] text-white rounded-2xl shadow-xl shadow-emerald-900/10">
               Place Order ৳ {total} →
             </Button>
           {/* </Link> */}
