@@ -58,7 +58,7 @@ export const cartService = {
 
   deleteCartItem: async (id: string) => {
     try {
-      console.log("guest id from client service delete single data: ", id);
+      // console.log("guest id from client service delete single data: ", id);
       const res = await fetch(`${env.BACKEND_URL}/api/cart/delete/${id}`, {
         method: "DELETE",
         cache: "no-store",
@@ -74,7 +74,7 @@ export const cartService = {
 
   deleteAll: async (payload: { guest_id: string }) => {
     try {
-      console.log("guest id from client service: ", payload);
+      // console.log("guest id from client service: ", payload);
       const res = await fetch(`http://localhost:5000/api/cart/delete`, {
         method: "DELETE",
         body: JSON.stringify(payload),

@@ -9,9 +9,10 @@ import {
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { createOrder } from "@/app/utlis/CreateOrder";
-import { ReviewModal } from "./ReviewModal";
+
 import { useEffect, useState } from "react";
 import { deleteAllCart } from "@/app/actions/cart.action";
+import ReviewModal from "./ReviewModal";
 
 const PaymentMethod = ({
   subtotal,
@@ -40,6 +41,7 @@ const PaymentMethod = ({
     const loadingId = toast.loading("confirming your order..");
     try {
       const result = await createOrder({ subtotal, orderedItems });
+      // console.log("confirm ordered: ", result);
       if (result.success) {
         toast.success(result.message, { id: loadingId });
         setIsModalOpen(true);
@@ -64,7 +66,32 @@ const PaymentMethod = ({
                 </span>
                 Payment Method
               </AccordionTrigger>
-              {/* <AccordionContent className="h-16">
+              <AccordionContent className="h-16">
+                <div
+                  onClick={() => handleConfirmOrder({ subtotal, orderedItems })}
+                  className="flex items-center space-x-3 border rounded-xl px-4 bg-[#F8F8F5] h-16 group hover:border-green-500 transition duration-500"
+                >
+                  <div className="w-8 h-8  rounded flex items-center justify-center font-bold text-lg">
+                    💵
+                  </div>
+                  <span className="font-bold group-hover:text-green-600 transition duration-500">
+                    Cash on Delivery
+                  </span>
+                </div>
+              </AccordionContent>
+              <ReviewModal open={isModalOpen} onOpenChange={setIsModalOpen} />
+            </AccordionItem>
+          </Accordion>
+        </CardHeader>
+      </Card>
+    </div>
+  );
+};
+
+export default PaymentMethod;
+
+{
+  /* <AccordionContent className="h-16">
                 <div className="group flex items-center space-x-3 border rounded-xl px-4 bg-[#F8F8F5] h-16 hover:border-pink-500 transition duration-500">
                   <div className="w-8 h-8  rounded flex items-center justify-center font-bold text-lg">
                     📱
@@ -93,27 +120,5 @@ const PaymentMethod = ({
                     Card/Net Banking
                   </span>
                 </div>
-              </AccordionContent> */}
-              <AccordionContent className="h-16">
-                <div
-                  onClick={() => handleConfirmOrder({ subtotal, orderedItems })}
-                  className="flex items-center space-x-3 border rounded-xl px-4 bg-[#F8F8F5] h-16 group hover:border-green-500 transition duration-500"
-                >
-                  <div className="w-8 h-8  rounded flex items-center justify-center font-bold text-lg">
-                    💵
-                  </div>
-                  <span className="font-bold group-hover:text-green-600 transition duration-500">
-                    Cash on Delivery
-                  </span>
-                </div>
-              </AccordionContent>
-              <ReviewModal open={isModalOpen} onOpenChange={setIsModalOpen} />
-            </AccordionItem>
-          </Accordion>
-        </CardHeader>
-      </Card>
-    </div>
-  );
-};
-
-export default PaymentMethod;
+              </AccordionContent> */
+}

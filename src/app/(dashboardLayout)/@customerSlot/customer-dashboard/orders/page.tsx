@@ -14,14 +14,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+
 import { orderService } from "@/service/order.service";
 import { Order } from "@/types";
 import Link from "next/link";
+import EmptyOrder from "@/components/modules/dashboard/customer/orders/EmptyOrders";
 
 export default async function OrderManagement() {
   const { data } = await orderService.getOrders();
   const orders = data?.data;
+  if (orders.length === 0) {
+    return <EmptyOrder />;
+  }
   return (
     <div className="p-6 bg-white min-h-screen">
       {/* Header Section */}

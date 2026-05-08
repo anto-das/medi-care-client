@@ -45,7 +45,6 @@ const CartPage = () => {
         setLoading(true);
         const payload = { user_id: user_id, guest_id: guest_id as string };
         const res = await getCart(payload);
-        console.log("carts from cart page component: ",res)
         setCartsItems(res);
         if (res) {
           setLoading(false);

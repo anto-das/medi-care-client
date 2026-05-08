@@ -27,7 +27,7 @@ export const orderService = {
       });
       return await result.json();
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       return { data: null };
     }
   },
@@ -37,6 +37,24 @@ export const orderService = {
     const allCookies = cookieStore.toString();
     try {
       const result = fetch(`${env.BACKEND_URL}/api/order`, {
+        headers: {
+          Cookie: allCookies,
+        },
+        cache: "no-store",
+      });
+      const data = await (await result).json();
+      // console.log("service order response: ", data);
+      return { data, error: null };
+    } catch (error: any) {
+      return { data: null, error: error };
+    }
+  },
+
+  getFirstOrder: async (email: string) => {
+    const cookieStore = await cookies();
+    const allCookies = cookieStore.toString();
+    try {
+      const res = await fetch(`${env.BACKEND_URL}/api/order/getFirst`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -44,11 +62,14 @@ export const orderService = {
         },
         cache: "no-store",
       });
-      const data = await (await result).json();
-      // console.log("service order response: ",await data)
-      return { data, error: null };
-    } catch (error: any) {
-      return { data: null, error: error };
+      const { data } = await res.json();
+
+      return data;
+    } catch (err: any) {
+      return {
+        data: null,
+        error: err,
+      };
     }
   },
 };
