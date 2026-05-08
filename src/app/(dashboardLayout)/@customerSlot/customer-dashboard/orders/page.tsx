@@ -30,7 +30,10 @@ export default async function OrderManagement() {
           <h1 className="text-2xl font-semibold text-slate-800">
             Manage Orders
           </h1>
-          <p className="text-sm text-slate-500">384 active orders</p>
+          <p className="text-sm text-slate-500">
+            {" "}
+            {orders.length} active orders
+          </p>
         </div>
         <div className="w-[150px]">
           <Select defaultValue="all">

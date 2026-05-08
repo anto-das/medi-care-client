@@ -50,6 +50,7 @@ const MedicinePage = () => {
     fetchData();
   }, [selectedCategories || searchMedi]);
 
+
   const handleCategories = (categoryType: string, checked: boolean) => {
     if (checked) {
       setSelectedCategories(categoryType);
@@ -61,6 +62,7 @@ const MedicinePage = () => {
   const handleSearch = useDebouncedCallback((value: string) => {
     setSearchMedi(value);
   }, 400);
+  // console.log("categoires:  ",categories)
   return (
     <div>
       <h1 className="text-3xl w-11/14 mx-auto lg:py-8  md:text-4xl lg:text-5xl font-bold">

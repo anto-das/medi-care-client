@@ -26,18 +26,10 @@ export const cartService = {
   },
   getCartItems: async (payload: { user_id?: string; guest_id?: string }) => {
     try {
-      const url = new URL(`${env.BACKEND_URL}/api/cart`);
-      if (payload) {
-        Object.entries(payload).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== "") {
-            url.searchParams.append(key, value);
-          }
-        });
-      }
-
-      // console.log("url: ", url.toString());
-
-      const res = await fetch(url.toString(), { next: { revalidate: 30 } });
+      const res = await fetch(
+        `${env.BACKEND_URL}/api/cart?guest_id=${payload.guest_id}`,
+        { cache: "no-store" },
+      );
       const { data } = await res.json();
       return data;
     } catch (error) {
@@ -65,16 +57,35 @@ export const cartService = {
   },
 
   deleteCartItem: async (id: string) => {
-    const res = await fetch(`${env.BACKEND_URL}/api/cart/delete/${id}`, {
-      method: "DELETE",
-    });
-    return await res.json();
+    try {
+      console.log("guest id from client service delete single data: ", id);
+      const res = await fetch(`${env.BACKEND_URL}/api/cart/delete/${id}`, {
+        method: "DELETE",
+        cache: "no-store",
+      });
+      return await res.json();
+    } catch (err: any) {
+      return {
+        data: null,
+        error: { message: "Failed to update quantities", details: err },
+      };
+    }
   },
-  deleteAll: async (payload: { guest_id: string; user_id?: string }) => {
-    const res = await fetch(`http://localhost:5000/api/cart/delete`, {
-      method: "DELETE",
-      body: JSON.stringify(payload),
-    });
-    return await res.json();
+
+  deleteAll: async (payload: { guest_id: string }) => {
+    try {
+      console.log("guest id from client service: ", payload);
+      const res = await fetch(`http://localhost:5000/api/cart/delete`, {
+        method: "DELETE",
+        body: JSON.stringify(payload),
+        cache: "no-store",
+      });
+      return await res.json();
+    } catch (error) {
+      return {
+        data: null,
+        error: { message: "Failed to update quantities", details: error },
+      };
+    }
   },
 };

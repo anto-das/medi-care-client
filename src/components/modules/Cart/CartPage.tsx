@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  deleteAll,
+  deleteAllCart,
   deleteCartItem,
   getCart,
   updateCartQuantity,
@@ -45,6 +45,7 @@ const CartPage = () => {
         setLoading(true);
         const payload = { user_id: user_id, guest_id: guest_id as string };
         const res = await getCart(payload);
+        console.log("carts from cart page component: ",res)
         setCartsItems(res);
         if (res) {
           setLoading(false);
@@ -56,7 +57,6 @@ const CartPage = () => {
     fetchCart();
   }, [guest_id, user_id]);
   const debouncedCarts = useDebounce(carts, 700);
-
   const handleQuantityChange = async (cart_id: string, action: string) => {
     setCartsItems((prevCarts) =>
       prevCarts.map((item) => {
@@ -98,7 +98,7 @@ const CartPage = () => {
       const deleteRes = await deleteCartItem(id);
       toast.success(deleteRes.message, { id: toastId });
       const res = await getCart(payload);
-      setCartsItems(res || []);
+      setCartsItems(res);
     } catch (error: any) {
       toast.error("failed to delete..", { id: toastId });
     }
@@ -106,10 +106,10 @@ const CartPage = () => {
 
   const handleDeleteAll = async (guest_id: string) => {
     const toastId = toast.loading("deleting item");
-    const payload = { user_id: user_id, guest_id: guest_id as string };
+    const payload = { guest_id: guest_id as string };
     try {
       if (guest_id || user_id) {
-        const delAll = await deleteAll(payload);
+        const delAll = await deleteAllCart(payload);
         delAll.success && toast.success(delAll.message, { id: toastId });
         const res = await getCart(payload);
         setCartsItems(res);

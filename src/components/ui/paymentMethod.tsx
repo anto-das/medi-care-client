@@ -10,7 +10,8 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { createOrder } from "@/app/utlis/CreateOrder";
 import { ReviewModal } from "./ReviewModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { deleteAllCart } from "@/app/actions/cart.action";
 
 const PaymentMethod = ({
   subtotal,
@@ -21,7 +22,14 @@ const PaymentMethod = ({
 }) => {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [guest_id, setGuestId] = useState<string | null>(null);
+  const payload = {
+    guest_id: guest_id as string,
+  };
+  useEffect(() => {
+    const id = localStorage.getItem("guest_id");
+    setGuestId(id);
+  }, []);
   const handleConfirmOrder = async ({
     subtotal,
     orderedItems,
@@ -33,8 +41,9 @@ const PaymentMethod = ({
     try {
       const result = await createOrder({ subtotal, orderedItems });
       if (result.success) {
-        setIsModalOpen(true);
         toast.success(result.message, { id: loadingId });
+        setIsModalOpen(true);
+        await deleteAllCart(payload);
         // router.push("/customer-dashboard/orders");
       } else {
         toast.error("Failed to place order", { id: loadingId });

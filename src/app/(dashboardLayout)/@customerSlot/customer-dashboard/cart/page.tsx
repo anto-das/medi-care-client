@@ -1,7 +1,7 @@
 import CartPage from "@/components/modules/Cart/CartPage";
 
-const DashboardCartPage = () => {
+const page = () => {
   return <CartPage />;
 };
 
-export default DashboardCartPage;
+export default page;

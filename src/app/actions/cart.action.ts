@@ -15,7 +15,7 @@ export const addCart = async ({
   const { data } = await userService.getSession();
   const user_id = data?.user.id;
   console.log({ user_id, id, guest_id });
-  const create = cartService.addToCart({ id, guest_id, user_id,quantity });
+  const create = cartService.addToCart({ id, guest_id, user_id, quantity });
   return create;
 };
 
@@ -23,8 +23,7 @@ export const getCart = async (payload: {
   user_id?: string;
   guest_id: string;
 }) => {
-  const data = cartService.getCartItems(payload);
-  return data;
+  return await cartService.getCartItems(payload);
 };
 
 export const updateCartQuantity = async (cart_id: string, quantity: number) => {
@@ -36,10 +35,8 @@ export const updateCartQuantity = async (cart_id: string, quantity: number) => {
   }
 };
 
-export const deleteAll = async (payload: {
-  guest_id: string;
-  user_id?: string;
-}) => {
+export const deleteAllCart = async (payload: { guest_id: string }) => {
+  // console.log(payload.guest_id);
   const res = await cartService.deleteAll(payload);
   return res;
 };
