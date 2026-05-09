@@ -16,8 +16,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { authClient } from "@/lib/auth-client";
-import { orderService } from "@/service/order.service";
 import { getFirstOrder } from "@/app/actions/order.action";
+import { postReview } from "@/app/actions/review.action";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const ReviewModal = ({
   open,
@@ -27,16 +29,39 @@ const ReviewModal = ({
   onOpenChange: (open: boolean) => void;
 }) => {
   const { data } = authClient.useSession();
+  const router = useRouter();
   const user = data?.user;
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
 
   const handleReview = async (e: any) => {
-    e.preventDefault();
-    const name = e.target.name.value;
-    const location = e.target.location.value;
-    const comment = e.target.comment.value;
-    const order = await getFirstOrder(user?.email as string);
+    const loadingId = toast.loading(
+      "submitting your review please stay with us.",
+    );
+    try {
+      e.preventDefault();
+      const name = e.target.name.value;
+      const location = e.target.location.value;
+      const comment = e.target.comment.value;
+      const order = await getFirstOrder(user?.email as string);
+      const payload = {
+        customer_email: user?.email as string,
+        customer_name: name,
+        order_id: order.order_id,
+        user_location: location,
+        rating: rating,
+        comment: comment,
+      };
+      console.log(payload);
+      const result = await postReview(payload);
+      if (result.success) {
+        toast.success("Thanks for your valuable opinion", { id: loadingId });
+        router.push("/customer-dashboard/orders");
+      }
+    } catch (err: any) {
+      router.push("/");
+      return { data: null, error: err };
+    }
   };
 
   return (
@@ -86,6 +111,7 @@ const ReviewModal = ({
                 name="name"
                 placeholder="Rahim Ahmed"
                 readOnly
+                required
                 defaultValue={user?.name}
                 className="focus-visible:ring-[#0b5e4e]"
               />
@@ -95,6 +121,7 @@ const ReviewModal = ({
               <Input
                 id="location"
                 name="location"
+                required
                 placeholder="Dhaka, Mirpur"
                 className="focus-visible:ring-[#0b5e4e]"
               />

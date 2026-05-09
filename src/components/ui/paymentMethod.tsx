@@ -7,7 +7,7 @@ import {
   AccordionTrigger,
 } from "./accordion";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+
 import { createOrder } from "@/app/utlis/CreateOrder";
 
 import { useEffect, useState } from "react";
@@ -21,7 +21,6 @@ const PaymentMethod = ({
   subtotal: number;
   orderedItems: any;
 }) => {
-  const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [guest_id, setGuestId] = useState<string | null>(null);
   const payload = {
