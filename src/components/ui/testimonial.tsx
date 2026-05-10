@@ -1,5 +1,3 @@
-import React from "react";
-
 const Testimonial = () => {
   return (
     <div className="max-w-md border border-[#e0eee7] mx-auto bg-white rounded-xl hover:shadow-lg p-6">
