@@ -190,7 +190,7 @@ const CheckoutPage = () => {
 
             {/* 4. Payment Method - Accordion Style */}
             <PaymentMethod
-              subtotal={subtotal}
+              subtotal={total}
               orderedItems={orderedItems}
             ></PaymentMethod>
           </div>

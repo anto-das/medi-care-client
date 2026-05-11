@@ -8,6 +8,7 @@ export type OrderItem = {
 export type Order = {
   order_id: string;
   customer_email: string;
+  customer_name: string;
   seller_id: string;
   status: Status;
   total_bill: string;

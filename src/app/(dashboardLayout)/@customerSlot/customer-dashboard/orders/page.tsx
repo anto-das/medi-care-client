@@ -39,7 +39,7 @@ export default async function OrderManagement() {
             {orders.length} active orders
           </p>
         </div>
-        <div className="w-[150px]">
+        <div className="w-37.5">
           <Select defaultValue="all">
             <SelectTrigger className="bg-slate-50 border-slate-200">
               <SelectValue placeholder="All Status" />
@@ -62,7 +62,10 @@ export default async function OrderManagement() {
                 Order ID
               </TableHead>
               <TableHead className="font-bold text-[11px] uppercase tracking-wider text-slate-500">
-                Customer
+                Customer Email
+              </TableHead>
+              <TableHead className="font-bold text-[11px] uppercase tracking-wider text-slate-500">
+                Name
               </TableHead>
               <TableHead className="font-bold text-[11px] uppercase tracking-wider text-slate-500">
                 Items
@@ -89,6 +92,9 @@ export default async function OrderManagement() {
                 </TableCell>
                 <TableCell className="text-slate-600">
                   {order.customer_email}
+                </TableCell>
+                <TableCell className="text-slate-600">
+                  {order.customer_name}
                 </TableCell>
                 <TableCell className="text-slate-600">
                   {order.orderItems.length}
