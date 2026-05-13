@@ -8,8 +8,12 @@ export const sellerRoutes: Routes = {
       href: "/seller-dashboard",
     },
     {
-      label: "💊 Medicines",
-      href: "/seller-dashboard/medicines",
+      label: "💊My Medicines",
+      href: "/seller-dashboard/medicine",
+    },
+    {
+      label: "➕ Add Medicine",
+      href: "/seller-dashboard/add-medicine",
     },
     {
       label: "📋 Orders",
@@ -29,4 +33,3 @@ export const sellerRoutes: Routes = {
     },
   ],
 };
-

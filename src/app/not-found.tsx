@@ -4,8 +4,12 @@ import Link from "next/link";
 import { Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { authClient } from "@/lib/auth-client";
 
 export default function NotFound() {
+  const { data } = authClient.useSession();
+  const user: any = data?.user;
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-slate-50 px-6 text-center overflow-hidden">
       {/* Animated Stethoscope Container */}
@@ -59,7 +63,17 @@ export default function NotFound() {
           size="lg"
           className="bg-[#0b5e4e] hover:bg-[#084a3d] px-8 py-7 text-lg transition-transform active:scale-95 shadow-lg"
         >
-          <Link href="/">Return to Dashboard</Link>
+          <Link
+            href={
+              user?.role === "CUSTOMER"
+                ? "/customer-dashboard"
+                : user?.role === "SELLER"
+                  ? "/seller-dashboard"
+                  : "/admin-dashboard"
+            }
+          >
+            Return to Dashboard
+          </Link>
         </Button>
 
         <Button
@@ -68,7 +82,7 @@ export default function NotFound() {
           asChild
           className="px-8 py-7 text-lg border-slate-300 hover:bg-slate-100 transition-transform active:scale-95"
         >
-          <Link href="/help">Contact Support</Link>
+          <Link href="/">Contact Support</Link>
         </Button>
       </motion.div>
 
