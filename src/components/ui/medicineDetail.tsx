@@ -14,7 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Medicine } from "@/types";
-import { handleAddToCart } from "@/app/utlis/handleAddToCart";
+import { handleAddToCart } from "@/app/utilis/handleAddToCart";
 
 export default function MedicineDetailsClient({
   medicine,

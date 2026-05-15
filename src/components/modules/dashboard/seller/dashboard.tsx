@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import Chart from "@/components/ui/chartbar";
 import OrderTable from "@/components/ui/orderTable";
 import Overview from "@/components/ui/overview";
-import React from "react";
 
 const SellerDashboard = () => {
   return (

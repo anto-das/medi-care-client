@@ -1,7 +1,7 @@
 "use client";
 
 import { addCart } from "@/app/actions/cart.action";
-import { handleAddToCart } from "@/app/utlis/handleAddToCart";
+import { handleAddToCart } from "@/app/utilis/handleAddToCart";
 import { Medicine } from "@/types";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";

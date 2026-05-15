@@ -18,6 +18,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
+import { env } from "@/env";
+import { imgBB } from "@/app/utilis/handlePostImgBB";
+import { medicineFormSchema } from "@/schema/medicineSchema";
+
 export default function AddMedicineForm() {
   const dosageForms = [
     { label: "Tablet", value: "TABLET" },
@@ -57,8 +61,11 @@ export default function AddMedicineForm() {
       category: "ANTIBIOTICS",
       manufacturer: "",
       description: "",
-      photo: {},
+      photo: [] as File[],
     },
+    // validators: {
+    //   onSubmit: medicineFormSchema,
+    // },
     onSubmit: async ({ value }) => {
       // Do something with form data
       const {
@@ -72,7 +79,12 @@ export default function AddMedicineForm() {
         description,
         photo,
       } = value;
-      console.log(value);
+      console.log(value.photo[0].name);
+      if (value?.photo && value?.photo.length > 0) {
+        const targetFile = value.photo[0];
+        const img_url = await imgBB(targetFile);
+        console.log("img url:  ", img_url);
+      }
     },
   });
   return (
@@ -115,25 +127,29 @@ export default function AddMedicineForm() {
             {/* Medicine Name */}
             <form.Field
               name="medicine_name"
-              children={(field) => (
-                <div className="space-y-2">
-                  <label className="text-[14px] font-medium text-gray-700">
-                    Medicine Name <span className="text-red-500">*</span>
-                  </label>
-                  <Input
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    required
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    placeholder="e.g. Napa Extra 500mg Tablet"
-                    className="bg-gray-50/50 border-gray-200 focus:bg-white"
-                  />
-                  <p className="text-[12px] text-gray-400">
-                    Use the official DGDA-registered brand name
-                  </p>
-                </div>
-              )}
+              children={(field) => {
+                // const isInvalid =
+                //   field.state.meta.isTouched && !field.state.meta.isValid;
+                return (
+                  <div className="space-y-2">
+                    <label className="text-[14px] font-medium text-gray-700">
+                      Medicine Name <span className="text-red-500">*</span>
+                    </label>
+                    <Input
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      required
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      placeholder="e.g. Napa Extra 500mg Tablet"
+                      className="bg-gray-50/50 border-gray-200 focus:bg-white"
+                    />
+                    <p className="text-[12px] text-gray-400">
+                      Use the official DGDA-registered brand name
+                    </p>
+                  </div>
+                );
+              }}
             />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
@@ -333,11 +349,10 @@ export default function AddMedicineForm() {
                       multiple
                       accept="image/*"
                       className="absolute inset-0 opacity-0 cursor-pointer"
-                      // ব্রাউজার থেকে ফাইল সিলেক্ট হলে ফর্মে ডাটা পুশ করবে
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        const files = e.target.files; // এখন আর কোনো এরর আসবে না
+                        const files = e.target.files;
                         if (files) {
-                          const first = Object.values(files)[0];
+                          const first = Object.values(files);
                           field.handleChange(first);
                         }
                       }}

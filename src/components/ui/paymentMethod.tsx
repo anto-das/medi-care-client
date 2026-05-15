@@ -8,7 +8,7 @@ import {
 } from "./accordion";
 import { toast } from "sonner";
 
-import { createOrder } from "@/app/utlis/CreateOrder";
+import { createOrder } from "@/app/utilis/CreateOrder";
 
 import { useEffect, useState } from "react";
 import { deleteAllCart } from "@/app/actions/cart.action";

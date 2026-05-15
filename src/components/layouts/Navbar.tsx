@@ -23,7 +23,7 @@ import { usePathname } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { v4 as uuid } from "uuid";
 import { useEffect } from "react";
-import { handleSignOut } from "@/app/utlis/handleSignOUt";
+import { handleSignOut } from "@/app/utilis/handleSignOUt";
 import { MenuItem, Navbar1Props } from "@/types";
 
 const baseClasses =
