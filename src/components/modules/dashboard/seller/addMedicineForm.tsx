@@ -20,9 +20,62 @@ import Link from "next/link";
 
 import { env } from "@/env";
 import { imgBB } from "@/app/utilis/handlePostImgBB";
-import { medicineFormSchema } from "@/schema/medicineSchema";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 
 export default function AddMedicineForm() {
+  const medicineFormSchema = z.object({
+    medicine_name: z
+      .string()
+      .min(2, "Medicine name must be at least 2 characters.")
+      .trim(),
+
+    generic_name: z
+      .string()
+      .min(2, "Generic name must be at least 2 characters.")
+      .trim(),
+
+    strength: z
+      .string()
+      .min(1, "Strength is required (e.g., 500mg, 10ml).")
+      .trim(),
+
+    unit_type: z.string(""),
+
+    // সংখ্যা ইনপুট স্ট্রিং হিসেবে আসলে সেটিকে নাম্বারে রূপান্তর করে ভ্যালিডেট করবে
+    stock_quantity: z
+      .string()
+      .min(1, "Stock quantity is required.")
+      .refine((val) => !isNaN(Number(val)), "Must be a valid number.")
+      .transform((val) => Number(val))
+      .pipe(z.number().int().positive("Stock must be a positive integer.")),
+
+    category: z.string(""),
+
+    manufacturer: z.string().min(2, "Manufacturer name is required.").trim(),
+
+    description: z
+      .string()
+      .min(10, "Description must be at least 10 characters long.")
+      .max(500, "Description cannot exceed 500 characters.")
+      .trim(),
+
+    // ফাইলের জন্য অ্যাডভান্সড অ্যারে ভ্যালিডেশন
+    photo: z
+      .array(z.instanceof(File))
+      .min(1, "Please upload a medicine photo.") // ফটো বাধ্যতামূলক করতে চাইলে
+      .refine(
+        (files) => files.every((file) => file.size / (1024 * 1024) <= 4),
+        "Each image must be less than 4MB.",
+      )
+      .refine(
+        (files) =>
+          files.every((file) =>
+            ["image/jpeg", "image/png", "image/webp"].includes(file.type),
+          ),
+        "Only JPG, PNG, and WEBP formats are allowed.",
+      ),
+  });
+
   const dosageForms = [
     { label: "Tablet", value: "TABLET" },
     { label: "Capsule", value: "CAPSULE" },
@@ -68,23 +121,16 @@ export default function AddMedicineForm() {
     // },
     onSubmit: async ({ value }) => {
       // Do something with form data
-      const {
-        medicine_name,
-        generic_name,
-        strength,
-        unit_type,
-        stock_quantity,
-        category,
-        manufacturer,
-        description,
-        photo,
-      } = value;
-      console.log(value.photo[0].name);
-      if (value?.photo && value?.photo.length > 0) {
+      const { photo, ...data } = value;
+      photo.every((file) => console.log(file.size));
+      let medi_url = "";
+      if (photo && photo.length > 0) {
         const targetFile = value.photo[0];
-        const img_url = await imgBB(targetFile);
-        console.log("img url:  ", img_url);
+        const url = await imgBB(targetFile);
+        medi_url = url as string;
       }
+
+      console.log({ ...data, medi_url });
     },
   });
   return (
@@ -128,13 +174,13 @@ export default function AddMedicineForm() {
             <form.Field
               name="medicine_name"
               children={(field) => {
-                // const isInvalid =
-                //   field.state.meta.isTouched && !field.state.meta.isValid;
+                const isInvalid =
+                  field.state.meta.isTouched && !field.state.meta.isValid;
                 return (
-                  <div className="space-y-2">
-                    <label className="text-[14px] font-medium text-gray-700">
+                  <Field data-invalid={isInvalid} className="space-y-0">
+                    <FieldLabel className="text-[14px] font-medium text-gray-700">
                       Medicine Name <span className="text-red-500">*</span>
-                    </label>
+                    </FieldLabel>
                     <Input
                       name={field.name}
                       value={field.state.value}
@@ -147,7 +193,10 @@ export default function AddMedicineForm() {
                     <p className="text-[12px] text-gray-400">
                       Use the official DGDA-registered brand name
                     </p>
-                  </div>
+                    {isInvalid && (
+                      <FieldError errors={field.state.meta.errors} />
+                    )}
+                  </Field>
                 );
               }}
             />
@@ -156,67 +205,91 @@ export default function AddMedicineForm() {
               {/* Generic Name */}
               <form.Field
                 name="generic_name"
-                children={(field) => (
-                  <div className="space-y-2">
-                    <label className="text-[14px] font-medium text-gray-700">
-                      Generic Name <span className="text-red-500">*</span>
-                    </label>
-                    <Input
-                      placeholder="e.g. Paracetamol"
-                      required
-                      value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      className="bg-gray-50/50 border-gray-200"
-                    />
-                  </div>
-                )}
+                children={(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
+                  return (
+                    <Field data-invalid={isInvalid} className="space-y-2">
+                      <FieldLabel className="text-[14px] font-medium text-gray-700">
+                        Generic Name <span className="text-red-500">*</span>
+                      </FieldLabel>
+                      <Input
+                        placeholder="e.g. Paracetamol"
+                        required
+                        value={field.state.value}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        className="bg-gray-50/50 border-gray-200"
+                      />
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
+                    </Field>
+                  );
+                }}
               />
 
               {/* Strength */}
               <form.Field
                 name="strength"
-                children={(field) => (
-                  <div className="space-y-2">
-                    <label className="text-[14px] font-medium text-gray-700">
-                      Strength <span className="text-red-500">*</span>
-                    </label>
-                    <Input
-                      placeholder="e.g. 500mg"
-                      value={field.state.value}
-                      required
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      className="bg-gray-50/50 border-gray-200"
-                    />
-                  </div>
-                )}
+                children={(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
+                  return (
+                    <Field data-invalid={isInvalid} className="space-y-2">
+                      <FieldLabel className="text-[14px] font-medium text-gray-700">
+                        Strength <span className="text-red-500">*</span>
+                      </FieldLabel>
+                      <Input
+                        placeholder="e.g. 500mg"
+                        value={field.state.value}
+                        required
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        className="bg-gray-50/50 border-gray-200"
+                      />
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
+                    </Field>
+                  );
+                }}
               />
 
               {/*  (unit_type) */}
               <form.Field
                 name="unit_type"
-                children={(field) => (
-                  <div className="space-y-2 w-full">
-                    <label className="text-[14px] font-medium text-gray-700">
-                      unit-type <span className="text-red-500">*</span>
-                    </label>
-                    <Select
-                      onValueChange={field.handleChange}
-                      defaultValue={field.state.value}
-                      required
+                children={(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
+                  return (
+                    <Field
+                      data-invalid={isInvalid}
+                      className="space-y-2 w-full"
                     >
-                      <SelectTrigger className="bg-gray-50/50 w-full border-gray-200">
-                        <SelectValue placeholder="Select form" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {dosageForms.map((dosage, idx) => (
-                          <SelectItem key={idx} value={dosage.value}>
-                            {dosage.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
+                      <FieldLabel className="text-[14px] font-medium text-gray-700">
+                        unit-type <span className="text-red-500">*</span>
+                      </FieldLabel>
+                      <Select
+                        onValueChange={field.handleChange}
+                        defaultValue={field.state.value}
+                        required
+                      >
+                        <SelectTrigger className="bg-gray-50/50 w-full border-gray-200">
+                          <SelectValue placeholder="Select form" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {dosageForms.map((dosage, idx) => (
+                            <SelectItem key={idx} value={dosage.value}>
+                              {dosage.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
+                    </Field>
+                  );
+                }}
               />
 
               {/* stock quantity */}
@@ -241,68 +314,92 @@ export default function AddMedicineForm() {
               {/* Category */}
               <form.Field
                 name="category"
-                children={(field) => (
-                  <div className="space-y-2 w-full">
-                    <label className="text-[14px] font-medium text-gray-700">
-                      Category <span className="text-red-500">*</span>
-                    </label>
-                    <Select
-                      onValueChange={field.handleChange}
-                      defaultValue={field.state.value}
-                      required
+                children={(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
+                  return (
+                    <Field
+                      data-invalid={isInvalid}
+                      className="space-y-2 w-full"
                     >
-                      <SelectTrigger className="bg-gray-50/50 w-full border-gray-200">
-                        <SelectValue placeholder="Select" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {categories.map((cate, idx) => (
-                          <SelectItem key={idx} value={cate.value}>
-                            {cate.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
+                      <FieldLabel className="text-[14px] font-medium text-gray-700">
+                        Category <span className="text-red-500">*</span>
+                      </FieldLabel>
+                      <Select
+                        onValueChange={field.handleChange}
+                        defaultValue={field.state.value}
+                        required
+                      >
+                        <SelectTrigger className="bg-gray-50/50 w-full border-gray-200">
+                          <SelectValue placeholder="Select" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {categories.map((cate, idx) => (
+                            <SelectItem key={idx} value={cate.value}>
+                              {cate.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
+                    </Field>
+                  );
+                }}
               />
 
               {/* Manufacturer */}
               <form.Field
                 name="manufacturer"
-                children={(field) => (
-                  <div className="space-y-2">
-                    <label className="text-[14px] font-medium text-gray-700">
-                      Manufacturer <span className="text-red-500">*</span>
-                    </label>
-                    <Input
-                      placeholder="e.g. Beximco Pharmaceuticals"
-                      value={field.state.value}
-                      required
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      className="bg-gray-50/50 border-gray-200"
-                    />
-                  </div>
-                )}
+                children={(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
+                  return (
+                    <Field data-invalid={isInvalid} className="space-y-2">
+                      <FieldLabel className="text-[14px] font-medium text-gray-700">
+                        Manufacturer <span className="text-red-500">*</span>
+                      </FieldLabel>
+                      <Input
+                        placeholder="e.g. Beximco Pharmaceuticals"
+                        value={field.state.value}
+                        required
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        className="bg-gray-50/50 border-gray-200"
+                      />
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
+                    </Field>
+                  );
+                }}
               />
             </div>
 
             {/* Description */}
             <form.Field
               name="description"
-              children={(field) => (
-                <div className="space-y-2">
-                  <label className="text-[14px] font-medium text-gray-700">
-                    Description <span className="text-red-500">*</span>
-                  </label>
-                  <Textarea
-                    placeholder="Describe indications, how it works, key benefits..."
-                    value={field.state.value}
-                    required
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    className="min-h-30 bg-gray-50/50 border-gray-200 resize-none"
-                  />
-                </div>
-              )}
+              children={(field) => {
+                const isInvalid =
+                  field.state.meta.isTouched && !field.state.meta.isValid;
+                return (
+                  <Field data-invalid={isInvalid} className="space-y-2">
+                    <FieldLabel className="text-[14px] font-medium text-gray-700">
+                      Description <span className="text-red-500">*</span>
+                    </FieldLabel>
+                    <Textarea
+                      placeholder="Describe indications, how it works, key benefits..."
+                      value={field.state.value}
+                      required
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      className="min-h-30 bg-gray-50/50 border-gray-200 resize-none"
+                    />
+                    {isInvalid && (
+                      <FieldError errors={field.state.meta.errors} />
+                    )}
+                  </Field>
+                );
+              }}
             />
             <div className="w-full max-w-4xl mx-auto p-4">
               {/* Header Section */}
@@ -352,8 +449,8 @@ export default function AddMedicineForm() {
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const files = e.target.files;
                         if (files) {
-                          const first = Object.values(files);
-                          field.handleChange(first);
+                          const arrayOfFiles = Object.values(files);
+                          field.handleChange(arrayOfFiles);
                         }
                       }}
                     />

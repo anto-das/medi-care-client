@@ -1,5 +1,6 @@
 import { env } from "@/env";
 export const imgBB = async (file: File) => {
+  // console.log("file from img bb deployment: ", file);
   try {
     let directUrl = "";
     const formData = new FormData();
@@ -13,13 +14,12 @@ export const imgBB = async (file: File) => {
         body: formData,
       },
     );
-    console.log("imgResponse: ", imgResponse);
+    // console.log("imgResponse: ", imgResponse);
     const response = await imgResponse.json();
-    console.log("response: ", response);
+    // console.log("response: ", response);
     if (response.success) {
       directUrl = response.data.url;
     }
-
     return directUrl;
   } catch (err: any) {
     console.log(err);

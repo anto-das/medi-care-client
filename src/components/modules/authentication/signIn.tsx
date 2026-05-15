@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useForm } from "@tanstack/react-form";
 import { FaGoogle } from "react-icons/fa";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import * as z from "zod";
 import { toast } from "sonner";
 import { redirect, useRouter } from "next/navigation";
@@ -127,6 +127,9 @@ const SignInPage = ({
                         onChange={(e) => field.handleChange(e.target.value)}
                         required
                       />
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
                     </Field>
                   );
                 }}
@@ -156,6 +159,9 @@ const SignInPage = ({
                         onChange={(e) => field.handleChange(e.target.value)}
                         required
                       />
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
                     </Field>
                   );
                 }}
