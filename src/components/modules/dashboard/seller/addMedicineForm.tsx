@@ -21,59 +21,61 @@ import Link from "next/link";
 import { env } from "@/env";
 import { imgBB } from "@/app/utilis/handlePostImgBB";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { useEffect, useState } from "react";
+import { getCategories } from "@/app/actions/category.action";
 
 export default function AddMedicineForm() {
+  const MAX_FILE_SIZE = 5 * 1024 * 1024;
+  const [categories, setCategories] = useState<
+    { category_id: string; category_type: string }[]
+  >([]);
+  useEffect(() => {
+    (async () => {
+      const { data } = await getCategories();
+      if (data.length > 0) {
+        setCategories(data);
+      }
+    })();
+  }, []);
   const medicineFormSchema = z.object({
     medicine_name: z
       .string()
-      .min(2, "Medicine name must be at least 2 characters.")
+      .min(10, "Medicine name must be at least 2 characters.")
       .trim(),
 
     generic_name: z
       .string()
-      .min(2, "Generic name must be at least 2 characters.")
+      .min(10, "Generic name must be at least 2 characters.")
       .trim(),
 
     strength: z
       .string()
-      .min(1, "Strength is required (e.g., 500mg, 10ml).")
+      .min(10, "Strength is required (e.g., 500mg, 10ml).")
       .trim(),
 
     unit_type: z.string(""),
 
     // সংখ্যা ইনপুট স্ট্রিং হিসেবে আসলে সেটিকে নাম্বারে রূপান্তর করে ভ্যালিডেট করবে
-    stock_quantity: z
-      .string()
-      .min(1, "Stock quantity is required.")
-      .refine((val) => !isNaN(Number(val)), "Must be a valid number.")
-      .transform((val) => Number(val))
-      .pipe(z.number().int().positive("Stock must be a positive integer.")),
+    stock_quantity: z.number(),
+    price: z.number(),
 
-    category: z.string(""),
+    categoryId: z.string(""),
 
-    manufacturer: z.string().min(2, "Manufacturer name is required.").trim(),
+    manufacturer: z.string("").trim(),
 
-    description: z
-      .string()
-      .min(10, "Description must be at least 10 characters long.")
-      .max(500, "Description cannot exceed 500 characters.")
-      .trim(),
+    description: z.string("").trim(),
 
     // ফাইলের জন্য অ্যাডভান্সড অ্যারে ভ্যালিডেশন
     photo: z
       .array(z.instanceof(File))
-      .min(1, "Please upload a medicine photo.") // ফটো বাধ্যতামূলক করতে চাইলে
+      .min(1, "Please upload a medicine photo.")
       .refine(
-        (files) => files.every((file) => file.size / (1024 * 1024) <= 4),
-        "Each image must be less than 4MB.",
-      )
-      .refine(
-        (files) =>
-          files.every((file) =>
-            ["image/jpeg", "image/png", "image/webp"].includes(file.type),
-          ),
-        "Only JPG, PNG, and WEBP formats are allowed.",
-      ),
+        // 💡 এই লুপটি অ্যারের প্রতিটি ফাইলের সাইজ চেক করবে
+        (files) => files.every((file) => file.size <= MAX_FILE_SIZE),
+        {
+          message: "Each image size must be less than 5MB.", // ৫ মেগাবাইটের বেশি হলে এই এরর দেখাবে
+        },
+      ), // ফটো বাধ্যতামূলক করতে চাইলে
   });
 
   const dosageForms = [
@@ -91,46 +93,34 @@ export default function AddMedicineForm() {
     { label: "Suppository", value: "SUPPOSITORY" },
   ];
 
-  const categories = [
-    { label: "ANTIBIOTICS", value: "ANTIBIOTICS" },
-    { label: "PAIN RELIEF (ANALGESICS)", value: "PAIN_KILLER" },
-    { label: "ANTIPYRETICS (FEVER)", value: "ANTIPYRETICS" },
-    { label: "ANTISEPTICS", value: "ANTISEPTICS" },
-    { label: "CARDIOVASCULAR (HEART)", value: "CARDIOVASCULAR" },
-    { label: "GASTROINTESTINAL", value: "GASTROINTESTINAL" },
-    { label: "RESPIRATORY", value: "RESPIRATORY" },
-    { label: "DERMATOLOGICAL (SKIN)", value: "DERMATOLOGICAL" },
-    { label: "DIABETIC CARE", value: "DIABETIC" },
-    { label: "VITAMINS & SUPPLEMENTS", value: "SUPPLEMENTS" },
-    { label: "HERBAL", value: "HERBAL" },
-  ];
   const form = useForm({
     defaultValues: {
       medicine_name: "",
       generic_name: "",
       strength: "",
       unit_type: "TABLET", // Backend sample typical value
-      stock_quantity: "",
-      category: "ANTIBIOTICS",
+      stock_quantity: 0,
+      price: 0,
+      categoryId: "",
       manufacturer: "",
       description: "",
       photo: [] as File[],
     },
-    // validators: {
-    //   onSubmit: medicineFormSchema,
-    // },
+    validators: {
+      onSubmit: medicineFormSchema,
+    },
     onSubmit: async ({ value }) => {
       // Do something with form data
       const { photo, ...data } = value;
-      photo.every((file) => console.log(file.size));
-      let medi_url = "";
+      // photo.every((file) => console.log(file.size));
+      let medi_img = "";
       if (photo && photo.length > 0) {
         const targetFile = value.photo[0];
         const url = await imgBB(targetFile);
-        medi_url = url as string;
+        medi_img = url as string;
       }
 
-      console.log({ ...data, medi_url });
+      console.log({ ...data, medi_img });
     },
   });
   return (
@@ -295,25 +285,62 @@ export default function AddMedicineForm() {
               {/* stock quantity */}
               <form.Field
                 name="stock_quantity"
-                children={(field) => (
-                  <div className="space-y-2">
-                    <label className="text-[14px] font-medium text-gray-700">
-                      stock-quantity <span className="text-red-500">*</span>
-                    </label>
-                    <Input
-                      placeholder="e.g. Strip of 10"
-                      value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      required
-                      className="bg-gray-50/50 border-gray-200"
-                    />
-                  </div>
-                )}
+                children={(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
+                  return (
+                    <Field data-invalid={isInvalid} className="space-y-2">
+                      <label className="text-[14px] font-medium text-gray-700">
+                        stock-quantity <span className="text-red-500">*</span>
+                      </label>
+                      <Input
+                        placeholder="e.g. Strip of 10"
+                        type="number"
+                        value={field.state.value}
+                        onChange={(e) =>
+                          field.handleChange(Number(e.target.value))
+                        }
+                        required
+                        className="bg-gray-50/50 border-gray-200"
+                      />
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
+                    </Field>
+                  );
+                }}
+              />
+              <form.Field
+                name="price"
+                children={(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
+                  return (
+                    <Field data-invalid={isInvalid} className="space-y-2">
+                      <label className="text-[14px] font-medium text-gray-700">
+                        price <span className="text-red-500">*</span>
+                      </label>
+                      <Input
+                        placeholder="e.g. Strip of 10"
+                        type="number"
+                        value={field.state.value}
+                        onChange={(e) =>
+                          field.handleChange(Number(e.target.value))
+                        }
+                        required
+                        className="bg-gray-50/50 border-gray-200"
+                      />
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
+                    </Field>
+                  );
+                }}
               />
 
               {/* Category */}
               <form.Field
-                name="category"
+                name="categoryId"
                 children={(field) => {
                   const isInvalid =
                     field.state.meta.isTouched && !field.state.meta.isValid;
@@ -334,9 +361,9 @@ export default function AddMedicineForm() {
                           <SelectValue placeholder="Select" />
                         </SelectTrigger>
                         <SelectContent>
-                          {categories.map((cate, idx) => (
-                            <SelectItem key={idx} value={cate.value}>
-                              {cate.label}
+                          {categories?.map((cate, idx) => (
+                            <SelectItem key={idx} value={cate.category_id}>
+                              {cate.category_type}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -445,11 +472,17 @@ export default function AddMedicineForm() {
                       name={field.name}
                       multiple
                       accept="image/*"
+                      required
                       className="absolute inset-0 opacity-0 cursor-pointer"
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      onChange={async (
+                        e: React.ChangeEvent<HTMLInputElement>,
+                      ) => {
                         const files = e.target.files;
                         if (files) {
                           const arrayOfFiles = Object.values(files);
+                          if (arrayOfFiles.length > 0) {
+                            await imgBB(arrayOfFiles[0]);
+                          }
                           field.handleChange(arrayOfFiles);
                         }
                       }}
@@ -466,7 +499,6 @@ export default function AddMedicineForm() {
                 children={([canSubmit, isSubmitting]) => (
                   <Button
                     type="submit"
-                    disabled={!canSubmit}
                     className="bg-[#1A1C1E] text-white hover:bg-black px-10 py-6 rounded-md"
                   >
                     {isSubmitting ? "Saving..." : "Save Medicine"}
