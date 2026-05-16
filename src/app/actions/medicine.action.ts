@@ -1,6 +1,8 @@
 "use server";
 
 import { medicineService } from "@/service/medicine.service";
+import { Medicine } from "@/types";
+import { updateTag } from "next/cache";
 interface Params {
   search?: string;
   category_name?: string;
@@ -13,4 +15,10 @@ interface Options {
 }
 export const getMedicine = async (payload?: Params, options?: Options) => {
   return await medicineService.getMedicines(payload, options);
+};
+
+export const postMedicine = async (medicine: any) => {
+  const result = await medicineService.postMedicine(medicine);
+  updateTag("medicines");
+  return result;
 };

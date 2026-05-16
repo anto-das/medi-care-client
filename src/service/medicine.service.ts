@@ -47,7 +47,7 @@ export const medicineService = {
     const res = await fetch(`${env.BACKEND_URL}/api/medicine/${id}`);
     return await res.json();
   },
-  postMedicine: async (medicine: Omit<Medicine, " medicine_id">) => {
+  postMedicine: async (medicine: any) => {
     const allCookies = await cookies();
     try {
       const res = await fetch(`${env.BACKEND_URL}/api/seller/medicine`, {
@@ -58,7 +58,7 @@ export const medicineService = {
         },
         body: JSON.stringify(medicine),
       });
-      const { data } = await res.json();
+      const data = await res.json();
       return { data, error: null };
     } catch (err: any) {
       return {

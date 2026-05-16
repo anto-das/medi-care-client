@@ -28,4 +28,13 @@ export const reviewService = {
       return { data: null, error: "your review don't added", details: err };
     }
   },
+  getReviews: async () => {
+    try {
+      const res = await fetch(`${env.BACKEND_URL}/api/review`);
+      const result = await res.json();
+      return { result, error: null };
+    } catch (err: any) {
+      return { data: null, error: "get reviews something wrong", detail: err };
+    }
+  },
 };

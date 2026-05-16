@@ -1,4 +1,4 @@
-export type Medicine = {
+export interface Medicine {
   medicine_id: string;
   medicine_name: string;
   generic_name: string;
@@ -8,8 +8,8 @@ export type Medicine = {
   categoryId: string;
   category: string;
   seller_id: String;
-  price: string;
+  price: string | number;
   description: string;
   unit_type: string;
-  stock_quantity: string;
-};
+  stock_quantity: string | number;
+}

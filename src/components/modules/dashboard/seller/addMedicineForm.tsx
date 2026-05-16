@@ -23,6 +23,8 @@ import { imgBB } from "@/app/utilis/handlePostImgBB";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { useEffect, useState } from "react";
 import { getCategories } from "@/app/actions/category.action";
+import { postMedicine } from "@/app/actions/medicine.action";
+import { toast } from "sonner";
 
 export default function AddMedicineForm() {
   const MAX_FILE_SIZE = 5 * 1024 * 1024;
@@ -40,17 +42,17 @@ export default function AddMedicineForm() {
   const medicineFormSchema = z.object({
     medicine_name: z
       .string()
-      .min(10, "Medicine name must be at least 2 characters.")
+      // .min(0, "Medicine name must be at least 2 characters.")
       .trim(),
 
     generic_name: z
       .string()
-      .min(10, "Generic name must be at least 2 characters.")
+      // .min(0, "Generic name must be at least 2 characters.")
       .trim(),
 
     strength: z
       .string()
-      .min(10, "Strength is required (e.g., 500mg, 10ml).")
+      // .min(0, "Strength is required (e.g., 500mg, 10ml).")
       .trim(),
 
     unit_type: z.string(""),
@@ -120,7 +122,12 @@ export default function AddMedicineForm() {
         medi_img = url as string;
       }
 
-      console.log({ ...data, medi_img });
+      const medicine = { ...data, medi_img };
+      console.log(medicine);
+      if (medicine.medi_img) {
+        const { data } = await postMedicine(medicine);
+        data?.success && toast.success(data.message);
+      }
     },
   });
   return (

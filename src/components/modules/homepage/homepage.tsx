@@ -1,11 +1,9 @@
 import Testimonial from "@/components/ui/testimonial";
 import Prescription from "@/components/ui/prescription";
 
-import Banner from "@/components/ui/banner";
 import Medicines from "./medicines";
 import { Suspense } from "react";
 
-// import { Medicine } from "@/types/medicine.type";
 const Homepage = () => {
   return (
     <div>
@@ -76,9 +74,6 @@ const Homepage = () => {
             Trusted by 2 million+ Bangladeshis
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  gap-8 mt-10">
-            <Testimonial />
-            <Testimonial />
-            <Testimonial />
             <Testimonial />
           </div>
         </div>
