@@ -1,5 +1,5 @@
 import { env } from "@/env";
-import { Medicine } from "@/types";
+
 import { cookies } from "next/headers";
 
 interface params {
@@ -14,6 +14,26 @@ interface options {
 }
 
 export const medicineService = {
+  postMedicine: async (medicine: any) => {
+    const allCookies = await cookies();
+    try {
+      const res = await fetch(`${env.BACKEND_URL}/api/seller/medicine`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          Cookie: allCookies.toString(),
+        },
+        body: JSON.stringify(medicine),
+      });
+      const data = await res.json();
+      return { data, error: null };
+    } catch (err: any) {
+      return {
+        data: null,
+        error: { message: "Failed to fetch medicines", details: err },
+      };
+    }
+  },
   getMedicines: async (params?: params, options?: options) => {
     try {
       const url = new URL(`${env.BACKEND_URL}/api/medicine`);
@@ -46,25 +66,5 @@ export const medicineService = {
   getMedicineById: async (id: string) => {
     const res = await fetch(`${env.BACKEND_URL}/api/medicine/${id}`);
     return await res.json();
-  },
-  postMedicine: async (medicine: any) => {
-    const allCookies = await cookies();
-    try {
-      const res = await fetch(`${env.BACKEND_URL}/api/seller/medicine`, {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-          Cookie: allCookies.toString(),
-        },
-        body: JSON.stringify(medicine),
-      });
-      const data = await res.json();
-      return { data, error: null };
-    } catch (err: any) {
-      return {
-        data: null,
-        error: { message: "Failed to fetch medicines", details: err },
-      };
-    }
   },
 };

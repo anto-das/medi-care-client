@@ -1,15 +1,57 @@
 import { AlertTriangle, Banknote, Package, ShoppingCart } from "lucide-react";
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Card, CardContent } from "./card";
 import { Badge } from "./badge";
+import {
+  getSellerMedicines,
+  getSellerOrders,
+} from "@/app/actions/seller.action";
+import { Medicine, Order } from "@/types";
+
+enum Status {
+  PENDING = "PENDING",
+  PROCESSING = "PROCESSING",
+  SHIPPED = "SHIPPED",
+  DELIVERED = "DELIVERED",
+}
 
 const Overview = () => {
+  const [medicines, setMedicines] = useState<any>([]);
+  const [orders, setOrders] = useState<any>([]);
+  useEffect(() => {
+    (async () => {
+      const { data } = await getSellerMedicines({ cache: "no-store" });
+      if (data.length > 0) {
+        setMedicines(data);
+      }
+      const { data: orders } = await getSellerOrders({ cache: "no-store" });
+      if (orders.length > 0) {
+        setOrders(orders);
+      }
+    })();
+  }, []);
+  const overview = useMemo(() => {
+    const stock_quantity = medicines?.map(
+      (medicine: Medicine) => Number(medicine.stock_quantity) < 5,
+    );
+    return { stock_quantity };
+  }, [medicines?.length]);
+  const revenue = orders?.reduce((acc: number, order: Order) => {
+    const { status, total_bill } = order;
+    // console.log("status: ", status.toString());
+    if (status.toString() === Status.SHIPPED) {
+      console.log("hello status");
+      return acc + Number(total_bill);
+    }
+    return acc;
+  }, 0);
+
   return (
     <section className="mb-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
       {[
         {
           title: "Products",
-          val: "1,248",
+          val: medicines?.length.toString() || 0,
           up: "+12%",
           icon: Package,
           border: "border-[#0b5e4e]",
@@ -17,7 +59,7 @@ const Overview = () => {
         },
         {
           title: "Active Orders",
-          val: "384",
+          val: orders?.length.toString() || 0,
           up: "+28%",
           icon: ShoppingCart,
           border: "border-orange-400",
@@ -25,7 +67,7 @@ const Overview = () => {
         },
         {
           title: "Revenue",
-          val: "৳4.2L",
+          val: revenue,
           up: "+8.4%",
           icon: Banknote,
           border: "border-blue-500",
@@ -33,7 +75,7 @@ const Overview = () => {
         },
         {
           title: "Low Stock",
-          val: "23",
+          val: overview.stock_quantity?.length.toString() || 0,
           up: "+5%",
           icon: AlertTriangle,
           border: "border-red-500",

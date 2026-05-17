@@ -1,8 +1,9 @@
-import { medicineService } from "@/service/medicine.service";
+import { sellerService } from "@/service/seller.service";
 
 const page = async () => {
-  const { data } = await medicineService.getMedicines();
-  return <div>this is medicine page... : {data.length} </div>;
+  const { data } = await sellerService.getSellerMedicines();
+  // console.log(data);
+  return <div>this is medicine page... : {data?.length} </div>;
 };
 
 export default page;
