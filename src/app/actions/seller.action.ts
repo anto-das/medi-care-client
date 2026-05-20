@@ -12,3 +12,6 @@ export const getSellerMedicines = async (options?: options) => {
 export const getSellerOrders = async (options?: options) => {
   return await sellerService.getSellerOrders(options);
 };
+export const getSellerSingleOrders = async (options?: options) => {
+  return await sellerService.getSellerSingleOrders(options);
+};

@@ -10,15 +10,35 @@ import {
   TableRow,
 } from "./table";
 import { Badge } from "./badge";
+import Link from "next/link";
+import { sellerService } from "@/service/seller.service";
+import {
+  getSellerOrders,
+  getSellerSingleOrders,
+} from "@/app/actions/seller.action";
+import { useEffect, useState } from "react";
+import { Medicine, Order } from "@/types";
 
 const OrderTable = () => {
+  const [order, setOrder] = useState<Order[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const { data }: any = await getSellerOrders({ cache: "no-store" });
+      setOrder(data);
+    })();
+  }, []);
+
   return (
     <Card className="shadow-sm">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="text-xl font-bold">Recent Orders</CardTitle>
-        <Button variant="ghost" className="font-semibold text-slate-500">
+        <Link
+          href={"/seller-dashboard/orders"}
+          className="font-semibold border p-2 border-[#0b5e4e] hover:text-[#0b5e4e] rounded-lg text-slate-500"
+        >
           View All
-        </Button>
+        </Link>
       </CardHeader>
       <Table>
         <TableHeader className="bg-slate-50/50">
@@ -42,14 +62,18 @@ const OrderTable = () => {
         </TableHeader>
         <TableBody>
           <TableRow>
-            <TableCell className="font-bold">#ORD-8821</TableCell>
-            <TableCell className="font-semibold text-slate-600">
-              Rahim Ahmed
+            <TableCell className="font-bold">
+              {order[0] && order[0].order_id}
             </TableCell>
-            <TableCell className="font-bold">৳1,240</TableCell>
+            <TableCell className="font-semibold text-slate-600">
+              {order[0] && order[0].customer_name}
+            </TableCell>
+            <TableCell className="font-bold">
+              {order[0] && order[0].total_bill}
+            </TableCell>
             <TableCell>
               <Badge className="bg-orange-50 text-orange-600 hover:bg-orange-100 border-none px-3 py-1 font-bold">
-                Processing
+                {order[0] && order[0].status}
               </Badge>
             </TableCell>
             <TableCell className="text-right">

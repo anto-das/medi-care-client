@@ -94,4 +94,31 @@ export const sellerService = {
       };
     }
   },
+  getSellerSingleOrders: async (options?: options) => {
+    try {
+      const allCookies = await cookies();
+      const config: RequestInit = {};
+      if (options?.cache) {
+        config.cache = options.cache;
+      }
+      if (options?.revalidate) {
+        config.next = { revalidate: options.revalidate };
+      }
+      config.next = { ...config, tags: ["medicines"] };
+      const res = await fetch(`${env.BACKEND_URL}/api/seller/orders/solo`, {
+        headers: {
+          Cookie: allCookies.toString(),
+        },
+        ...config,
+      });
+      const { data } = await res.json();
+      // console.log(data)
+      return { data, error: null };
+    } catch (error) {
+      return {
+        data: null,
+        error: { message: "Failed to fetch medicines", details: error },
+      };
+    }
+  },
 };

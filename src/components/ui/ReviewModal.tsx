@@ -34,6 +34,13 @@ const ReviewModal = ({
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
 
+  const handleModalClose = (isOpen: boolean) => {
+    onOpenChange(isOpen);
+    if (!isOpen) {
+      router.push("/");
+    }
+  };
+
   const handleReview = async (e: any) => {
     const loadingId = toast.loading(
       "submitting your review please stay with us.",
@@ -44,6 +51,7 @@ const ReviewModal = ({
       const location = e.target.location.value;
       const comment = e.target.comment.value;
       const order = await getFirstOrder(user?.email as string);
+
       const payload = {
         customer_email: user?.email as string,
         customer_name: name,
@@ -51,6 +59,7 @@ const ReviewModal = ({
         user_location: location,
         rating: rating,
         comment: comment,
+        seller_id: order.seller_id,
       };
       console.log(payload);
       const result = await postReview(payload);
@@ -65,7 +74,7 @@ const ReviewModal = ({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleModalClose}>
       <DialogContent className="sm:max-w-106.25">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-[#0b5e4e]">
