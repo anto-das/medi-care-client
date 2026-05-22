@@ -1,6 +1,8 @@
 import React from "react";
 import { Search, ChevronDown } from "lucide-react";
 import { sellerService } from "@/service/seller.service";
+import { Button } from "@/components/ui/button";
+import ConfirmOrderBtn from "@/components/ui/confirmOrderBtn";
 
 // Types for our order data
 interface Order {
@@ -11,7 +13,7 @@ interface Order {
   status: Status;
 }
 
-enum Status {
+export enum Status {
   PENDING = "PENDING",
   PROCESSING = "PROCESSING",
   SHIPPED = "SHIPPED",
@@ -22,7 +24,7 @@ enum Status {
 
 export default async function OrderTable() {
   const { data: orders } = await sellerService.getSellerOrders();
-  // console.log("orders: ", orders);
+
   return (
     <div className="w-full max-w-full mx-auto p-6 bg-[#FCFCFB] min-h-screen">
       {/* Table Container with shadcn-like Card Styling */}
@@ -92,7 +94,7 @@ export default async function OrderTable() {
                   {/* Status (simulating shadcn Badge) */}
                   <td className="py-4 px-6">
                     {order.status === Status.PENDING ? (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-[#FEF6E6] text-[#D97706]">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-orange-50 text-orange-600 hover:bg-orange-100">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#D97706]" />
                         PENDING
                       </span>
@@ -106,15 +108,7 @@ export default async function OrderTable() {
 
                   {/* Action (simulating shadcn Button) */}
                   <td className="py-4 px-6">
-                    {order.status === Status.PENDING ? (
-                      <button className="px-5 py-1.5 bg-[#0F291E] hover:bg-[#163d2d] text-white text-xs font-medium rounded-lg shadow-sm transition-all">
-                        Confirm
-                      </button>
-                    ) : (
-                      <button className="px-5 py-1.5 border border-gray-200 hover:bg-gray-50 text-gray-700 text-xs font-medium rounded-lg transition-all">
-                        Ship
-                      </button>
-                    )}
+                    <ConfirmOrderBtn order={order}></ConfirmOrderBtn>
                   </td>
                 </tr>
               ))}

@@ -12,6 +12,6 @@ export const getSellerMedicines = async (options?: options) => {
 export const getSellerOrders = async (options?: options) => {
   return await sellerService.getSellerOrders(options);
 };
-export const getSellerSingleOrders = async (options?: options) => {
-  return await sellerService.getSellerSingleOrders(options);
+export const updateOrderStatus = async (id: string) => {
+  return await sellerService.updateOrderStatus(id);
 };

@@ -1,3 +1,4 @@
+import { Status } from "@/app/(dashboardLayout)/@sellerSlot/seller-dashboard/orders/page";
 import { env } from "@/env";
 import { cookies } from "next/headers";
 
@@ -119,6 +120,22 @@ export const sellerService = {
         data: null,
         error: { message: "Failed to fetch medicines", details: error },
       };
+    }
+  },
+  updateOrderStatus: async (id: string) => {
+    try {
+      const res = await fetch(`${env.BACKEND_URL}/api/seller/orders/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+
+        body: JSON.stringify({ status: "DELIVERED" }),
+      });
+      const data = await res.json();
+      return { data, error: null };
+    } catch (error) {
+      return { data: null, error: error };
     }
   },
 };

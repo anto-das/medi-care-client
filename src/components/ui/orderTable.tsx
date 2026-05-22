@@ -12,12 +12,9 @@ import {
 import { Badge } from "./badge";
 import Link from "next/link";
 import { sellerService } from "@/service/seller.service";
-import {
-  getSellerOrders,
-  getSellerSingleOrders,
-} from "@/app/actions/seller.action";
+import { getSellerOrders } from "@/app/actions/seller.action";
 import { useEffect, useState } from "react";
-import { Medicine, Order } from "@/types";
+import { Order } from "@/types";
 
 const OrderTable = () => {
   const [order, setOrder] = useState<Order[]>([]);
