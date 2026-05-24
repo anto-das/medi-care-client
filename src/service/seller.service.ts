@@ -123,15 +123,20 @@ export const sellerService = {
     }
   },
   updateOrderStatus: async (id: string) => {
+    const allCookies = await cookies();
     try {
-      const res = await fetch(`${env.BACKEND_URL}/api/seller/orders/${id}`, {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
+      const res = await fetch(
+        `http://localhost:5000/api/seller/orders/5cc31bf8-7ddd-4f81-887c-5938237f4e1c`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-type": "application/json",
+            Cookie: allCookies.toString(),
+          },
 
-        body: JSON.stringify({ status: "DELIVERED" }),
-      });
+          body: JSON.stringify({ status: "DELIVERED" }),
+        },
+      );
       const data = await res.json();
       return { data, error: null };
     } catch (error) {

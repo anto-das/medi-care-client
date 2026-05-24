@@ -18,12 +18,19 @@ enum Status {
 const Overview = () => {
   const [medicines, setMedicines] = useState<any>([]);
   const [orders, setOrders] = useState<any>([]);
+  const pendingOrders = orders.filter(
+    (order: any) => order.status === Status.PENDING,
+  );
   useEffect(() => {
     (async () => {
       const { data } = await getSellerMedicines({ cache: "no-store" });
       if (data.length > 0) {
         setMedicines(data);
       }
+    })();
+  }, []);
+  useEffect(() => {
+    (async () => {
       const { data: orders } = await getSellerOrders({ cache: "no-store" });
       if (orders.length > 0) {
         setOrders(orders);
@@ -39,12 +46,14 @@ const Overview = () => {
   const revenue = orders?.reduce((acc: number, order: Order) => {
     const { status, total_bill } = order;
     // console.log("status: ", status.toString());
-    if (status.toString() === Status.SHIPPED) {
+    if (status.toString() === Status.DELIVERED) {
       console.log("hello status");
       return acc + Number(total_bill);
     }
     return acc;
   }, 0);
+
+  // console.log("revenue: ",revenue)
 
   return (
     <section className="mb-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -59,7 +68,7 @@ const Overview = () => {
         },
         {
           title: "Active Orders",
-          val: orders?.length.toString() || 0,
+          val: pendingOrders.toString() || 0,
           up: "+28%",
           icon: ShoppingCart,
           border: "border-orange-400",
@@ -67,7 +76,7 @@ const Overview = () => {
         },
         {
           title: "Revenue",
-          val: revenue,
+          val: `${revenue}৳`,
           up: "+8.4%",
           icon: Banknote,
           border: "border-blue-500",

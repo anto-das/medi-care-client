@@ -66,7 +66,7 @@ const OrderTable = () => {
               {order[0] && order[0].customer_name}
             </TableCell>
             <TableCell className="font-bold">
-              {order[0] && order[0].total_bill}
+              {order[0] && order[0].total_bill}৳
             </TableCell>
             <TableCell>
               <Badge className="bg-orange-50 text-orange-600 hover:bg-orange-100 border-none px-3 py-1 font-bold">

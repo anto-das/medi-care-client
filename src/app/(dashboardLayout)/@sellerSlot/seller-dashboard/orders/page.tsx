@@ -1,8 +1,15 @@
-import React from "react";
+"use client";
 import { Search, ChevronDown } from "lucide-react";
-import { sellerService } from "@/service/seller.service";
+
 import { Button } from "@/components/ui/button";
-import ConfirmOrderBtn from "@/components/ui/confirmOrderBtn";
+
+import {
+  getSellerOrders,
+  updateOrderStatus,
+} from "@/app/actions/seller.action";
+import { toast } from "sonner";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 // Types for our order data
 interface Order {
@@ -22,8 +29,29 @@ export enum Status {
 
 // Mock data matching the image
 
-export default async function OrderTable() {
-  const { data: orders } = await sellerService.getSellerOrders();
+export default function OrderTable() {
+  const [orders, setOrders] = useState<Order[]>([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    (async () => {
+      const res = await getSellerOrders({ cache: "no-store" });
+      setOrders(res.data);
+    })();
+  }, []);
+
+  const handleConfirmOrder = async (id: string) => {
+    const toastId = toast.loading("confirming order...");
+    // console.log(id);
+    try {
+      const { data, error } = await updateOrderStatus(id);
+      toast.success("ordered confirm successfully..", { id: toastId });
+      router.refresh();
+    } catch (err: any) {
+      toast.error(err.message || "order not confirm", { id: toastId });
+      console.log(err);
+    }
+  };
 
   return (
     <div className="w-full max-w-full mx-auto p-6 bg-[#FCFCFB] min-h-screen">
@@ -78,7 +106,7 @@ export default async function OrderTable() {
 
                   {/* Total */}
                   <td className="py-4 px-6 font-semibold">
-                    {order.total_bill}
+                    {order.total_bill}৳
                   </td>
 
                   {/* Date */}
@@ -108,7 +136,13 @@ export default async function OrderTable() {
 
                   {/* Action (simulating shadcn Button) */}
                   <td className="py-4 px-6">
-                    <ConfirmOrderBtn order={order}></ConfirmOrderBtn>
+                    <Button
+                      onClick={() => handleConfirmOrder(order?.order_id)}
+                      size="sm"
+                      className="bg-[#0b5e4e] hover:bg-[#084a3d] px-6 font-bold shadow-md"
+                    >
+                      Confirm
+                    </Button>
                   </td>
                 </tr>
               ))}
