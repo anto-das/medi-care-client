@@ -1,19 +1,7 @@
 import { Status } from "@/app/(dashboardLayout)/@sellerSlot/seller-dashboard/orders/page";
 import { env } from "@/env";
+import { SellerMedicine } from "@/types";
 import { cookies } from "next/headers";
-
-export interface SellerMedicine {
-  medi_img: string;
-  medicine_name: string;
-  generic_name: string;
-  strength: string;
-  unit_type: string;
-  stock_quantity: number;
-  price: number;
-  categoryId: string;
-  manufacturer: string;
-  description: string;
-}
 
 interface options {
   cache?: RequestCache;
@@ -138,6 +126,30 @@ export const sellerService = {
       return { data, error: null };
     } catch (error) {
       return { data: null, error: error };
+    }
+  },
+
+  getDayWiseWeeklyRevenue: async () => {
+    const allCookies = await cookies();
+    try {
+      const res = await fetch(
+        `${env.BACKEND_URL}/api/seller/revenue/day-wise`,
+        {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            Cookie: allCookies.toString(),
+          },
+        },
+      );
+      const data = res.json();
+      return data;
+    } catch (error) {
+      return {
+        data: null,
+        error: "retrieved weekly sale report failed!",
+        detail: error,
+      };
     }
   },
 };

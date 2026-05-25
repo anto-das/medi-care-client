@@ -47,7 +47,6 @@ const Overview = () => {
     const { status, total_bill } = order;
     // console.log("status: ", status.toString());
     if (status.toString() === Status.DELIVERED) {
-      console.log("hello status");
       return acc + Number(total_bill);
     }
     return acc;

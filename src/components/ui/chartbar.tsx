@@ -1,4 +1,5 @@
-
+"use client";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -15,19 +16,23 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { getDayWiseWeeklyRevenue } from "@/app/actions/seller.action";
 
-const chartData = [
-  { day: "Sun", revenue: 80 },
-  { day: "Mon", revenue: 110 },
-  { day: "Tue", revenue: 95 },
-  { day: "Wed", revenue: 210 }, // Highlighted peak
-  { day: "Thu", revenue: 140 },
-  { day: "Fri", revenue: 100 },
-  { day: "Sat", revenue: 70 },
-];
+// const chartData: any[] = [];
 
 const Chart = () => {
-  const maxRevenue = Math.max(...chartData.map((item) => item.revenue));
+  const [revenue, setRevenue] = useState([]);
+  useEffect(() => {
+    (async () => {
+      const data = await getDayWiseWeeklyRevenue();
+      if (data.success) {
+        setRevenue(data.data);
+      }
+    })();
+  }, []);
+  const maxRevenue = Math.max(
+    ...revenue.map((item: any) => item.total_revenue),
+  );
   // Data matching your image for the chart
   return (
     <div className="mb-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -42,7 +47,7 @@ const Chart = () => {
           <div className="h-75 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
-                data={chartData}
+                data={revenue}
                 margin={{ top: 20, right: 0, left: -20, bottom: 0 }}
               >
                 <XAxis
@@ -63,12 +68,14 @@ const Chart = () => {
                 />
 
                 <Bar dataKey="revenue" radius={[4, 4, 0, 0]}>
-                  {chartData.map((entry, index) => (
+                  {revenue.map((entry: any, index) => (
                     <Cell
                       key={`cell-${index}`}
                       /* ২. যদি রেভিনিউ সর্বোচ্চ হয় তবে আপনার ব্র্যান্ড কালার, নাহলে নরমাল কালার */
                       fill={
-                        entry.revenue === maxRevenue ? "#0b5e4e" : "#e2e8f0"
+                        entry.total_revenue === maxRevenue
+                          ? "#0b5e4e"
+                          : "#e2e8f0"
                       }
                       className="transition-all duration-300"
                     />
@@ -80,7 +87,7 @@ const Chart = () => {
         </CardContent>
       </Card>
 
-      <Card className="shadow-sm">
+      {/* <Card className="shadow-sm">
         <CardHeader>
           <CardTitle className="text-xl font-bold">Top Categories</CardTitle>
         </CardHeader>
@@ -101,7 +108,7 @@ const Chart = () => {
             </div>
           ))}
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   );
 };

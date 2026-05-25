@@ -15,3 +15,6 @@ export const getSellerOrders = async (options?: options) => {
 export const updateOrderStatus = async (id: string) => {
   return await sellerService.updateOrderStatus(id);
 };
+export const getDayWiseWeeklyRevenue = async () => {
+  return await sellerService.getDayWiseWeeklyRevenue();
+};
