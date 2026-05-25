@@ -23,7 +23,7 @@ const Overview = () => {
   );
   useEffect(() => {
     (async () => {
-      const { data } = await getSellerMedicines({ cache: "no-store" });
+      const { data } = await getSellerMedicines({ revalidate: 60 });
       if (data.length > 0) {
         setMedicines(data);
       }
@@ -31,7 +31,7 @@ const Overview = () => {
   }, []);
   useEffect(() => {
     (async () => {
-      const { data: orders } = await getSellerOrders({ cache: "no-store" });
+      const { data: orders } = await getSellerOrders({ revalidate: 60 });
       if (orders.length > 0) {
         setOrders(orders);
       }
@@ -68,7 +68,7 @@ const Overview = () => {
         },
         {
           title: "Active Orders",
-          val: pendingOrders.toString() || 0,
+          val: pendingOrders.length.toString() || 0,
           up: "+28%",
           icon: ShoppingCart,
           border: "border-orange-400",

@@ -14,7 +14,8 @@ import Link from "next/link";
 import { sellerService } from "@/service/seller.service";
 import { getSellerOrders } from "@/app/actions/seller.action";
 import { useEffect, useState } from "react";
-import { Order } from "@/types";
+import { Order, OrderItem } from "@/types";
+import { Status } from "@/app/(dashboardLayout)/@sellerSlot/seller-dashboard/orders/page";
 
 const OrderTable = () => {
   const [order, setOrder] = useState<Order[]>([]);
@@ -25,7 +26,9 @@ const OrderTable = () => {
       setOrder(data);
     })();
   }, []);
-
+  const pendingOrders = order.filter(
+    (ord: any) => ord.status === Status.PENDING,
+  );
   return (
     <Card className="shadow-sm">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -60,17 +63,17 @@ const OrderTable = () => {
         <TableBody>
           <TableRow>
             <TableCell className="font-bold">
-              {order[0] && order[0].order_id}
+              {pendingOrders[0] && pendingOrders[0].order_id}
             </TableCell>
             <TableCell className="font-semibold text-slate-600">
-              {order[0] && order[0].customer_name}
+              {pendingOrders[0] && pendingOrders[0].customer_name}
             </TableCell>
             <TableCell className="font-bold">
-              {order[0] && order[0].total_bill}৳
+              {pendingOrders[0] && pendingOrders[0].total_bill}৳
             </TableCell>
             <TableCell>
               <Badge className="bg-orange-50 text-orange-600 hover:bg-orange-100 border-none px-3 py-1 font-bold">
-                {order[0] && order[0].status}
+                {pendingOrders[0] && pendingOrders[0].status}
               </Badge>
             </TableCell>
             <TableCell className="text-right">

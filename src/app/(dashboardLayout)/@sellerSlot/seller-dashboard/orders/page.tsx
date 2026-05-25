@@ -31,13 +31,12 @@ export enum Status {
 
 export default function OrderTable() {
   const [orders, setOrders] = useState<Order[]>([]);
-  const router = useRouter();
-
+  const fetchOrder = async () => {
+    const res = await getSellerOrders({ cache: "no-store" });
+    setOrders(res.data);
+  };
   useEffect(() => {
-    (async () => {
-      const res = await getSellerOrders({ cache: "no-store" });
-      setOrders(res.data);
-    })();
+    fetchOrder();
   }, []);
 
   const handleConfirmOrder = async (id: string) => {
@@ -46,7 +45,7 @@ export default function OrderTable() {
     try {
       const { data, error } = await updateOrderStatus(id);
       toast.success("ordered confirm successfully..", { id: toastId });
-      router.refresh();
+      fetchOrder();
     } catch (err: any) {
       toast.error(err.message || "order not confirm", { id: toastId });
       console.log(err);

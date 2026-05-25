@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
+import { userService } from "@/service/user.service";
+import Loading from "@/components/ui/loading";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +30,7 @@ const inter = Inter({
   display: "swap",
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -39,8 +42,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className={`min-h-full flex flex-col `}>
-        {children}{" "}
-        <Toaster duration={2000} richColors position="top-right" />{" "}
+        <Suspense fallback={<Loading />}>
+          {children}{" "}
+          <Toaster duration={2000} richColors position="top-right" />{" "}
+        </Suspense>
       </body>
     </html>
   );

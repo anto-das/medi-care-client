@@ -127,7 +127,7 @@ export default function MyMedicines() {
 
                   {/* ক্যাটাগরি */}
                   <td className="py-4 px-6 text-gray-500 font-normal">
-                    {medicine.category}
+                    {medicine.category_name}
                   </td>
 
                   {/* প্রাইস (টাকা সাইন সহ) */}
@@ -142,7 +142,15 @@ export default function MyMedicines() {
 
                   {/* স্ট্যাটাস ব্যাজ */}
                   <td className="py-4 px-6">
-                    {/* {renderStatusBadge(medicine.s)} */}
+                    {Number(medicine.stock_quantity) > 5 ? (
+                      <p className="text-green-500 font-bold capitalize">
+                        in stock
+                      </p>
+                    ) : (
+                      <p className="text-red-500 font-bold capitalize">
+                        out of stock
+                      </p>
+                    )}
                   </td>
 
                   {/* অ্যাকশন বাটনস */}

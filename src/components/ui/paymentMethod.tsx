@@ -47,7 +47,7 @@ const PaymentMethod = ({
         await deleteAllCart(payload);
         // router.push("/customer-dashboard/orders");
       } else {
-        toast.error("Failed to place order", { id: loadingId });
+        toast.error(result.message, { id: loadingId });
       }
     } catch (error: any) {
       throw new Error(error);

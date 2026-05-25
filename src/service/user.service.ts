@@ -9,7 +9,6 @@ export const userService = {
         headers: {
           cookie: cookieStore.toString(),
         },
-        cache: "no-store",
       });
       const data = await res.json();
       if (data === null) {
