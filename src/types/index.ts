@@ -4,3 +4,5 @@ export type * from "@/types/navbar.type";
 export type * from "@/types/cartItem";
 export type * from "@/types/order.type";
 export type * from "@/types/sellerMedicine";
+export type * from "@/types/status";
+export type * from "@/types/orderStatus";

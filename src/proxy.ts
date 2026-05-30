@@ -13,7 +13,8 @@ export async function proxy(request: NextRequest) {
     isAuthenticated = true;
     isAdmin = data.user.role === Roles.ADMIN;
     isSeller = data.user.role === Roles.SELLER;
-    isCustomer = data.user.role === Roles.CUSTOMER;
+    isCustomer =
+      data.user.role === Roles.CUSTOMER && data.user.status === "ACTIVE";
   }
   if (!isAuthenticated) {
     return NextResponse.redirect(new URL("/sign-in", request.url));

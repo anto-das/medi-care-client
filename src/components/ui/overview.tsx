@@ -1,95 +1,65 @@
 import { AlertTriangle, Banknote, Package, ShoppingCart } from "lucide-react";
-import React, { useEffect, useMemo, useState } from "react";
-import { Card, CardContent } from "./card";
-import { Badge } from "./badge";
-import {
-  getSellerMedicines,
-  getSellerOrders,
-} from "@/app/actions/seller.action";
+
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { sellerService } from "@/service/seller.service";
 import { Medicine, Order } from "@/types";
+import { Status } from "@/app/(dashboardLayout)/@sellerSlot/seller-dashboard/orders/page";
 
-enum Status {
-  PENDING = "PENDING",
-  PROCESSING = "PROCESSING",
-  SHIPPED = "SHIPPED",
-  DELIVERED = "DELIVERED",
-}
-
-const Overview = () => {
-  const [medicines, setMedicines] = useState<any>([]);
-  const [orders, setOrders] = useState<any>([]);
-  const pendingOrders = orders.filter(
-    (order: any) => order.status === Status.PENDING,
-  );
-  useEffect(() => {
-    (async () => {
-      const { data } = await getSellerMedicines({ revalidate: 60 });
-      if (data.length > 0) {
-        setMedicines(data);
-      }
-    })();
-  }, []);
-  useEffect(() => {
-    (async () => {
-      const { data: orders } = await getSellerOrders({ revalidate: 60 });
-      if (orders.length > 0) {
-        setOrders(orders);
-      }
-    })();
-  }, []);
-  const overview = useMemo(() => {
-    const stock_quantity = medicines?.map(
-      (medicine: Medicine) => Number(medicine.stock_quantity) < 5,
-    );
-    return { stock_quantity };
-  }, [medicines?.length]);
-  const revenue = orders?.reduce((acc: number, order: Order) => {
-    const { status, total_bill } = order;
-    // console.log("status: ", status.toString());
-    if (status.toString() === Status.DELIVERED) {
-      return acc + Number(total_bill);
+const Overview = async () => {
+  const [products, orders] = await Promise.all([
+    sellerService.getSellerMedicines(),
+    sellerService.getSellerOrders(),
+  ]);
+  // console.log(products, orders);
+  const medicines = products.data;
+  const order = orders.data;
+  const revenue = order.reduce((acc: number, ord: any) => {
+    if (ord.status === Status.DELIVERED) {
+      return acc + ord.total_bill;
     }
     return acc;
   }, 0);
-
-  // console.log("revenue: ",revenue)
-
+  const lowStock = medicines.filter(
+    (medicine: Medicine) => Number(medicine.stock_quantity) <= 5,
+  );
+  const overviewData = [
+    {
+      title: "Products",
+      val: medicines?.length || 0,
+      up: "+12%",
+      icon: Package,
+      border: "border-[#0b5e4e]",
+      badge: "bg-green-50",
+    },
+    {
+      title: "total orders",
+      val: order.length || 0,
+      up: "+28%",
+      icon: ShoppingCart,
+      border: "border-orange-400",
+      badge: "bg-orange-50",
+    },
+    {
+      title: "Revenue",
+      val: `${revenue}$`,
+      up: "+8.4%",
+      icon: Banknote,
+      border: "border-blue-500",
+      badge: "bg-blue-50",
+    },
+    {
+      title: "Low Stock",
+      val: lowStock.length || 0,
+      up: "+5%",
+      icon: AlertTriangle,
+      border: "border-red-500",
+      badge: "bg-red-50",
+    },
+  ];
   return (
     <section className="mb-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-      {[
-        {
-          title: "Products",
-          val: medicines?.length.toString() || 0,
-          up: "+12%",
-          icon: Package,
-          border: "border-[#0b5e4e]",
-          badge: "bg-green-50",
-        },
-        {
-          title: "Active Orders",
-          val: pendingOrders.length.toString() || 0,
-          up: "+28%",
-          icon: ShoppingCart,
-          border: "border-orange-400",
-          badge: "bg-orange-50",
-        },
-        {
-          title: "Revenue",
-          val: `${revenue}৳`,
-          up: "+8.4%",
-          icon: Banknote,
-          border: "border-blue-500",
-          badge: "bg-blue-50",
-        },
-        {
-          title: "Low Stock",
-          val: overview.stock_quantity?.length.toString() || 0,
-          up: "+5%",
-          icon: AlertTriangle,
-          border: "border-red-500",
-          badge: "bg-red-50",
-        },
-      ].map((stat, i) => (
+      {overviewData.map((stat, i) => (
         <Card
           key={i}
           className={`border-t-4 ${stat.border} shadow-sm border-x-0 border-b-0`}

@@ -30,6 +30,7 @@ const Chart = () => {
       }
     })();
   }, []);
+  console.log(revenue);
   const maxRevenue = Math.max(
     ...revenue.map((item: any) => item.total_revenue),
   );
@@ -87,7 +88,7 @@ const Chart = () => {
         </CardContent>
       </Card>
 
-      {/* <Card className="shadow-sm">
+      <Card className="shadow-sm">
         <CardHeader>
           <CardTitle className="text-xl font-bold">Top Categories</CardTitle>
         </CardHeader>
@@ -108,7 +109,7 @@ const Chart = () => {
             </div>
           ))}
         </CardContent>
-      </Card> */}
+      </Card>
     </div>
   );
 };

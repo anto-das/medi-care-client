@@ -15,18 +15,18 @@ export const customerRoutes: Routes = {
       label: "📦 My Orders",
       href: "/customer-dashboard/orders",
     },
-    {
-      label: "📋 Prescriptions",
-      href: "/customer-dashboard/prescriptions",
-    },
 
     {
       label: "❤️ Wishlist",
       href: "/customer-dashboard/wishlist",
     },
+    // {
+    //   label: "👤 Profile",
+    //   href: "/customer-dashboard/profile",
+    // },
     {
-      label: "👤 Profile",
-      href: "/customer-dashboard/profile",
+      label: "🌐 Back to site",
+      href: "/",
     },
   ],
 };

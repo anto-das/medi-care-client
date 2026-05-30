@@ -69,7 +69,7 @@ export default function MedicineDetailsClient({
 
         <div className="bg-[#f3f4f6]/50 p-6 rounded-2xl border border-gray-100">
           <h2 className="text-4xl font-bold text-gray-900">
-            ৳{medicine.price}.00
+            ${medicine.price}.00
           </h2>
           <p className="text-sm text-gray-500 mt-1">Per {medicine.unit_type}</p>
         </div>

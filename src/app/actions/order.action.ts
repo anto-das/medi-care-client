@@ -7,3 +7,8 @@ export const getFirstOrder = async (email: string) => {
 
   return order;
 };
+
+export const getAllOrders = async () => {
+  const orders = await orderService.getOrders();
+  return orders;
+};

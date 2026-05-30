@@ -12,23 +12,21 @@ import {
 import { Badge } from "./badge";
 import Link from "next/link";
 import { sellerService } from "@/service/seller.service";
-import { getSellerOrders } from "@/app/actions/seller.action";
-import { useEffect, useState } from "react";
-import { Order, OrderItem } from "@/types";
+
 import { Status } from "@/app/(dashboardLayout)/@sellerSlot/seller-dashboard/orders/page";
+import NoOrdersState from "./NoOrderState";
 
-const OrderTable = () => {
-  const [order, setOrder] = useState<Order[]>([]);
+const OrderTable = async () => {
+  const [orders] = await Promise.all([sellerService.getSellerOrders()]);
+  const order = await orders.data;
+  if (order.length === 0) {
+    return <NoOrdersState />;
+  }
 
-  useEffect(() => {
-    (async () => {
-      const { data }: any = await getSellerOrders({ cache: "no-store" });
-      setOrder(data);
-    })();
-  }, []);
-  const pendingOrders = order.filter(
-    (ord: any) => ord.status === Status.PENDING,
+  const pendingOrders = order.filter((ord: any) =>
+    ord.status === Status.PENDING ? ord : [],
   );
+
   return (
     <Card className="shadow-sm">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -69,7 +67,7 @@ const OrderTable = () => {
               {pendingOrders[0] && pendingOrders[0].customer_name}
             </TableCell>
             <TableCell className="font-bold">
-              {pendingOrders[0] && pendingOrders[0].total_bill}৳
+              {pendingOrders[0] && pendingOrders[0].total_bill}$
             </TableCell>
             <TableCell>
               <Badge className="bg-orange-50 text-orange-600 hover:bg-orange-100 border-none px-3 py-1 font-bold">
@@ -77,12 +75,14 @@ const OrderTable = () => {
               </Badge>
             </TableCell>
             <TableCell className="text-right">
-              <Button
-                size="sm"
-                className="bg-[#0b5e4e] hover:bg-[#084a3d] px-6 font-bold shadow-md"
-              >
-                Confirm
-              </Button>
+              <Link href={"/seller-dashboard/orders"}>
+                <Button
+                  size="sm"
+                  className="bg-[#0b325e] hover:bg-[#1f4d92] px-6 font-bold shadow-md"
+                >
+                  Order Info
+                </Button>
+              </Link>
             </TableCell>
           </TableRow>
         </TableBody>

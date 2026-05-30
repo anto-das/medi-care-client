@@ -1,7 +1,7 @@
-import { Status } from "@/app/(dashboardLayout)/@sellerSlot/seller-dashboard/orders/page";
 import { env } from "@/env";
-import { SellerMedicine } from "@/types";
+import { orderStatus, SellerMedicine } from "@/types";
 import { cookies } from "next/headers";
+import { toast } from "sonner";
 
 interface options {
   cache?: RequestCache;
@@ -110,7 +110,7 @@ export const sellerService = {
       };
     }
   },
-  updateOrderStatus: async (id: string) => {
+  updateOrderStatus: async (id: string, status: orderStatus) => {
     const allCookies = await cookies();
     try {
       const res = await fetch(`${env.BACKEND_URL}/api/seller/orders/${id}`, {
@@ -120,12 +120,38 @@ export const sellerService = {
           Cookie: allCookies.toString(),
         },
 
-        body: JSON.stringify({ status: "DELIVERED" }),
+        body: JSON.stringify({ status }),
       });
       const data = await res.json();
+
       return { data, error: null };
     } catch (error) {
       return { data: null, error: error };
+    }
+  },
+
+  updateMedicine: async (
+    id: string,
+    payload: {
+      price: number;
+      stock_quantity: number;
+    },
+  ) => {
+    const allCookies = (await cookies()).toString();
+    try {
+      const res = await fetch(`${env.BACKEND_URL}/api/seller/medicine/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+          Cookie: allCookies,
+        },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      console.log(data);
+      return { data };
+    } catch (error: any) {
+      toast.error("something wrong in service");
     }
   },
 
@@ -150,6 +176,43 @@ export const sellerService = {
         error: "retrieved weekly sale report failed!",
         detail: error,
       };
+    }
+  },
+
+  deleteOrder: async (id: string) => {
+    const cookie = await cookies();
+    const allCookies = cookie.toString();
+    try {
+      const res = await fetch(`${env.BACKEND_URL}/api/seller/delete/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json",
+          Cookie: allCookies,
+        },
+      });
+      const data = res.json();
+      console.log(data);
+      return data;
+    } catch (error) {
+      return { data: null, error };
+    }
+  },
+
+  deleteMedicine: async (id: string) => {
+    const cookie = await cookies();
+    const allCookies = cookie.toString();
+    try {
+      const res = await fetch(`${env.BACKEND_URL}/api/seller/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json",
+          Cookie: allCookies,
+        },
+      });
+      const data = res.json();
+      return data;
+    } catch (error) {
+      return { data: null, error };
     }
   },
 };

@@ -22,3 +22,11 @@ enum Status {
   "COMPLETED",
   "CANCELLED",
 }
+interface Orders {
+  id: string;
+  customer: string;
+  total: string;
+  date: string;
+  status: Status;
+}
+

@@ -10,10 +10,16 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useForm } from "@tanstack/react-form";
 import { FaGoogle } from "react-icons/fa";
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 import * as z from "zod";
 import { toast } from "sonner";
 import { redirect, useRouter } from "next/navigation";
+import { Roles } from "@/constants/Roles";
 
 interface Signup2Props {
   heading?: string;
@@ -54,7 +60,17 @@ const SignInPage = ({
           });
         }
         toast.success("Signed in successfully!", { id: toastId });
-        router.push("/");
+        const user: any = data.user;
+        console.log(user.role);
+        if (user.role === Roles.SELLER) {
+          router.push("/seller-dashboard");
+        }
+        if (user.role === Roles.ADMIN) {
+          router.push("/admin-dashboard");
+        }
+        if (user.role === Roles.CUSTOMER) {
+          router.push("/");
+        }
       } catch (e) {
         toast.error("Failed to sign in. Please try again.", { id: toastId });
       }
@@ -68,10 +84,14 @@ const SignInPage = ({
     });
     const toastId = toast.loading("Redirecting to Google...");
     try {
-      const { data } = await res;
+      const { data, error } = await res;
+      if (error) {
+        return toast.error("failed sign in with google..");
+      }
+      toast.success("successfully sign in with google");
       redirect("/");
     } catch (error) {
-      toast.error("Failed to redirect to Google.", { id: toastId });
+      toast.success("success to redirect to Google.", { id: toastId });
     }
   };
 
@@ -188,7 +208,7 @@ const SignInPage = ({
               href={signupUrl}
               className="font-bold font-[sans-serif] text-[#0c705d]"
             >
-              Sign In
+              Sign up
             </Link>
           </div>
         </div>

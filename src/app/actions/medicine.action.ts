@@ -1,8 +1,8 @@
 "use server";
 
 import { medicineService } from "@/service/medicine.service";
-import { SellerMedicine, sellerService } from "@/service/seller.service";
-import { Medicine } from "@/types";
+import { sellerService } from "@/service/seller.service";
+import { SellerMedicine } from "@/types";
 import { updateTag } from "next/cache";
 interface Params {
   search?: string;

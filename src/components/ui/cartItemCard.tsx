@@ -63,7 +63,7 @@ const CartItemCard = ({
 
           <div className="text-right min-w-[80px]">
             <p className="text-2xl font-black text-gray-900 leading-none">
-              ৳{parseFloat(item.price).toFixed(2)}
+              ${parseFloat(item.price).toFixed(2)}
             </p>
           </div>
 

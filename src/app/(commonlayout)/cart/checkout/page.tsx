@@ -179,7 +179,7 @@ const CheckoutPage = () => {
                           </div>
                         </div>
                         <span className="text-lg font-bold text-slate-800">
-                          ৳80
+                          $80
                         </span>
                       </div>
                     </AccordionContent>

@@ -36,7 +36,7 @@ const MediCard = ({ medicine }: { medicine: Medicine }) => {
         <p className="text-[#8da197] capitalize"> 🏭 {manufacturer}</p>
         <p className="text-[#8da197] capitalize"> {category_name}</p>
         <p className="text-xl font-bold text-green-700 capitalize">
-          ৳{price} / {generic_name}{" "}
+          ${price} / {generic_name}{" "}
         </p>
       </div>
       <div className="border-t border-[#c1e6db] py-3 text-xs font-medium text-muted-foreground md:flex-row md:items-center md:text-left">

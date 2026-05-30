@@ -19,17 +19,21 @@ export const sellerRoutes: Routes = {
       label: "📋 Orders",
       href: "/seller-dashboard/orders",
     },
+    // {
+    //   label: "💬 Reviews",
+    //   href: "/seller-dashboard/reviews",
+    // },
+    // {
+    //   label: "💳 Earnings",
+    //   href: "/seller-dashboard/earnings",
+    // },
+    // {
+    //   label: "👤 Profile",
+    //   href: "/seller-dashboard/profile",
+    // },
     {
-      label: "💬 Reviews",
-      href: "/seller-dashboard/reviews",
-    },
-    {
-      label: "💳 Earnings",
-      href: "/seller-dashboard/earnings",
-    },
-    {
-      label: "👤 Profile",
-      href: "/seller-dashboard/profile",
+      label: "🌐 Back to site",
+      href: "/",
     },
   ],
 };

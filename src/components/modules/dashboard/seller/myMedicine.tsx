@@ -1,48 +1,86 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { Search, Plus, Edit2, Trash2, AlertTriangle } from "lucide-react";
-import { renderStatusBadge } from "@/app/utilis/handleRenderStatusBadge";
-import { getSellerMedicines } from "@/app/actions/seller.action";
+import { Search, Edit2, Trash2, AlertTriangle } from "lucide-react";
+
+import {
+  deleteMedicine,
+  getSellerMedicines,
+} from "@/app/actions/seller.action";
 import { Medicine } from "@/types";
+
+import UpdateMedicineInfo from "@/components/ui/UpdateMedicineModal";
+import { toast } from "sonner";
 
 // ১. টাইপ ডেফিনিশন (Type Safety)
 export type StockStatus = "In Stock" | "Low Stock" | "Out of Stock";
 
 export default function MyMedicines() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedMedicine, setSelectedMedicine] = useState<any>(null);
   const [medicines, setMedicines] = useState<Medicine[]>([]);
   const [activeFilter, setActiveFilter] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
+  const fetchData = async () => {
+    const { data } = await getSellerMedicines({ cache: "no-store" });
+    setMedicines(data || []);
+  };
+
   useEffect(() => {
     (async () => {
-      const { data } = await getSellerMedicines({ cache: "no-store" });
-      setMedicines(data || []);
+      fetchData();
     })();
   }, []);
 
   // ৩. পারফরম্যান্স অপ্টিমাইজড ফিল্টারিং (Memoized Filter & Search)
   const filteredMedicines = useMemo(() => {
-    const InStockMedicines = medicines.filter(
-      (medicine) => Number(medicine.stock_quantity) > 5,
-    );
-    const LowStockMedicines = medicines.filter(
-      (medicine) =>
-        Number(medicine.stock_quantity) < 5 &&
-        Number(medicine.stock_quantity) > 0,
-    );
-    const stockOutMedicines = medicines.filter(
-      (medicine) => Number(medicine.stock_quantity) === 0,
-    );
-    if (activeFilter === "All") return medicines;
-    if (activeFilter === "In Stock") return InStockMedicines;
-    if (activeFilter === "Low Stock") return LowStockMedicines;
-    if (activeFilter === "Out") return stockOutMedicines;
-    return medicines;
+    // ধাপ ১: প্রথমে স্টক স্ট্যাটাস (Active Filter) অনুযায়ী ডাটা আলাদা করুন
+    let result = medicines;
+    if (activeFilter === "In Stock") {
+      result = medicines.filter(
+        (medicine) => Number(medicine.stock_quantity) > 5,
+      );
+    } else if (activeFilter === "Low Stock") {
+      result = medicines.filter(
+        (medicine) =>
+          Number(medicine.stock_quantity) <= 5 &&
+          Number(medicine.stock_quantity) > 0,
+      );
+    } else if (activeFilter === "Out") {
+      result = medicines.filter(
+        (medicine) => Number(medicine.stock_quantity) === 0,
+      );
+    }
+
+    // ধাপ ২: এবার ফিল্টার হওয়া রেজাল্ট-এর ওপর সার্চ কোয়েরি চালান (যদি searchQuery থাকে)
+    if (searchQuery.trim() !== "") {
+      const cleanSearchQuery = searchQuery.trim().toLowerCase();
+
+      result = result.filter((medicine) => {
+        // যদি আপনার ডাটাবেজে category_name অবজেক্ট হয়, তবে medicine.category_name.name লিখবেন
+        return medicine?.category_name
+          ?.toLowerCase()
+          .includes(cleanSearchQuery);
+      });
+    }
+
+    return result;
   }, [medicines, activeFilter, searchQuery]);
 
-  // ৪. ডাইনামিক স্ট্যাটাস ব্যাজ রেন্ডারিং
-  // console.log(filteredMedicines)
+  const handleDeleteMedicine = async (id: string) => {
+    const res = await deleteMedicine(id);
+
+    if (res.success) {
+      // ডিলিট সফল হলে ডাটা রিফ্রেশ করুন
+      toast.success("Medicine deleted successfully");
+      fetchData();
+    } else {
+      console.error("Failed to delete medicine:", res.error);
+      toast.error("Failed to delete medicine");
+    }
+  };
+
   return (
     <div className="w-full max-w-full mx-auto p-6 bg-[#FCFCFA] min-h-screen text-[#1E293B]">
       {/* হেডার সেকশন */}
@@ -51,8 +89,10 @@ export default function MyMedicines() {
       <div className="mb-6 flex items-center gap-3 bg-[#FFF9E6] border border-[#FFEBA6] rounded-xl p-4 text-sm text-[#805B00]">
         <AlertTriangle className="w-5 h-5 text-[#D97706] shrink-0" />
         <p>
-          <span className="font-bold">23 medicines</span> running low. Restock
-          soon.
+          <span className="font-bold">
+            {medicines.filter((m) => Number(m.stock_quantity) === 0).length}
+          </span>{" "}
+          medicines running out of stock. Restock soon.
         </p>
       </div>
 
@@ -132,7 +172,7 @@ export default function MyMedicines() {
 
                   {/* প্রাইস (টাকা সাইন সহ) */}
                   <td className="py-4 px-6 text-[#0F291E] font-semibold">
-                    ৳{medicine.price}
+                    ${medicine.price}
                   </td>
 
                   {/* স্টক সংখ্যা */}
@@ -143,26 +183,50 @@ export default function MyMedicines() {
                   {/* স্ট্যাটাস ব্যাজ */}
                   <td className="py-4 px-6">
                     {Number(medicine.stock_quantity) > 5 ? (
-                      <p className="text-green-500 font-bold capitalize">
+                      <span className="text-green-500 bg-green-50 px-3 py-1 rounded-xl font-bold capitalize">
                         in stock
-                      </p>
+                      </span>
+                    ) : Number(medicine.stock_quantity) > 0 ? (
+                      <span className="text-amber-500 bg-amber-50 px-3 py-1 rounded-xl font-bold capitalize">
+                        low stock
+                      </span>
                     ) : (
-                      <p className="text-red-500 font-bold capitalize">
-                        out of stock
-                      </p>
+                      <span className="px-3 py-1 rounded-xl text-red-500 font-bold bg-red-50 capitalize">
+                        stock out
+                      </span>
                     )}
                   </td>
 
                   {/* অ্যাকশন বাটনস */}
                   <td className="py-4 px-6 text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <button className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 hover:bg-gray-50 rounded-xl text-xs font-semibold text-gray-700 transition-all">
+                      <button
+                        onClick={() => setSelectedMedicine(medicine)} // ক্লিক করলে সিলেক্টেড মেডিসিন সেট হবে
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 hover:bg-gray-50 rounded-xl text-xs font-semibold text-gray-700 transition-all"
+                      >
                         <Edit2 className="w-3.5 h-3.5 text-orange-500" />
                         Edit
                       </button>
-                      <button className="p-2 bg-[#FCE8E6] hover:bg-[#FAD2CD] text-[#C53030] rounded-xl transition-all">
+                      <button
+                        onClick={() =>
+                          handleDeleteMedicine(medicine.medicine_id)
+                        }
+                        className="p-2 bg-[#FCE8E6] hover:bg-[#FAD2CD] text-[#C53030] rounded-xl transition-all"
+                      >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
+                      {selectedMedicine && (
+                        <UpdateMedicineInfo
+                          open={!!selectedMedicine} // অবজেক্ট থাকলে true হবে
+                          onOpenChange={(isOpen) => {
+                            if (!isOpen) {
+                              setSelectedMedicine(null); // মডাল বন্ধ হলে সিলেক্টেড মেডিসিন রিসেট হবে
+                              fetchData(); // মডাল বন্ধ হলে ডাটা রিফ্রেশ হবে যাতে আপডেটেড ডাটা দেখা যায়
+                            } // বন্ধ করলে স্টেট null হবে
+                          }}
+                          medicine={selectedMedicine} // সঠিক মেডিসিন অবজেক্ট পাস হবে
+                        />
+                      )}
                     </div>
                   </td>
                 </tr>

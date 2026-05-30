@@ -100,7 +100,7 @@ export default async function OrderManagement() {
                   {order.orderItems.length}
                 </TableCell>
                 <TableCell className="text-slate-600">
-                  ৳{order.total_bill}
+                  ${order.total_bill}
                 </TableCell>
                 <TableCell className="text-slate-600">
                   {new Date(order.order_date).toLocaleString("en-GB", {

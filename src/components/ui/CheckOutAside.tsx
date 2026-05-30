@@ -22,18 +22,18 @@ const CheckOutAside = ({
           <div className="flex justify-between text-gray-500 font-medium">
             <span>Subtotal</span>
             <span className="text-gray-900 font-bold">
-              ৳{subtotal.toFixed(2)}
+              ${subtotal.toFixed(2)}
             </span>
           </div>
           <div className="flex justify-between text-gray-500 font-medium">
             <span>Delivery Fee</span>
             <span className="text-gray-900 font-bold">
-              ৳{deliveryFee.toFixed(2)}
+              ${deliveryFee.toFixed(2)}
             </span>
           </div>
           <div className="flex justify-between text-green-600 font-medium">
             <span>Promo Discount</span>
-            <span className="font-bold">-৳{discount.toFixed(2)}</span>
+            <span className="font-bold">-${discount.toFixed(2)}</span>
           </div>
 
           <div className="pt-5 border-t border-dashed border-gray-200">
@@ -42,7 +42,7 @@ const CheckOutAside = ({
                 Total Amount
               </span>
               <span className="text-3xl font-black text-[#1b3d2f]">
-                ৳{total.toFixed(2)}
+                ${total.toFixed(2)}
               </span>
             </div>
           </div>

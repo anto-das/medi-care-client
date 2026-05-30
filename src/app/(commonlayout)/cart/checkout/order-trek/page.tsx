@@ -84,7 +84,7 @@ const OrderStatus = () => {
                   <p className="text-xs text-gray-400">10 tablets</p>
                 </div>
               </div>
-              <p className="font-bold text-lg text-gray-800">৳286.00</p>
+              <p className="font-bold text-lg text-gray-800">$286.00</p>
             </div>
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-green-50 rounded-lg p-2">💊</div>
@@ -143,7 +143,7 @@ const OrderStatus = () => {
                 </div>
               </div>
             </div>
-            <p className="font-bold text-lg text-gray-700">৳85.00</p>
+            <p className="font-bold text-lg text-gray-700">$85.00</p>
           </div>
           <div className="flex gap-2 mt-4">
             <button className="bg-green-900 text-white px-6 py-1.5 rounded-lg text-xs font-medium">

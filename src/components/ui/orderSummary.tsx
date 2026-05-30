@@ -27,29 +27,32 @@ const OrderSummary = ({
           <div className="pt-4 border-t border-slate-50 space-y-2 text-slate-500 text-sm font-medium">
             <div className="flex justify-between">
               <span>Subtotal</span>
-              <span>৳{subtotal}</span>
+              <span>${subtotal}</span>
             </div>
             <div className="flex justify-between">
               <span>Delivery</span>
-              <span>৳{deliveryFee}</span>
+              <span>${deliveryFee}</span>
             </div>
             <div className="flex justify-between text-rose-500 font-bold">
               <span>Discount</span>
-              <span>-৳{discount}</span>
+              <span>-${discount}</span>
             </div>
           </div>
 
           <div className="pt-4 border-t border-slate-50 flex justify-between items-baseline">
             <span className="text-xl font-bold">Total</span>
             <span className="text-3xl font-black tracking-tighter">
-              ৳{total}
+              ${total}
             </span>
           </div>
 
           {/* <Link href={"/cart/checkout/order-trek"}> */}
-            <Button disabled className="w-full h-14 text-lg font-bold bg-[#064E3B] hover:bg-[#043d2e] text-white rounded-2xl shadow-xl shadow-emerald-900/10">
-              Place Order ৳ {total} →
-            </Button>
+          <Button
+            disabled
+            className="w-full h-14 text-lg font-bold bg-[#064E3B] hover:bg-[#043d2e] text-white rounded-2xl shadow-xl shadow-emerald-900/10"
+          >
+            Place Order $ {total} →
+          </Button>
           {/* </Link> */}
 
           <div className="flex items-center justify-center space-x-2 text-[10px] text-slate-400 font-bold uppercase tracking-widest pt-2">

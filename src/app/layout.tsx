@@ -35,6 +35,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // const { data } = await userService.getSession();
+
+  // const user = data.user;
+  // if (user.role === Roles.ADMIN) {
+  //   return redirect("/admin-dashboard");
+  // }
   return (
     <html
       lang="en"

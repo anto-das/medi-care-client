@@ -22,12 +22,16 @@ export const adminRoutes = {
       href: "/admin-dashboard/orders ",
     },
     {
-      label: "📈 Reports",
-      href: "/admin-dashboard/reports",
+      label: "🌐 Back to site",
+      href: "/",
     },
-    {
-      label: "⚙️ Settings",
-      href: "/admin-dashboard/settings",
-    },
+    // {
+    //   label: "📈 Reports",
+    //   href: "/admin-dashboard/reports",
+    // },
+    // {
+    //   label: "⚙️ Settings",
+    //   href: "/admin-dashboard/settings",
+    // },
   ],
 };
