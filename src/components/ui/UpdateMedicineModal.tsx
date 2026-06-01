@@ -88,6 +88,7 @@ const updateMedicineInfo = ({
                 name="price"
                 type="number" // number টাইপ ব্যবহার করা ভালো
                 placeholder="Price"
+                defaultValue={medicine?.price} // পূর্বের দাম দেখানোর জন্য
                 className="focus-visible:ring-[#0b5e4e]"
               />
             </div>
@@ -98,6 +99,7 @@ const updateMedicineInfo = ({
                 name="stock"
                 type="number"
                 placeholder="12"
+                defaultValue={medicine?.stock_quantity} // পূর্বের স্টক দেখানোর জন্য
                 className="focus-visible:ring-[#0b5e4e]"
               />
             </div>

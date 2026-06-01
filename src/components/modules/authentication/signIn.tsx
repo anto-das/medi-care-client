@@ -53,24 +53,31 @@ const SignInPage = ({
     onSubmit: async ({ value }) => {
       const toastId = toast.loading("Signing in...");
       try {
-        const { data, error } = await authClient.signIn.email(value);
-        if (error) {
-          return toast.error(error.message, {
-            id: toastId,
-          });
-        }
-        toast.success("Signed in successfully!", { id: toastId });
-        const user: any = data.user;
-        console.log(user.role);
-        if (user.role === Roles.SELLER) {
-          router.push("/seller-dashboard");
-        }
-        if (user.role === Roles.ADMIN) {
-          router.push("/admin-dashboard");
-        }
-        if (user.role === Roles.CUSTOMER) {
-          router.push("/");
-        }
+        const result = await authClient.signIn.email(
+          {
+            email: value.email,
+            password: value.password,
+          },
+          {
+            onSuccess: (ctx) => {
+              toast.success("Signed in successfully!", { id: toastId });
+
+              // Better Auth context থেকে সরাসরি ইউজার ডাটা নিন
+              const user = ctx.data.user;
+
+              if (user.role === "SELLER") {
+                router.push("/seller-dashboard");
+              } else if (user.role === Roles.ADMIN) {
+                router.push("/admin-dashboard");
+              } else if (user.role === Roles.CUSTOMER) {
+                router.push("/");
+              }
+            },
+            onError: (ctx) => {
+              toast.error(ctx.error.message, { id: toastId });
+            },
+          },
+        );
       } catch (e) {
         toast.error("Failed to sign in. Please try again.", { id: toastId });
       }

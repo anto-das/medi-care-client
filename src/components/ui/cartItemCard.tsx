@@ -22,7 +22,11 @@ const CartItemCard = ({
         className="group bg-white p-5 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-green-100 transition-all duration-300 flex items-center gap-6"
       >
         <div className="w-20 h-20 bg-gray-50 rounded-2xl flex items-center justify-center text-4xl shadow-inner">
-          {item.medi_img}
+          <img
+            src={item.medi_img}
+            alt={item.medicine_name}
+            className="h-full w-full object-cover object-center"
+          />
         </div>
 
         <div className="flex-1">

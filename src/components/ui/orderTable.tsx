@@ -13,7 +13,6 @@ import { Badge } from "./badge";
 import Link from "next/link";
 import { sellerService } from "@/service/seller.service";
 
-import { Status } from "@/app/(dashboardLayout)/@sellerSlot/seller-dashboard/orders/page";
 import NoOrdersState from "./NoOrderState";
 
 const OrderTable = async () => {
@@ -23,8 +22,8 @@ const OrderTable = async () => {
     return <NoOrdersState />;
   }
 
-  const pendingOrders = order.filter((ord: any) =>
-    ord.status === Status.PENDING ? ord : [],
+  const pendingOrders = order?.filter((ord: any) =>
+    ord.status === "PENDING" ? ord : [],
   );
 
   return (

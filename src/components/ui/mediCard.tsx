@@ -28,9 +28,13 @@ const MediCard = ({ medicine }: { medicine: Medicine }) => {
       onClick={() => handleCardClick(medicine_id)}
       className="border relative border-[#c1e6db] rounded-2xl  shadow-md hover:shadow-xl transition duration-500 hover:scale-101  antialiased will-change-contents transform-gpu"
     >
-      <p className="text-center text-5xl py-14 rounded-t-2xl flex items-center justify-center bg-[#e8f6f2] ">
-        {medi_img}
-      </p>
+      <div className="h-48 w-full overflow-hidden rounded-t-2xl">
+        <img
+          src={medi_img}
+          alt={medicine_name}
+          className="h-full w-full object-cover object-center"
+        />
+      </div>
       <div className="px-4 py-2 space-y-1">
         <h2 className="text-lg font-bold capitalize">{medicine_name}</h2>
         <p className="text-[#8da197] capitalize"> 🏭 {manufacturer}</p>

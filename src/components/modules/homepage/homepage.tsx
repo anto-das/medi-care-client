@@ -73,7 +73,7 @@ const Homepage = () => {
           <p className="text-[#8da197] text-lg font-light">
             Trusted by 2 million+ Bangladeshis
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  gap-8 mt-10">
+          <div >
             <Testimonial />
           </div>
         </div>

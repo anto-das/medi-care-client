@@ -75,7 +75,7 @@ export const cartService = {
   deleteAll: async (payload: { guest_id: string }) => {
     try {
       // console.log("guest id from client service: ", payload);
-      const res = await fetch(`http://localhost:5000/api/cart/delete`, {
+      const res = await fetch(`${env.BACKEND_URL}/api/cart/delete`, {
         method: "DELETE",
         body: JSON.stringify(payload),
         cache: "no-store",

@@ -15,7 +15,7 @@ export const adminRoutes = {
     },
     {
       label: "💊 All Medicines",
-      href: "/admin-dashboard/medicines",
+      href: "/admin-dashboard/medicine",
     },
     {
       label: "📋 All Orders",

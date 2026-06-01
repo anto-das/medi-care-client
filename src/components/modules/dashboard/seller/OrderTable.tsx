@@ -4,10 +4,11 @@ import {
   handleDeleteOrder,
 } from "@/app/utilis/handleConfirmOrder";
 import { Button } from "@/components/ui/button";
+import NoOrdersState from "@/components/ui/NoOrderState";
 import { orderType } from "@/constants/OrderStatus";
 import { Order } from "@/types";
 import { ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const OrdersTable = () => {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -15,6 +16,13 @@ const OrdersTable = () => {
     const res = await getSellerOrders({ cache: "no-store" });
     setOrders(res.data);
   };
+  useEffect(() => {
+    fetchOrder();
+  }, []);
+
+  if (orders.length === 0) {
+    return <NoOrdersState />;
+  }
   return (
     <div className="w-full max-w-full mx-auto p-6 bg-[#FCFCFB] min-h-screen">
       {/* Table Container with shadcn-like Card Styling */}
@@ -51,7 +59,7 @@ const OrdersTable = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 text-sm font-medium text-gray-700">
-              {orders.map((ord: any) => (
+              {orders?.map((ord: any) => (
                 <tr
                   key={ord.order_id}
                   className="hover:bg-gray-50/50 transition-colors"

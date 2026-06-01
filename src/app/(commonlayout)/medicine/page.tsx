@@ -5,6 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import MediCard from "@/components/ui/mediCard";
+import { authClient } from "@/lib/auth-client";
 
 import { Medicine } from "@/types";
 import { useEffect, useState } from "react";
@@ -20,7 +21,6 @@ const MedicinePage = () => {
   const [selectedCategories, setSelectedCategories] = useState<string>("");
   const [categories, setCategories] = useState<Categories[]>([]);
   const [searchMedi, setSearchMedi] = useState<string>("");
-
   const payload = {
     search: "",
     category_name: "",
@@ -49,7 +49,6 @@ const MedicinePage = () => {
 
     fetchData();
   }, [selectedCategories || searchMedi]);
-
 
   const handleCategories = (categoryType: string, checked: boolean) => {
     if (checked) {

@@ -1,4 +1,5 @@
 import { getMedicine } from "@/app/actions/medicine.action";
+import EmptyMedicineState from "@/components/ui/EmptyMedicine";
 import MediCard from "@/components/ui/mediCard";
 import { medicineService } from "@/service/medicine.service";
 
@@ -8,6 +9,10 @@ import { FaArrowRight } from "react-icons/fa";
 
 const Medicines = async () => {
   const { data } = await medicineService.getMedicines({}, { revalidate: 1000 });
+  const medicines = data || [];
+  if (medicines.length === 0) {
+    return <EmptyMedicineState />;
+  }
 
   return (
     <div className="py-8 bg-[#faf8f4] my-10 border">
@@ -28,7 +33,7 @@ const Medicines = async () => {
         </Link>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 py-8 w-11/18 mx-auto">
-        {data.map((medicine: Medicine) => (
+        {medicines?.map((medicine: Medicine) => (
           <MediCard key={medicine.medicine_id} medicine={medicine} />
         ))}
       </div>

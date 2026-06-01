@@ -10,23 +10,23 @@ export type Order = {
   customer_email: string;
   customer_name: string;
   seller_id: string;
-  status: Status;
+  status: orderType;
   total_bill: string;
   order_date: string;
   orderItems: OrderItem[];
+  seller_name: string;
 };
 
-enum Status {
-  "PENDING",
-  "PROCESSING",
-  "COMPLETED",
-  "CANCELLED",
+export enum orderType {
+  PENDING = "PENDING",
+  PROCESSING = "PROCESSING",
+  COMPLETED = "COMPLETED",
+  CANCELLED = "CANCELLED",
 }
 interface Orders {
   id: string;
   customer: string;
   total: string;
   date: string;
-  status: Status;
+  status: orderType;
 }
-

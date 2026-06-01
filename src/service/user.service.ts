@@ -1,3 +1,4 @@
+import { env } from "@/env";
 import { cookies } from "next/headers";
 import { cache } from "react";
 
@@ -5,7 +6,7 @@ export const userService = {
   getSession: cache(async () => {
     try {
       const cookieStore = await cookies();
-      const res = await fetch("http://localhost:5000/api/auth/get-session", {
+      const res = await fetch(`${env.AUTH_BASE_URL}/get-session`, {
         headers: {
           cookie: cookieStore.toString(),
         },

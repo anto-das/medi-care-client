@@ -72,7 +72,7 @@ const Signup = ({
     try {
       const { data } = await authClient.signIn.social({
         provider: "google",
-        callbackURL: "http://localhost:3000",
+        // callbackURL: "http://localhost:3000",
       });
       // console.log("Google Sign-In Response:", data);
       if (data) {

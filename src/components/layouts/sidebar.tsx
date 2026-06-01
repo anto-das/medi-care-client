@@ -26,8 +26,11 @@ import { adminRoutes } from "@/routes/adminRoutes";
 import { Roles } from "@/constants/Roles";
 import { Routes } from "@/types";
 import { Input } from "../ui/input";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Inter } from "next/font/google";
+
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -131,6 +134,19 @@ const Sidebar1 = ({
   children: React.ReactNode;
   userInfo: any;
 }) => {
+  const handleDashSignOut = async () => {
+    const toastId = toast.loading("Signing out...");
+    try {
+      const result = await authClient.signOut();
+      if (result?.data?.success) {
+        toast.success("Signed out successfully!", { id: toastId });
+        window.location.href = "/"; // Redirect to home page
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to sign out. Please try again.", { id: toastId });
+    }
+  };
   return (
     <SidebarProvider>
       <AppSidebar userInfo={userInfo} />
@@ -156,6 +172,12 @@ const Sidebar1 = ({
                 placeholder="🔍Search medicines,brands and more..."
                 className="w-1/2 rounded-md bg-[#f8fdfb] border focus:shadow-none focus:text-lg placeholder:text-lg p-5"
               />
+              <button
+                onClick={handleDashSignOut}
+                className="rounded-md capitalize bg-[#e22929] px-4 py-2 text-sm max-w-full font-bold text-[#e2fff0] font-[Sans-serif]"
+              >
+                Sign Out
+              </button>
               <button className="rounded-md capitalize bg-white text-[#42534e] border border-[#ddeae7] hover:border-[#12725c] hover:text-[#12725c] p-1.5 text-lg font-bold font-[Sans-serif]">
                 🔔
               </button>

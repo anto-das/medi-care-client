@@ -5,6 +5,8 @@ import { Toaster } from "sonner";
 import { userService } from "@/service/user.service";
 import Loading from "@/components/ui/loading";
 import { Suspense } from "react";
+import { Roles } from "@/constants/Roles";
+import { redirect } from "next/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,12 +37,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const { data } = await userService.getSession();
-
-  // const user = data.user;
-  // if (user.role === Roles.ADMIN) {
-  //   return redirect("/admin-dashboard");
-  // }
   return (
     <html
       lang="en"
@@ -50,7 +46,7 @@ export default async function RootLayout({
       <body className={`min-h-full flex flex-col `}>
         <Suspense fallback={<Loading />}>
           {children}{" "}
-          <Toaster duration={2000} richColors position="top-right" />{" "}
+          <Toaster duration={1000} richColors position="top-right" />{" "}
         </Suspense>
       </body>
     </html>

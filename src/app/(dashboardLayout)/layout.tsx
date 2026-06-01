@@ -1,8 +1,7 @@
 import DashboardLayout from "@/components/layouts/dashboardLayout";
-import { Sidebar1 } from "@/components/layouts/sidebar";
+
 import Loading from "@/components/ui/loading";
-import { Roles } from "@/constants/Roles";
-import { userService } from "@/service/user.service";
+
 import { Suspense } from "react";
 
 export default function RootLayout({

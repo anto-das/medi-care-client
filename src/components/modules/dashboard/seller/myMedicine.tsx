@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { Search, Edit2, Trash2, AlertTriangle } from "lucide-react";
+import { Search, Edit2, Trash2, AlertTriangle, Plus, Pill } from "lucide-react";
 
 import {
   deleteMedicine,
@@ -12,13 +12,14 @@ import { Medicine } from "@/types";
 import UpdateMedicineInfo from "@/components/ui/UpdateMedicineModal";
 import { toast } from "sonner";
 
+import EmptySellerMedicine from "@/components/ui/EmptySellerMedicine";
+
 // ১. টাইপ ডেফিনিশন (Type Safety)
 export type StockStatus = "In Stock" | "Low Stock" | "Out of Stock";
 
 export default function MyMedicines() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedMedicine, setSelectedMedicine] = useState<any>(null);
   const [medicines, setMedicines] = useState<Medicine[]>([]);
+  const [selectedMedicine, setSelectedMedicine] = useState<any>(null);
   const [activeFilter, setActiveFilter] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -67,6 +68,10 @@ export default function MyMedicines() {
 
     return result;
   }, [medicines, activeFilter, searchQuery]);
+
+  if (medicines.length === 0) {
+    return <EmptySellerMedicine />;
+  }
 
   const handleDeleteMedicine = async (id: string) => {
     const res = await deleteMedicine(id);

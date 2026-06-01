@@ -24,6 +24,69 @@ export const adminService = {
       };
     }
   },
+  getAllSellers: async () => {
+    const cookieStore = await cookies();
+    const allCookies = cookieStore.toString();
+    try {
+      const res = await fetch(`${env.BACKEND_URL}/api/admin/sellers`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          Cookie: allCookies,
+        },
+      });
+      const data = await res.json();
+      return data;
+    } catch (err: any) {
+      return {
+        data: null,
+        error: "Retrieved all sellers failed!",
+        details: err,
+      };
+    }
+  },
+  getAllOrders: async () => {
+    const cookieStore = await cookies();
+    const allCookies = cookieStore.toString();
+    try {
+      const res = await fetch(`${env.BACKEND_URL}/api/order`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          Cookie: allCookies,
+        },
+      });
+      const data = await res.json();
+      return data;
+    } catch (err: any) {
+      return {
+        data: null,
+        error: "Retrieved all orders failed!",
+        details: err,
+      };
+    }
+  },
+  getAllMedicines: async () => {
+    const cookieStore = await cookies();
+    const allCookies = cookieStore.toString();
+    try {
+      const res = await fetch(`${env.BACKEND_URL}/api/medicine`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          Cookie: allCookies,
+        },
+      });
+      const data = await res.json();
+      return data;
+    } catch (err: any) {
+      return {
+        data: null,
+        error: "Retrieved all medicines failed!",
+        details: err,
+      };
+    }
+  },
   updateUserStatus: async (status: UserStatus, id: string) => {
     const cookieStore = await cookies();
     const allCookies = cookieStore.toString();

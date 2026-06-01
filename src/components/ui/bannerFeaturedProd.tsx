@@ -2,10 +2,16 @@ import { medicineService } from "@/service/medicine.service";
 import { Medicine } from "@/types";
 
 const FeaturedProduct = async () => {
-  const { data } = await medicineService.getMedicines({}, { revalidate: 3600 });
-  const featuredProduct: Medicine = data?.reduce(
+  const { data } = await medicineService.getMedicines({}, { revalidate: 60 });
+  const medicines = data || [];
+  if (medicines.length === 0) {
+    return null;
+  }
+  const featuredProduct: Medicine = medicines?.reduce(
     (prev: Medicine, curr: Medicine) =>
-      parseFloat(prev.price) < parseFloat(curr.price) ? prev : curr,
+      parseFloat(prev.price as string) < parseFloat(curr.price as string)
+        ? prev
+        : curr,
   );
   if (!featuredProduct) {
     return null;
@@ -14,8 +20,12 @@ const FeaturedProduct = async () => {
     <>
       <div className="w-1/4 mx-auto relative mt-10 lg:mt-0 hidden lg:block">
         <div className="border rounded-lg p-4 shadow-md bg-white space-y-2">
-          <div className="text-center py-8 text-6xl bg-[#e6f2ef] rounded-lg">
-            {featuredProduct.medi_img}
+          <div className="h-48 w-1/2 mx-auto overflow-hidden rounded-lg">
+            <img
+              src={featuredProduct.medi_img}
+              alt={featuredProduct.medicine_name}
+              className="h-full w-full object-cover object-center"
+            />
           </div>
           <h1 className="text-xl font-bold">{featuredProduct.medicine_name}</h1>
           <h3 className="text-lg text-[#8da197]">
