@@ -10,7 +10,7 @@ export async function proxy(request: NextRequest) {
   let isAuthenticated = false;
 
   const { data } = await userService.getSession();
-
+  // console.log("Session data in proxy:", data);
   if (data) {
     isAuthenticated = true;
     isAdmin = data?.user.role === Roles.ADMIN;

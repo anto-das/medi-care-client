@@ -14,7 +14,7 @@ export default function EmptyMedicineState() {
   };
 
   return (
-    <div className="relative flex items-center justify-center min-h-[550px] w-full p-6 overflow-hidden rounded-2xl bg-slate-50/40">
+    <div className="relative flex items-center z-0 inset-0 justify-center min-h-[550px] w-full p-6 overflow-hidden rounded-2xl bg-slate-50/40">
       {/* --- Medi-Care Smooth Background Ambient Glows --- */}
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#e6f4f1] blur-[100px] rounded-full pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-96 h-96 bg-[#1f6b5d]/5 blur-[120px] rounded-full pointer-events-none" />

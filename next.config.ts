@@ -1,12 +1,23 @@
 import type { NextConfig } from "next";
-import "./src/env";
+
 const nextConfig: NextConfig = {
   /* config options here */
-  cacheComponents: true,
-  experimental: {
-    serverActions: {
-      bodySizeLimit: "10mb", // 👈 ১ মেগাবাইট থেকে বাড়িয়ে ১০ মেগাবাইট করা হলো
-    },
+  reactCompiler: true,
+
+  // better-auth proxy
+  async rewrites() {
+    return [
+      {
+        // Explicitly map auth requests
+        source: "/api/auth/:path*",
+        destination: process.env.BACKEND_URL + "/api/auth/:path*",
+      },
+      {
+        // Explicitly map v1 API requests
+        source: "/api/:path*",
+        destination: process.env.BACKEND_URL + "/api/v1/:path*",
+      },
+    ];
   },
 };
 

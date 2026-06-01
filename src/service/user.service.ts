@@ -7,11 +7,15 @@ export const userService = {
     try {
       const cookieStore = await cookies();
       const res = await fetch(`${env.AUTH_BASE_URL}/get-session`, {
+        method: "GET",
         headers: {
           cookie: cookieStore.toString(),
         },
+        cache: "no-store",
       });
+      // console.log(res)
       const data = await res.json();
+
       if (data === null) {
         return { data: null, error: { message: "No active session found" } };
       }

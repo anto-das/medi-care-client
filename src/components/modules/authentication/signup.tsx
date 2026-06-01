@@ -67,12 +67,12 @@ const Signup = ({
       }
     },
   });
-  const handleLoginWithGoogle = async () => {
+  const handleSignUpWithGoogle = async () => {
     const toastId = toast.loading("Redirecting to Google...");
     try {
       const { data } = await authClient.signIn.social({
         provider: "google",
-        // callbackURL: "http://localhost:3000",
+        callbackURL: `${process.env.NEXT_PUBLIC_APP_URL}/`,
       });
       // console.log("Google Sign-In Response:", data);
       if (data) {
@@ -209,7 +209,7 @@ const Signup = ({
 
           <div className="w-11/16 mx-auto">
             <button
-              onClick={handleLoginWithGoogle}
+              onClick={handleSignUpWithGoogle}
               className="flex items-center gap-2 border border-[#0c705d] text-[#0c705d] hover:bg-[#0c705d] hover:text-white transition-colors duration-300 rounded-md px-4 py-2 w-full justify-center text-lg font-bold hover:text-lg hover:font-bold"
             >
               {" "}

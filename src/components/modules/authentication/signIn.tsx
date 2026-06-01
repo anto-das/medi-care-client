@@ -84,19 +84,21 @@ const SignInPage = ({
       // Handle form submission logic here
     },
   });
-  const handleLoginWithGoogle = async () => {
-    const res = authClient.signIn.social({
+  const handleSignWithGoogle = async () => {
+    const res = await authClient.signIn.social({
       provider: "google",
-      callbackURL: "http://localhost:3000",
+      callbackURL: `${process.env.NEXT_PUBLIC_APP_URL}/`,
     });
     const toastId = toast.loading("Redirecting to Google...");
     try {
-      const { data, error } = await res;
-      if (error) {
-        return toast.error("failed sign in with google..");
+      const { data, error } = res;
+      if (data) {
+        toast.success("successfully sign in with google");
+        return redirect("/");
+      } else {
+        toast.error("failed sign in with google..");
+        return redirect("/");
       }
-      toast.success("successfully sign in with google");
-      redirect("/");
     } catch (error) {
       toast.success("success to redirect to Google.", { id: toastId });
     }
@@ -201,7 +203,7 @@ const SignInPage = ({
           <Divider />
           <div className="w-11/16 mx-auto">
             <button
-              onClick={handleLoginWithGoogle}
+              onClick={handleSignWithGoogle}
               className="flex items-center gap-2 border border-[#0c705d] text-[#0c705d] hover:bg-[#0c705d] hover:text-white transition-colors duration-300 rounded-md px-4 py-2 w-full justify-center text-lg font-bold hover:text-lg hover:font-bold"
             >
               {" "}
