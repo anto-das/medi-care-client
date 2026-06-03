@@ -12,4 +12,11 @@ export interface Medicine {
   description: string;
   unit_type: string;
   stock_quantity: string | number;
+  approval_status: string;
+}
+
+export enum ApprovalStatus {
+  PENDING,
+  APPROVED,
+  REJECTED,
 }

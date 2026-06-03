@@ -7,12 +7,22 @@ const FeaturedProduct = async () => {
   if (medicines.length === 0) {
     return null;
   }
-  const featuredProduct: Medicine = medicines?.reduce(
+  const medicinesWithApproval = medicines?.filter(
+    (medicine: Medicine) => medicine.approval_status === "APPROVED",
+  );
+  if (medicinesWithApproval.length === 0) {
+    return null;
+  }
+
+  const featuredProduct: Medicine = medicinesWithApproval?.reduce(
     (prev: Medicine, curr: Medicine) =>
       parseFloat(prev.price as string) < parseFloat(curr.price as string)
-        ? prev
+        ? curr.approval_status === "APPROVED"
+          ? curr
+          : prev
         : curr,
   );
+  console.log("featuredProduct", featuredProduct);
   if (!featuredProduct) {
     return null;
   }

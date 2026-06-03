@@ -11,7 +11,7 @@ const Overview = async () => {
     sellerService.getSellerOrders({ revalidate: 60 }),
   ]);
   // console.log(products, orders);
-  const medicines = products.data;
+  const medicines = products.data || [];
   const order = orders.data;
   const revenue = order?.reduce((acc: number, ord: any) => {
     if (ord.status !== "DELIVERED") {
@@ -58,7 +58,7 @@ const Overview = async () => {
   ];
   return (
     <section className="mb-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-      {overviewData.map((stat, i) => (
+      {overviewData?.map((stat, i) => (
         <Card
           key={i}
           className={`border-t-4 ${stat.border} shadow-sm border-x-0 border-b-0`}

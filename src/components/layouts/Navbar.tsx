@@ -57,7 +57,7 @@ const Navbar = ({
   className,
 }: Navbar1Props) => {
   const { data: session } = authClient.useSession();
-
+  // console.log("Session in Navbar:", session);
   const pathname = usePathname();
   useEffect(() => {
     const existingId = localStorage.getItem("guest_id");

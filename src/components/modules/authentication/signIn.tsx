@@ -53,31 +53,22 @@ const SignInPage = ({
     onSubmit: async ({ value }) => {
       const toastId = toast.loading("Signing in...");
       try {
-        const result = await authClient.signIn.email(
-          {
-            email: value.email,
-            password: value.password,
-          },
-          {
-            onSuccess: (ctx) => {
-              toast.success("Signed in successfully!", { id: toastId });
-
-              // Better Auth context থেকে সরাসরি ইউজার ডাটা নিন
-              const user = ctx.data.user;
-
-              if (user.role === "SELLER") {
-                router.push("/seller-dashboard");
-              } else if (user.role === Roles.ADMIN) {
-                router.push("/admin-dashboard");
-              } else if (user.role === Roles.CUSTOMER) {
-                router.push("/");
-              }
-            },
-            onError: (ctx) => {
-              toast.error(ctx.error.message, { id: toastId });
-            },
-          },
-        );
+        const result = await authClient.signIn.email({
+          email: value.email,
+          password: value.password,
+        });
+        const { data, error } = result;
+        // console.log("Sign-In Response:", data, error);
+        const user: any = data?.user;
+        if (user?.role === Roles.SELLER) {
+          toast.success("Signed in successfully!", { id: toastId });
+          console.log("User data after sign-in:", user.role);
+          router.push("/seller-dashboard");
+        } else if (user?.role === Roles.ADMIN) {
+          router.push("/admin-dashboard");
+        } else if (user?.role === Roles.CUSTOMER) {
+          router.push("/");
+        }
       } catch (e) {
         toast.error("Failed to sign in. Please try again.", { id: toastId });
       }
@@ -87,20 +78,22 @@ const SignInPage = ({
   const handleSignWithGoogle = async () => {
     const res = await authClient.signIn.social({
       provider: "google",
-      callbackURL: `${process.env.NEXT_PUBLIC_APP_URL}/`,
+      callbackURL: `${process.env.NEXT_PUBLIC_APP_URL}/`, // Adjust the callback URL as needed
     });
     const toastId = toast.loading("Redirecting to Google...");
     try {
       const { data, error } = res;
+      console.log("Google Sign-In Response:", data, error);
+      if (error) {
+        toast.error(error.message, { id: toastId });
+        return;
+      }
       if (data) {
-        toast.success("successfully sign in with google");
-        return redirect("/");
-      } else {
-        toast.error("failed sign in with google..");
-        return redirect("/");
+        toast.success("Redirected to Google successfully!", { id: toastId });
+        router.push("/");
       }
     } catch (error) {
-      toast.success("success to redirect to Google.", { id: toastId });
+      toast.error("Failed to redirect to Google.", { id: toastId });
     }
   };
 

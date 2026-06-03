@@ -17,8 +17,8 @@ import NoOrdersState from "./NoOrderState";
 
 const OrderTable = async () => {
   const [orders] = await Promise.all([sellerService.getSellerOrders()]);
-  const order = await orders.data;
-  if (order.length === 0) {
+  const order = (await orders?.data) || [];
+  if (order?.length === 0) {
     return <NoOrdersState />;
   }
 

@@ -10,7 +10,7 @@ export async function proxy(request: NextRequest) {
   let isAuthenticated = false;
 
   const { data } = await userService.getSession();
-  // console.log("Session data in proxy:", data);
+
   if (data) {
     isAuthenticated = true;
     isAdmin = data?.user.role === Roles.ADMIN;
@@ -19,46 +19,53 @@ export async function proxy(request: NextRequest) {
       data?.user.role === Roles.CUSTOMER && data?.user.status === "ACTIVE";
   }
 
-  // -------------------------------------------------------------
-  // ১. হোম রুট (/) এর জন্য বিশেষ প্রটেকশন (সেলার ও অ্যাডমিন ব্লক করা)
-  // -------------------------------------------------------------
+  // ১. হোম রুট (/) এর জন্য প্রটেকশন
   if (pathname === "/") {
-    // সেলার হোম পেজে আসতে চাইলে ড্যাশবোর্ডে পাঠান
-    if (isSeller) {
+    if (isSeller)
       return NextResponse.redirect(new URL("/seller-dashboard", request.url));
-    }
-    // অ্যাডমিন হোম পেজে আসতে চাইলে ড্যাশবোর্ডে পাঠান
-    if (isAdmin) {
+    if (isAdmin)
       return NextResponse.redirect(new URL("/admin-dashboard", request.url));
-    }
-    // কাস্টমার বা আন-অথেন্টিকেটেড ইউজার হলে হোম পেজ দেখতে দিন
     return NextResponse.next();
   }
 
-  // -------------------------------------------------------------
-  // ২. অন্যান্য প্রটেক্টেড রুটের জন্য লগইন চেক
-  // -------------------------------------------------------------
+  // ২. লগইন চেক (হোম পেজ ছাড়া বাকি সব ম্যাচড রুটের জন্য)
   if (!isAuthenticated) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 
-  // -------------------------------------------------------------
   // ৩. রোল ভিত্তিক ড্যাশবোর্ড প্রটেকশন ও রিডাইরেকশন
-  // -------------------------------------------------------------
-  if (isAdmin && pathname.startsWith("/customer-dashboard")) {
-    return NextResponse.redirect(new URL("/admin-dashboard", request.url));
+  const isCustomerRoute = pathname.startsWith("/customer-dashboard");
+  const isSellerRoute = pathname.startsWith("/seller-dashboard");
+  const isAdminRoute = pathname.startsWith("/admin-dashboard");
+
+  // অ্যাডমিন বা সেলার কাস্টমার ড্যাশবোর্ডে যেতে চাইলে তাদের নিজস্ব ড্যাশবোর্ডে পাঠান
+  if (isCustomerRoute) {
+    if (isAdmin)
+      return NextResponse.redirect(new URL("/admin-dashboard", request.url));
+    if (isSeller)
+      return NextResponse.redirect(new URL("/seller-dashboard", request.url));
   }
-  if (isSeller && pathname.startsWith("/customer-dashboard")) {
-    return NextResponse.redirect(new URL("/seller-dashboard", request.url));
-  }
-  if (
-    (!isAdmin && pathname.startsWith("/admin-dashboard")) ||
-    (isCustomer && pathname.startsWith("/seller-dashboard"))
-  ) {
+
+  // অ্যাডমিন ড্যাশবোর্ডে শুধু অ্যাডমিন ঢুকতে পারবে
+  if (isAdminRoute && !isAdmin) {
+    if (isSeller)
+      return NextResponse.redirect(new URL("/seller-dashboard", request.url));
     return NextResponse.redirect(new URL("/customer-dashboard", request.url));
   }
-  if (isCustomer && pathname.startsWith("/cart/checkout")) {
-    return NextResponse.next();
+
+  // সেলার ড্যাশবোর্ডে শুধু সেলার ঢুকতে পারবে
+  if (isSellerRoute && !isSeller) {
+    if (isAdmin)
+      return NextResponse.redirect(new URL("/admin-dashboard", request.url));
+    return NextResponse.redirect(new URL("/customer-dashboard", request.url));
+  }
+
+  // চেকআউট পেজে শুধু একটিভ কাস্টমার যেতে পারবে
+  if (pathname.startsWith("/cart/checkout") && !isCustomer) {
+    if (isAdmin)
+      return NextResponse.redirect(new URL("/admin-dashboard", request.url));
+    if (isSeller)
+      return NextResponse.redirect(new URL("/seller-dashboard", request.url));
   }
 
   return NextResponse.next();
@@ -67,8 +74,6 @@ export async function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     "/",
-    "/dashboard/:path*",
-    "/dashboard",
     "/customer-dashboard/:path*",
     "/customer-dashboard",
     "/seller-dashboard/:path*",

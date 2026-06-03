@@ -19,9 +19,9 @@ const AdminOverview = async () => {
     getMedicine(),
   ]);
 
-  const users = usersRes.data;
-  const orders = ordersRes.data?.data;
-  const medicines = medicineRes.data;
+  const users = usersRes.data || [];
+  const orders = ordersRes.data?.data || [];
+  const medicines = medicineRes.data || [];
 
   // console.log(medicines);
 
@@ -46,7 +46,7 @@ const AdminOverview = async () => {
         },
         {
           title: "sellers",
-          val: totalSeller.length || 0,
+          val: totalSeller?.length || 0,
           up: "+28%",
           icon: BriefcaseMedical,
           border: "border-orange-400",
