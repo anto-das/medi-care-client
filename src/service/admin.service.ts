@@ -105,4 +105,28 @@ export const adminService = {
       return { data: null, error: error };
     }
   },
+  updateMedicineApprovalStatus: async (
+    medicineId: string,
+    newStatus: string,
+  ) => {
+    const cookieStore = await cookies();
+    const allCookies = cookieStore.toString();
+    try {
+      const res = await fetch(
+        `http://localhost:5000/api/admin/sellers/4f5a28c7-917f-450d-aa4d-dadcd91768ff`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-type": "application/json",
+            Cookie: allCookies,
+          },
+          body: JSON.stringify({ approval_status: newStatus }),
+        },
+      );
+      const data = await res.json();
+      return { data: data, error: null };
+    } catch (error: any) {
+      return { data: null, error: error };
+    }
+  },
 };

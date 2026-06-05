@@ -65,8 +65,10 @@ const SignInPage = ({
           console.log("User data after sign-in:", user.role);
           router.push("/seller-dashboard");
         } else if (user?.role === Roles.ADMIN) {
+          toast.success("Signed in successfully!", { id: toastId });
           router.push("/admin-dashboard");
         } else if (user?.role === Roles.CUSTOMER) {
+          toast.success("Signed in successfully!", { id: toastId });
           router.push("/");
         }
       } catch (e) {

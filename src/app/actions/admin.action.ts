@@ -10,3 +10,13 @@ export const getTotalUsers = async () => {
 export const updateUserStatus = async (status: UserStatus, id: string) => {
   return await adminService.updateUserStatus(status, id);
 };
+
+export const updateMedicineApprovalStatus = async (
+  medicineId: string,
+  newStatus: string,
+) => {
+  return await adminService.updateMedicineApprovalStatus(
+    medicineId.toString(),
+    newStatus,
+  );
+};

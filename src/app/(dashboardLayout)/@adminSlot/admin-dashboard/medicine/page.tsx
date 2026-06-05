@@ -1,8 +1,25 @@
-import { adminService } from "@/service/admin.service";
-import { AlertTriangle } from "lucide-react";
+"use client";
+import { updateMedicineApprovalStatus } from "@/app/actions/admin.action";
+import { getMedicine } from "@/app/actions/medicine.action";
 
-const page = async () => {
-  const { data: medicines } = await adminService.getAllMedicines();
+import { AlertTriangle } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+
+const page = () => {
+  const [medicines, setMedicines] = useState([]);
+  const fetchMedicines = async () => {
+    try {
+      const { data } = await getMedicine();
+      setMedicines(data);
+      console.log("Medicines fetched in page component:", data);
+    } catch (error) {
+      console.error("Error fetching medicines in page component:", error);
+    }
+  };
+  useEffect(() => {
+    fetchMedicines();
+  }, []);
   const statusStyles = {
     APPROVED: {
       bg: "bg-[#EBFBF2]",
@@ -16,6 +33,28 @@ const page = async () => {
       bg: "bg-[#FEE2E2]",
       text: "text-[#EF4444]",
     },
+  };
+
+  const handleApprovalStatus = async (
+    medicineId: string,
+    newStatus: string,
+  ) => {
+    const loadingId = toast.loading("Updating approval status...");
+    try {
+      const { data } = await updateMedicineApprovalStatus(
+        medicineId,
+        newStatus,
+      );
+      toast.success("Approval status updated successfully!", {
+        id: loadingId,
+      });
+      fetchMedicines();
+    } catch (error) {
+      console.error("Error updating medicine approval status:", error);
+      toast.error("Failed to update approval status.", {
+        id: loadingId,
+      });
+    }
   };
 
   return (
@@ -34,7 +73,10 @@ const page = async () => {
       <div className="mb-6 flex items-center gap-2 bg-[#FFF9E6] border border-[#FFEBA6] text-[#A67300] px-4 py-3.5 rounded-xl text-sm font-medium">
         <AlertTriangle className="w-4 h-4 text-[#D97706]" />
         <span>
-          <strong className="text-amber-900 font-bold">3 medicines</strong>{" "}
+          <strong className="text-amber-900 font-bold">
+            {" "}
+            {medicines?.length} medicines
+          </strong>{" "}
           flagged for review.
         </span>
       </div>
@@ -111,16 +153,22 @@ const page = async () => {
                   {/* অ্যাকশন বাটনসমূহ (স্ট্যাটাস অনুযায়ী ডাইনামিক ডিজাইন) */}
                   <td className="p-4 pr-6">
                     <div className="flex items-center justify-center gap-2">
-                      {currentStatus === "PENDING" && (
-                        <>
-                          <button className="px-4 py-1.5 text-xs font-bold text-white bg-[#0A472E] rounded-lg hover:bg-[#073622] transition shadow-sm">
-                            Approve
-                          </button>
-                          <button className="px-4 py-1.5 text-xs font-bold text-red-500 bg-[#FFF1F1] border border-[#FFE2E2] rounded-lg hover:bg-red-100/60 transition">
-                            Reject
-                          </button>
-                        </>
-                      )}
+                      <button
+                        onClick={() =>
+                          handleApprovalStatus(medicine.medicine_id, "APPROVED")
+                        }
+                        className="px-4 py-1.5 text-xs font-bold text-white bg-[#0A472E] rounded-lg hover:bg-[#073622] transition shadow-sm"
+                      >
+                        Approve
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleApprovalStatus(medicine.medicine_id, "REJECTED")
+                        }
+                        className="px-4 py-1.5 text-xs font-bold text-red-500 bg-[#FFF1F1] border border-[#FFE2E2] rounded-lg hover:bg-red-100/60 transition"
+                      >
+                        Reject
+                      </button>
                     </div>
                   </td>
                 </tr>

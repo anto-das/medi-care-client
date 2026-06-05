@@ -22,7 +22,7 @@ const FeaturedProduct = async () => {
           : prev
         : curr,
   );
-  console.log("featuredProduct", featuredProduct);
+
   if (!featuredProduct) {
     return null;
   }
