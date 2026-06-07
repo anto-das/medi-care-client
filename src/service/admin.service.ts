@@ -113,7 +113,7 @@ export const adminService = {
     const allCookies = cookieStore.toString();
     try {
       const res = await fetch(
-        `http://localhost:5000/api/admin/sellers/4f5a28c7-917f-450d-aa4d-dadcd91768ff`,
+        `${env.BACKEND_URL}/api/admin/sellers/${medicineId}`,
         {
           method: "PATCH",
           headers: {
@@ -123,6 +123,24 @@ export const adminService = {
           body: JSON.stringify({ approval_status: newStatus }),
         },
       );
+      const data = await res.json();
+      return { data: data, error: null };
+    } catch (error: any) {
+      return { data: null, error: error };
+    }
+  },
+  updateUserRole: async (newRole: string, email: string) => {
+    const cookieStore = await cookies();
+    const allCookies = cookieStore.toString();
+    try {
+      const res = await fetch(`${env.BACKEND_URL}/api/admin/update-role`, {
+        method: "PATCH",
+        headers: {
+          "Content-type": "application/json",
+          Cookie: allCookies,
+        },
+        body: JSON.stringify({ role: newRole, email }),
+      });
       const data = await res.json();
       return { data: data, error: null };
     } catch (error: any) {

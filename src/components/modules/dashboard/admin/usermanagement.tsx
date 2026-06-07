@@ -13,7 +13,11 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Search } from "lucide-react";
-import { getTotalUsers, updateUserStatus } from "@/app/actions/admin.action";
+import {
+  getTotalUsers,
+  updateUserRole,
+  updateUserStatus,
+} from "@/app/actions/admin.action";
 import { Roles } from "@/constants/Roles";
 import UserNotFound from "@/components/ui/UserNotFound";
 import UserDashboardHeader from "@/components/ui/UserDashboardHeader";
@@ -40,7 +44,7 @@ export default function UserManagement() {
   }, []);
 
   // অ্যাকশন হ্যান্ডলার (Status পরিবর্তনের জন্য)
-  const filteredUsers = data.filter(
+  const filteredUsers = data?.filter(
     (user: any) => user.role === Roles.CUSTOMER || user.role === Roles.SELLER,
   );
   const handleStatusChange = async (userId: string, newStatus: UserStatus) => {
@@ -81,6 +85,22 @@ export default function UserManagement() {
     });
   }, [data, activeTab, searchQuery]);
 
+  const handleRoleChange = async (newRole: string, email: string) => {
+    const toastId = toast.loading("changing the user role....");
+    try {
+      const { data: user } = await updateUserRole(newRole, email);
+      if (user.success) {
+        toast.success(user?.message, { id: toastId });
+        const data = await fetchData();
+        console.log(data);
+        setData(data);
+      } else {
+        toast.error(data.message, { id: toastId });
+      }
+    } catch (error: any) {
+      toast.error("changing user role was wrong", { id: toastId });
+    }
+  };
   return (
     <div className="w-full mx-auto p-6 bg-[#FAFAF9] min-h-screen">
       {/* হেডার সেকশন */}
@@ -198,6 +218,9 @@ export default function UserManagement() {
                             variant="outline"
                             size="sm"
                             className="h-9 px-4 border-slate-200 text-slate-700 font-medium"
+                            onClick={() =>
+                              handleRoleChange(Roles.SELLER, user.email)
+                            }
                           >
                             Switch to Seller
                           </Button>
@@ -206,6 +229,9 @@ export default function UserManagement() {
                             variant="outline"
                             size="sm"
                             className="h-9 px-4 border-slate-200 text-slate-700 font-medium"
+                            onClick={() =>
+                              handleRoleChange(Roles.CUSTOMER, user.email)
+                            }
                           >
                             Switch to Customer
                           </Button>

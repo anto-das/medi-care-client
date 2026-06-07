@@ -144,6 +144,7 @@ export default function MyMedicines() {
                 <th className="py-4 px-6">Price</th>
                 <th className="py-4 px-6">Stock</th>
                 <th className="py-4 px-6">Status</th>
+                <th className="py-4 px-6">approval</th>
                 <th className="py-4 px-6 text-right">Actions</th>
               </tr>
             </thead>
@@ -198,6 +199,21 @@ export default function MyMedicines() {
                     ) : (
                       <span className="px-3 py-1 rounded-xl text-red-500 font-bold bg-red-50 capitalize">
                         stock out
+                      </span>
+                    )}
+                  </td>
+                  <td className="py-4 px-6">
+                    {medicine.approval_status === "APPROVED" ? (
+                      <span className="text-blue-500 bg-blue-50 px-3 py-1 rounded-xl font-bold capitalize">
+                        {medicine.approval_status}
+                      </span>
+                    ) : medicine.stock_quantity === "REJECTED" ? (
+                      <span className="text-amber-500 bg-amber-50 px-3 py-1 rounded-xl font-bold capitalize">
+                        {medicine.approval_status}
+                      </span>
+                    ) : (
+                      <span className="px-3 py-1 rounded-xl text-red-500 font-bold bg-red-50 capitalize">
+                        {medicine.approval_status}
                       </span>
                     )}
                   </td>

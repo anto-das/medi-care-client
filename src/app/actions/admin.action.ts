@@ -20,3 +20,7 @@ export const updateMedicineApprovalStatus = async (
     newStatus,
   );
 };
+
+export const updateUserRole = async (newRole: string, email: string) => {
+  return await adminService.updateUserRole(newRole, email);
+};
