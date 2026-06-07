@@ -28,7 +28,11 @@ export default function MedicineDetailsClient({
       {/* বাম পাশ: ইমেজ এবং ডেসক্রিপশন */}
       <div className="space-y-4">
         <div className="bg-[#e8f6f2] rounded-3xl aspect-video flex items-center justify-center text-9xl border border-[#c1e6db]">
-          {medicine.medi_img}
+          <img
+            src={medicine.medi_img}
+            alt={medicine.medicine_name}
+            className="w-full"
+          />
         </div>
 
         {/* ডেসক্রিপশন ট্যাব (সার্ভার সাইড সেফ) */}

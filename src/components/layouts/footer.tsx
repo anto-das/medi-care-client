@@ -33,21 +33,21 @@ const defaultSections = [
   {
     title: "Products",
     links: [
-      { name: "Browse Medicines", href: "#" },
-      { name: "Healthcare Devices", href: "#" },
-      { name: "Vitamins & Supplements", href: "#" },
-      { name: "Baby & Child", href: "#" },
-      { name: "Offers & Deals", href: "#" },
+      { name: "Browse Medicines", href: "/medicine" },
+      { name: "Healthcare Devices", href: "/blog" },
+      { name: "Vitamins & Supplements", href: "/medicine" },
+      { name: "Baby & Child", href: "/medicine" },
+      { name: "Offers & Deals", href: "/offers" },
     ],
   },
   {
     title: "SELLERS",
     links: [
-      { name: "Become a Seller", href: "#" },
-      { name: "Seller Dashboard", href: "#" },
-      { name: "Seller Guidelines", href: "#" },
-      { name: "DGDA Compliance", href: "#" },
-      { name: "Seller Support", href: "#" },
+      { name: "Become a Seller", href: "/seller-dashboard" },
+      { name: "Seller Dashboard", href: "/seller-dashboard" },
+      { name: "Seller Guidelines", href: "/seller-dashboard" },
+      { name: "DGDA Compliance", href: "/seller-dashboard" },
+      { name: "Seller Support", href: "/seller-dashboard" },
     ],
   },
   {
@@ -102,9 +102,9 @@ const Footer = ({
                   key={idx}
                   className="font-medium transition-colors duration-300 hover:text-[#31ddbb]"
                 >
-                  <a href={social.href} target="_blank">
+                  <Link href={social.href} target="_blank">
                     {social.icon}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -121,7 +121,7 @@ const Footer = ({
                       key={linkIdx}
                       className=" hover:text-gray-200 font-md transition-colors duration-300"
                     >
-                      <a href={link.href}>{link.name}</a>
+                      <Link href={link.href}>{link.name}</Link>
                     </li>
                   ))}
                 </ul>
