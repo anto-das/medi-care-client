@@ -188,11 +188,12 @@ const renderMenuItem = (item: MenuItem) => {
   }
 
   const pathname = usePathname();
+  const isActive = pathname.startsWith(item.url);
   return (
     <NavigationMenuItem key={item.title}>
       <Link
         href={item.url}
-        className={`${baseClasses} ${pathname === item.url ? "px-4 py-2 text-md font-medium text-[#1f6b5d] bg-[#e6f4f1]" : inactiveClasses}`}
+        className={`${baseClasses} ${isActive ? "px-4 py-2 text-md font-medium text-[#1f6b5d] bg-[#e6f4f1]" : inactiveClasses}`}
       >
         {item.title}
       </Link>

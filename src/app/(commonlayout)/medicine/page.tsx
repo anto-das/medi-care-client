@@ -26,6 +26,10 @@ const MedicinePage = () => {
     category_name: "",
   };
 
+  const filterMedicines = medicines?.filter(
+    (medicine: Medicine) => medicine.approval_status === "APPROVED",
+  );
+
   useEffect(() => {
     const fetchData = async () => {
       const categoryPromise = getCategories();
@@ -104,7 +108,7 @@ const MedicinePage = () => {
           </div>
           {/* medicine list */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4  w-11/14 mx-auto">
-            {medicines?.map((medicine: Medicine) => (
+            {filterMedicines?.map((medicine: Medicine) => (
               <MediCard key={medicine.medicine_id} medicine={medicine} />
             ))}
           </div>

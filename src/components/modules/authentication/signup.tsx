@@ -68,17 +68,21 @@ const Signup = ({
     },
   });
   const handleSignUpWithGoogle = async () => {
+    const res = await authClient.signIn.social({
+      provider: "google",
+      callbackURL: `${process.env.NEXT_PUBLIC_APP_URL}/`, // Adjust the callback URL as needed
+    });
     const toastId = toast.loading("Redirecting to Google...");
     try {
-      const { data } = await authClient.signIn.social({
-        provider: "google",
-      });
-      console.log("Google Sign-In Response:", data);
+      const { data, error } = res;
+      console.log("Google Sign-In Response:", data, error);
+      if (error) {
+        toast.error(error.message, { id: toastId });
+        return;
+      }
       if (data) {
+        toast.success("Redirected to Google successfully!", { id: toastId });
         router.push("/");
-        toast.success("Signed in with Google successfully!", { id: toastId });
-      } else {
-        toast.error("Failed to sign in with Google.", { id: toastId });
       }
     } catch (error) {
       toast.error("Failed to redirect to Google.", { id: toastId });

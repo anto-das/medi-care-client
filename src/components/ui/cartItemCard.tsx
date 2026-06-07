@@ -16,12 +16,12 @@ const CartItemCard = ({
   handleDeleteItem: handleDeleteItem<string>;
 }) => {
   return (
-    <div className="space-y-4">
+    <div className="space-x-4 lg:space-y-4">
       <article
         key={item.cart_id}
-        className="group bg-white p-5 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-green-100 transition-all duration-300 flex items-center gap-6"
+        className="group bg-white p-5 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-green-100 transition-all duration-300 lg:flex items-center gap-3"
       >
-        <div className="w-20 h-20 bg-gray-50 rounded-2xl flex items-center justify-center text-4xl shadow-inner">
+        <div className="lg:w-40 w-full my-2 lg:h-40 h-ful bg-gray-50 rounded-2xl flex items-center justify-center text-4xl shadow-inner p-3">
           <img
             src={item.medi_img}
             alt={item.medicine_name}
@@ -45,7 +45,7 @@ const CartItemCard = ({
           </p>
         </div>
 
-        <div className="flex items-center gap-8">
+        <div className="flex items-center mt-2 gap-5 w-full">
           <div className="flex items-center bg-gray-50 rounded-full p-1 border border-gray-100">
             <button
               onClick={() => handleQuantityChange(item.cart_id, "decrement")}
@@ -65,7 +65,7 @@ const CartItemCard = ({
             </button>
           </div>
 
-          <div className="text-right min-w-[80px]">
+          <div className="text-right w-full">
             <p className="text-2xl font-black text-gray-900 leading-none">
               ${parseFloat(item.price).toFixed(2)}
             </p>

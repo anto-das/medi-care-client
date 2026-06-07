@@ -126,24 +126,6 @@ const CheckoutPage = () => {
                     className="h-12 bg-[#F8F8F5] border-none"
                   />
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Select defaultValue="dhaka">
-                    <SelectTrigger className="h-12 bg-[#F8F8F5] border-none">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="dhaka">Dhaka</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Select defaultValue="dhaka">
-                    <SelectTrigger className="h-12 bg-[#F8F8F5] border-none">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="dhaka">Dhaka</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
                 <Textarea
                   defaultValue="House 12, Road 4, Mirpur-1, Dhaka"
                   className="min-h-[80px] bg-[#F8F8F5] border-none resize-none"
