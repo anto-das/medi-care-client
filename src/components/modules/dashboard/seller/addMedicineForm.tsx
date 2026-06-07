@@ -127,10 +127,10 @@ export default function AddMedicineForm() {
         price: parseFloat(data.price.toString()),
         medi_img,
       };
-      console.log(medicine);
+      // console.log(medicine);
       if (medicine.medi_img) {
         const { data } = await postMedicine(medicine);
-        console.log(data.error);
+        // console.log(data.error);
         data?.success && toast.success(data.message);
       }
     },

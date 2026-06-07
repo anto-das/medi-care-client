@@ -13,7 +13,7 @@ export const handleSignOut = async () => {
       toast.error("Failed to sign out. Please try again.", { id: toastId });
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return toast.error("Failed to sign out. Please try again.", {
       id: toastId,
     });

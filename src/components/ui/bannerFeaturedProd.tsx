@@ -2,7 +2,10 @@ import { medicineService } from "@/service/medicine.service";
 import { Medicine } from "@/types";
 
 const FeaturedProduct = async () => {
-  const { data } = await medicineService.getMedicines({}, { revalidate: 60 });
+  const { data } = await medicineService.getMedicines(
+    {},
+    { cache: "no-store" },
+  );
   const medicines = data || [];
   if (medicines.length === 0) {
     return null;

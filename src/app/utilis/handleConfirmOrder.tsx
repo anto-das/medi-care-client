@@ -10,7 +10,7 @@ export const handleConfirmOrder = async (id: string, status: orderStatus) => {
     toast.success(`ordered ${status} successfully..`, { id: toastId });
   } catch (err: any) {
     toast.error(err.message || "order not confirm", { id: toastId });
-    console.log(err);
+    // console.log(err);
   }
 };
 export const handleDeleteOrder = async (id: string) => {
@@ -18,10 +18,10 @@ export const handleDeleteOrder = async (id: string) => {
   // console.log(id);
   try {
     const res = await deleteOrder(id);
-    console.log(res);
+    // console.log(res);
     toast.success(`ordered deleted successfully..`, { id: toastId });
   } catch (err: any) {
     toast.error(err.message || "order not confirm", { id: toastId });
-    console.log(err);
+    // console.log(err);
   }
 };

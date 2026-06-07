@@ -36,7 +36,7 @@ const updateMedicineInfo = ({
       const price = formData.get("price");
       const stock = formData.get("stock");
       const medicineId = medicine?.medicine_id;
-      console.log("Form Data:", { price, stock, medicineId });
+      // console.log("Form Data:", { price, stock, medicineId });
 
       // খালি স্ট্রিং চেক এবং নাম্বার এ কনভার্ট করা
       const payload = {

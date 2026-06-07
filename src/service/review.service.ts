@@ -24,7 +24,7 @@ export const reviewService = {
       });
       return await result.json();
     } catch (err: any) {
-      console.log(err);
+      // console.log(err);
       return { data: null, error: "your review don't added", details: err };
     }
   },

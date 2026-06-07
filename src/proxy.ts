@@ -15,8 +15,7 @@ export async function proxy(request: NextRequest) {
     isAuthenticated = true;
     isAdmin = data?.user.role === Roles.ADMIN;
     isSeller = data?.user.role === Roles.SELLER;
-    isCustomer =
-      data?.user.role === Roles.CUSTOMER && data?.user.status === "ACTIVE";
+    isCustomer = data?.user.role === Roles.CUSTOMER;
   }
 
   // ১. হোম রুট (/) এর জন্য প্রটেকশন
@@ -58,6 +57,10 @@ export async function proxy(request: NextRequest) {
     if (isAdmin)
       return NextResponse.redirect(new URL("/admin-dashboard", request.url));
     return NextResponse.redirect(new URL("/customer-dashboard", request.url));
+  }
+
+  if (isCustomer && pathname.startsWith("/cart/checkout")) {
+    return NextResponse.next();
   }
 
   // চেকআউট পেজে শুধু একটিভ কাস্টমার যেতে পারবে

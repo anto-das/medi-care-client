@@ -51,7 +51,7 @@ export default function UserManagement() {
     const toastId = toast.loading("changing the user status....");
     try {
       const updatedData = await updateUserStatus(newStatus, userId);
-      console.log("updated: ", updatedData.data.success);
+      // console.log("updated: ", updatedData.data.success);
       if (updatedData.data.success) {
         toast.success("Changed successfully..", { id: toastId });
         const users = await fetchData();
@@ -92,7 +92,7 @@ export default function UserManagement() {
       if (user.success) {
         toast.success(user?.message, { id: toastId });
         const data = await fetchData();
-        console.log(data);
+        // console.log(data);
         setData(data);
       } else {
         toast.error(data.message, { id: toastId });

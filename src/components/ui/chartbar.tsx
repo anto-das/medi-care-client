@@ -30,7 +30,7 @@ const Chart = () => {
       }
     })();
   }, []);
-  console.log(revenue);
+  // console.log(revenue);
   const maxRevenue = Math.max(
     ...revenue.map((item: any) => item.total_revenue),
   );

@@ -62,11 +62,10 @@ const SignInPage = ({
         const user: any = data?.user;
         if (user?.role === Roles.SELLER) {
           toast.success("Signed in successfully!", { id: toastId });
-          console.log("User data after sign-in:", user.role);
-          router.push("/");
+          window.location.href = "/seller-dashboard";
         } else if (user?.role === Roles.ADMIN) {
           toast.success("Signed in successfully!", { id: toastId });
-          router.push("/");
+          window.location.href = "/admin-dashboard";
         } else if (user?.role === Roles.CUSTOMER) {
           toast.success("Signed in successfully!", { id: toastId });
           router.push("/");
@@ -77,7 +76,7 @@ const SignInPage = ({
       // Handle form submission logic here
     },
   });
-  const handleSignInWithGoogle = async () => {
+  const handleSignWithGoogle = async () => {
     const res = await authClient.signIn.social({
       provider: "google",
       callbackURL: `${process.env.NEXT_PUBLIC_APP_URL}/`, // Adjust the callback URL as needed
@@ -198,7 +197,7 @@ const SignInPage = ({
           <Divider />
           <div className="w-11/16 mx-auto">
             <button
-              onClick={handleSignInWithGoogle}
+              onClick={handleSignWithGoogle}
               className="flex items-center gap-2 border border-[#0c705d] text-[#0c705d] hover:bg-[#0c705d] hover:text-white transition-colors duration-300 rounded-md px-4 py-2 w-full justify-center text-lg font-bold hover:text-lg hover:font-bold"
             >
               {" "}

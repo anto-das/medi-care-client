@@ -60,7 +60,7 @@ const Signup = ({
         }
         toast.success("user created successfully.", { id: toastId });
         if (data.user) {
-          router.push("sign-in");
+          router.push("/sign-in");
         }
       } catch (error) {
         toast.error("something went wrong please try again.", { id: toastId });
@@ -82,7 +82,7 @@ const Signup = ({
       }
       if (data) {
         toast.success("Redirected to Google successfully!", { id: toastId });
-        router.push("/");
+        router.push("/customer-dashboard");
       }
     } catch (error) {
       toast.error("Failed to redirect to Google.", { id: toastId });
