@@ -22,6 +22,10 @@ export const adminRoutes = {
       href: "/admin-dashboard/orders ",
     },
     {
+      label: "🩺 Category",
+      href: "/admin-dashboard/category ",
+    },
+    {
       label: "🌐 Back to site",
       href: "/",
     },

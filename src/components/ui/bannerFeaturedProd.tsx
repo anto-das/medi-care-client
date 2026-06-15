@@ -1,11 +1,22 @@
+"use client";
+
+import { getMedicine } from "@/app/actions/medicine.action";
+import { handleAddToCart } from "@/app/utilis/handleAddToCart";
 import { medicineService } from "@/service/medicine.service";
 import { Medicine } from "@/types";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-const FeaturedProduct = async () => {
-  const { data } = await medicineService.getMedicines(
-    {},
-    { cache: "no-store" },
-  );
+const FeaturedProduct = () => {
+  const [data, setData] = useState<Medicine[]>([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    (async () => {
+      const { data: medi } = await getMedicine();
+      setData(medi);
+    })();
+  }, []);
   const medicines = data || [];
   if (medicines.length === 0) {
     return null;
@@ -29,9 +40,15 @@ const FeaturedProduct = async () => {
   if (!featuredProduct) {
     return null;
   }
+  const handleCardClick = (medicine_id: string) => {
+    router.push(`/medicine/${medicine_id}`); // আপনার ডিটেইল পেজের পাথ দিন
+  };
   return (
     <>
-      <div className="w-1/4 mx-auto relative mt-10 lg:mt-0 hidden lg:block">
+      <div
+        onClick={() => handleCardClick(featuredProduct.medicine_id)}
+        className="w-1/4 mx-auto relative mt-10 lg:mt-0 hidden lg:block"
+      >
         <div className="border rounded-lg p-4 shadow-md bg-white space-y-2">
           <div className="h-48 w-1/2 mx-auto overflow-hidden rounded-lg">
             <img
@@ -52,7 +69,13 @@ const FeaturedProduct = async () => {
               {featuredProduct.stock_quantity && "in stock"}
             </p>
           </div>
-          <button className="bg-[#10b981] w-full text-white py-2 px-4 rounded-lg hover:bg-[#0da371] mt-10">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAddToCart(featuredProduct.medicine_id, 1);
+            }}
+            className="bg-[#0b5e4e] w-full hover:bg-[#098169] text-white font-bold py-2 px-4 rounded"
+          >
             Add to Cart
           </button>
         </div>

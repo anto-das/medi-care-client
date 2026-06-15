@@ -1,9 +1,7 @@
-
 import AdminOverview from "@/components/ui/adminOverview";
 import { Button } from "@/components/ui/button";
 import Chart from "@/components/ui/chartbar";
 import OrderTable from "@/components/ui/orderTable";
-import Overview from "@/components/ui/overview";
 
 const AdminDashboard = () => {
   return (
@@ -30,10 +28,10 @@ const AdminDashboard = () => {
       <AdminOverview />
 
       {/* 3. Middle Section: Chart & Categories */}
-      {/* <Chart /> */}
+      <Chart />
 
       {/* 4. Recent Orders Table */}
-      {/* <OrderTable /> */}
+      <OrderTable />
     </div>
   );
 };

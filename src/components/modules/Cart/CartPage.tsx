@@ -15,7 +15,6 @@ import Link from "next/link";
 import CheckOutAside from "@/components/ui/CheckOutAside";
 import { useDebounce } from "@/hooks/useDebounce";
 import { toast } from "sonner";
-import { cartService } from "@/service/cart.service";
 import EmptyCart from "@/components/ui/emptyCart";
 import Loading from "@/components/ui/loading";
 

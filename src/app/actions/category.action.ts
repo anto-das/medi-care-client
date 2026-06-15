@@ -16,3 +16,10 @@ interface options {
 export const getCategories = async (options?: options) => {
   return await categoryService.getCategory(options);
 };
+
+export const addCategory = async (payload: {
+  category_type: string;
+  category_description: string;
+}) => {
+  return await categoryService.addCategory(payload);
+};

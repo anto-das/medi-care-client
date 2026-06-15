@@ -46,18 +46,11 @@ const OrderSummary = ({
             </span>
           </div>
 
-          {/* <Link href={"/cart/checkout/order-trek"}> */}
-          <Button
-            disabled
-            className="w-full h-14 text-lg font-bold bg-[#064E3B] hover:bg-[#043d2e] text-white rounded-2xl shadow-xl shadow-emerald-900/10"
-          >
-            Place Order $ {total} →
-          </Button>
-          {/* </Link> */}
+          
 
-          <div className="flex items-center justify-center space-x-2 text-[10px] text-slate-400 font-bold uppercase tracking-widest pt-2">
+          <div className="flex items-center justify-center space-x-2 text-[10px]  font-bold uppercase tracking-widest pt-2 text-blue-500">
             <ShieldCheck className="w-4 h-4" />
-            <span>SSL Secured</span>
+            <span>Secured by stripe</span>
           </div>
         </CardContent>
       </Card>

@@ -58,7 +58,9 @@ const SignInPage = ({
           password: value.password,
         });
         const { data, error } = result;
-        // console.log("Sign-In Response:", data, error);
+        if (error) {
+          return toast.error(error.message, { id: toastId });
+        }
         const user: any = data?.user;
         if (user?.role === Roles.SELLER) {
           toast.success("Signed in successfully!", { id: toastId });

@@ -58,13 +58,25 @@ const PaymentMethod = ({
       <Card className="border-none shadow-sm rounded-2xl bg-white overflow-hidden">
         <CardHeader className="flex flex-row items-center space-x-4 pb-0">
           <Accordion type="single" collapsible className="max-w-full">
-            <AccordionItem value="payment">
+            <AccordionItem value="payment" className="space-y-3">
               <AccordionTrigger className="text-xl border font-bold hover:no-underline flex justify-start items-center gap-3">
                 <span className="bg-[#064E3B] text-white rounded-full w-8 h-8 flex items-center justify-center font-bold">
                   4
                 </span>
                 Payment Method
               </AccordionTrigger>
+
+              <AccordionContent className="h-16">
+                <div className="flex items-center space-x-3 border rounded-xl px-4 bg-[#F8F8F5] h-16 group hover:border-green-500 transition duration-500">
+                  <div className="w-8 h-8  rounded flex items-center justify-center font-bold text-lg">
+                    💵
+                  </div>
+                  <span className="font-bold group-hover:text-green-600 transition duration-500 my-4 pt-1 tracking-wide">
+                    Pay ${subtotal}.00
+                  </span>
+                </div>
+              </AccordionContent>
+
               <AccordionContent className="h-16">
                 <div
                   onClick={() => handleConfirmOrder({ subtotal, orderedItems })}
@@ -73,11 +85,12 @@ const PaymentMethod = ({
                   <div className="w-8 h-8  rounded flex items-center justify-center font-bold text-lg">
                     💵
                   </div>
-                  <span className="font-bold group-hover:text-green-600 transition duration-500">
+                  <span className="font-bold group-hover:text-green-600 transition duration-500 pt-1">
                     Cash on Delivery
                   </span>
                 </div>
               </AccordionContent>
+
               <ReviewModal open={isModalOpen} onOpenChange={setIsModalOpen} />
             </AccordionItem>
           </Accordion>
@@ -88,36 +101,3 @@ const PaymentMethod = ({
 };
 
 export default PaymentMethod;
-
-{
-  /* <AccordionContent className="h-16">
-                <div className="group flex items-center space-x-3 border rounded-xl px-4 bg-[#F8F8F5] h-16 hover:border-pink-500 transition duration-500">
-                  <div className="w-8 h-8  rounded flex items-center justify-center font-bold text-lg">
-                    📱
-                  </div>
-                  <span className="font-bold group-hover:text-pink-500 transition duration-500">
-                    bKash
-                  </span>
-                </div>
-              </AccordionContent>
-              <AccordionContent className="h-16 my-4">
-                <div className="flex items-center space-x-3 border rounded-xl px-4 bg-[#F8F8F5] h-16 group hover:border-amber-500 transition duration-500">
-                  <div className="w-8 h-8  rounded flex items-center justify-center font-bold text-lg">
-                    💳
-                  </div>
-                  <span className="font-bold group-hover:text-amber-800 transition duration-500">
-                    Nagad
-                  </span>
-                </div>
-              </AccordionContent>
-              <AccordionContent className="h-16 my-4">
-                <div className="flex items-center space-x-3 border rounded-xl px-4 bg-[#F8F8F5] h-16 group hover:border-blue-500 transition duration-500">
-                  <div className="w-8 h-8  rounded flex items-center justify-center font-bold text-lg">
-                    🏦
-                  </div>
-                  <span className="font-bold group-hover:text-blue-500 transition duration-500">
-                    Card/Net Banking
-                  </span>
-                </div>
-              </AccordionContent> */
-}

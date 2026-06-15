@@ -3,13 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { Textarea } from "@/components/ui/textarea";
 import {
   Accordion,
@@ -17,7 +11,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { CheckCircle2, Zap } from "lucide-react";
+import { Zap } from "lucide-react";
 
 import OrderSummary from "@/components/ui/orderSummary";
 import PaymentMethod from "@/components/ui/paymentMethod";
@@ -26,13 +20,7 @@ import { authClient } from "@/lib/auth-client";
 import { CartItem } from "@/types";
 import { getCart } from "@/app/actions/cart.action";
 
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import { env } from "@/env";
-import { orderService } from "@/service/order.service";
-
 const CheckoutPage = () => {
-  const router = useRouter();
   const { data: session } = authClient.useSession();
   const user_id = session?.user.id;
   const [guest_id, setGuestId] = useState<string | null>(null);
