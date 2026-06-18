@@ -5,7 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import MediCard from "@/components/ui/mediCard";
-import { authClient } from "@/lib/auth-client";
+
 
 import { Medicine } from "@/types";
 import { useEffect, useState } from "react";

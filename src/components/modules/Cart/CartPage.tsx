@@ -127,8 +127,8 @@ const CartPage = () => {
     );
   }, [carts]);
 
-  const deliveryFee = carts.length > 0 ? 60 : 0;
-  const discount = carts.length > 0 ? 25 : 0;
+  const deliveryFee = carts?.length > 0 ? 60 : 0;
+  const discount = carts?.length > 0 ? 25 : 0;
   const total = subtotal + deliveryFee - discount;
 
   if (loading) {

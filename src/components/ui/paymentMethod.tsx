@@ -13,15 +13,20 @@ import { createOrder } from "@/app/utilis/CreateOrder";
 import { useEffect, useState } from "react";
 import { deleteAllCart } from "@/app/actions/cart.action";
 import ReviewModal from "./ReviewModal";
+import PaymentModal from "./PaymentModal";
+import { CartItem } from "@/types";
 
 const PaymentMethod = ({
   subtotal,
   orderedItems,
+  carts,
 }: {
   subtotal: number;
   orderedItems: any;
+  carts: CartItem[];
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [guest_id, setGuestId] = useState<string | null>(null);
   const payload = {
     guest_id: guest_id as string,
@@ -45,7 +50,7 @@ const PaymentMethod = ({
         toast.success(result.message, { id: loadingId });
         setIsModalOpen(true);
         await deleteAllCart(payload);
-        // router.push("/customer-dashboard/orders");
+        window.location.href = "/customer-dashboard/orders";
       } else {
         toast.error(result.message, { id: loadingId });
       }
@@ -67,7 +72,10 @@ const PaymentMethod = ({
               </AccordionTrigger>
 
               <AccordionContent className="h-16">
-                <div className="flex items-center space-x-3 border rounded-xl px-4 bg-[#F8F8F5] h-16 group hover:border-green-500 transition duration-500">
+                <div
+                  onClick={() => setIsPaymentModalOpen(!isPaymentModalOpen)}
+                  className="flex items-center space-x-3 border rounded-xl px-4 bg-[#F8F8F5] h-16 group hover:border-green-500 transition duration-500"
+                >
                   <div className="w-8 h-8  rounded flex items-center justify-center font-bold text-lg">
                     💵
                   </div>
@@ -76,6 +84,13 @@ const PaymentMethod = ({
                   </span>
                 </div>
               </AccordionContent>
+
+              <PaymentModal
+                open={isPaymentModalOpen}
+                onOpenChange={setIsPaymentModalOpen}
+                subtotal={subtotal}
+                carts={carts}
+              />
 
               <AccordionContent className="h-16">
                 <div

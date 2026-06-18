@@ -12,6 +12,7 @@ export type Order = {
   seller_id: string;
   status: orderType;
   total_bill: string;
+  payment_status: string;
   order_date: string;
   orderItems: OrderItem[];
   seller_name: string;

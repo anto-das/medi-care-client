@@ -162,6 +162,7 @@ const CheckoutPage = () => {
             <PaymentMethod
               subtotal={total}
               orderedItems={orderedItems}
+              carts={carts}
             ></PaymentMethod>
           </div>
 

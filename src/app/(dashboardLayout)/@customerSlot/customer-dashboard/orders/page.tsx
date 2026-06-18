@@ -80,6 +80,9 @@ export default async function OrderManagement() {
                 Status
               </TableHead>
               <TableHead className="font-bold text-[11px] uppercase tracking-wider text-slate-500">
+                Bill
+              </TableHead>
+              <TableHead className="font-bold text-[11px] uppercase tracking-wider text-slate-500">
                 Action
               </TableHead>
             </TableRow>
@@ -118,6 +121,15 @@ export default async function OrderManagement() {
                     className="bg-yellow-100 text-yellow-700 hover:bg-yellow-100 font-medium px-2 py-0.5 rounded-full"
                   >
                     <span className="mr-1 text-lg">•</span> {order.status}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  <Badge
+                    variant="secondary"
+                    className="bg-blue-100 text-blue-700 hover:bg-blue-100 font-medium px-2 py-0.5 rounded-full"
+                  >
+                    <span className="mr-1 text-lg">•</span>{" "}
+                    {order.payment_status}
                   </Badge>
                 </TableCell>
                 <TableCell>

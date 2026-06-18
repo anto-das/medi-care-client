@@ -23,6 +23,7 @@ const page = async () => {
               <th className="p-4 font-medium">Seller</th>
               <th className="p-4 font-medium">Total</th>
               <th className="p-4 pr-6 font-medium">Status</th>
+              <th className="p-4 pr-6 font-medium">Payment</th>
             </tr>
           </thead>
 
@@ -73,6 +74,24 @@ const page = async () => {
                         {order.status}
                       </span>
                     )}
+                  </td>
+                  <td className="p-4 align-middle">
+                    <span
+                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                        order.payment_status?.toLowerCase() === "paid"
+                          ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+                          : "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400"
+                      }`}
+                    >
+                      <span
+                        className={`mr-1.5 h-1.5 w-1.5 rounded-full ${
+                          order.payment_status?.toLowerCase() === "paid"
+                            ? "bg-green-600"
+                            : "bg-amber-600"
+                        }`}
+                      />
+                      {order.payment_status}
+                    </span>
                   </td>
                 </tr>
               );
