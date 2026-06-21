@@ -90,6 +90,7 @@ const PaymentMethod = ({
                 onOpenChange={setIsPaymentModalOpen}
                 subtotal={subtotal}
                 carts={carts}
+                guest_id={guest_id as string}
               />
 
               <AccordionContent className="h-16">

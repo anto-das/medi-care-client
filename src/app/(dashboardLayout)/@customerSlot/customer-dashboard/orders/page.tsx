@@ -124,13 +124,23 @@ export default async function OrderManagement() {
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  <Badge
-                    variant="secondary"
-                    className="bg-blue-100 text-blue-700 hover:bg-blue-100 font-medium px-2 py-0.5 rounded-full"
-                  >
-                    <span className="mr-1 text-lg">•</span>{" "}
-                    {order.payment_status}
-                  </Badge>
+                  {order.payment_status === "PAID" ? (
+                    <Badge
+                      variant="secondary"
+                      className="bg-green-100 text-green-700 hover:bg-green-100 font-medium px-2 py-0.5 rounded-full"
+                    >
+                      <span className="mr-1 text-lg">•</span>{" "}
+                      {order.payment_status}
+                    </Badge>
+                  ) : (
+                    <Badge
+                      variant="secondary"
+                      className="bg-red-100 text-red-700 hover:bg-red-100 font-medium px-2 py-0.5 rounded-full"
+                    >
+                      <span className="mr-1 text-lg">•</span>{" "}
+                      {order.payment_status}
+                    </Badge>
+                  )}
                 </TableCell>
                 <TableCell>
                   <Link

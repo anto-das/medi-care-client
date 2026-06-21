@@ -18,34 +18,54 @@ import { useRouter } from "next/navigation";
 import { CartItem, OrderItem } from "@/types";
 
 import { handlePayment } from "@/app/actions/payment.action";
+import { createOrder } from "@/app/utilis/CreateOrder";
+import { toast } from "sonner";
+import { deleteAllCart } from "@/app/actions/cart.action";
 
 const PaymentModal = ({
   open,
   onOpenChange,
   subtotal,
   carts,
+  guest_id,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   subtotal: number;
   carts: CartItem[];
+  guest_id: string;
 }) => {
   const { data } = authClient.useSession();
   const router = useRouter();
   const user = data?.user;
+
+  const orderedItems = carts.map((item) => ({
+    medicine_id: item.medicine_id,
+    quantity: item.quantity,
+    price: Number(item.price),
+  }));
 
   const handleModalClose = (isOpen: boolean) => {
     onOpenChange(isOpen);
   };
 
   const handleStripePayment = async (e: any) => {
+    const loadingId = toast.loading("processing your ordered...");
     try {
       e.preventDefault();
-      const res = await handlePayment(carts);
-      if (res.url) {
-        window.location.href = res.url;
+      const result = await createOrder({ subtotal, orderedItems });
+      if (result.success) {
+        await deleteAllCart({ guest_id });
+        const order_id = result.data.order_id as string;
+        const res = await handlePayment(carts, order_id);
+        if (res.url) {
+          toast.success("your ordered is confirm please pay your bill!😊", {
+            id: loadingId,
+          });
+          window.location.href = res.url;
+        }
       } else {
-        alert("Could not create payment link. Please try again.");
+        toast.info("Could not create payment link. Please try again.");
       }
       onOpenChange(open);
     } catch (err: any) {

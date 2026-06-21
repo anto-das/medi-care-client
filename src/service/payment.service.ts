@@ -3,12 +3,13 @@ import { CartItem } from "@/types";
 import { cookies } from "next/headers";
 
 export const handlePaymentService = {
-  createPaymentSession: async (carts: CartItem[]) => {
+  createPaymentSession: async (carts: CartItem[], order_id: string) => {
     const cookie = await cookies();
     const allCookies = cookie.toString();
     try {
       const body = {
         medicines: carts,
+        order_id,
       };
       const res = await fetch(`${env.BACKEND_URL}/create-checkout-session`, {
         method: "POST",

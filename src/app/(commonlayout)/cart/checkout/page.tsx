@@ -64,7 +64,7 @@ const CheckoutPage = () => {
   const discount = carts.length > 0 ? 25 : 0;
   const total = subtotal + deliveryFee - discount;
 
-  const orderedItems = carts.map((item) => ({
+  const orderedItems = carts.map((item:any) => ({
     medicine_id: item.medicine_id,
     quantity: item.quantity,
     price: Number(item.price),

@@ -135,7 +135,7 @@ const CartPage = () => {
     return <Loading />;
   }
 
-  if (carts.length === 0) {
+  if (carts?.length === 0) {
     return <EmptyCart />;
   }
 

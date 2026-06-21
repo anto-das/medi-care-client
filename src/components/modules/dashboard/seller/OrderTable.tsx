@@ -3,6 +3,7 @@ import {
   handleConfirmOrder,
   handleDeleteOrder,
 } from "@/app/utilis/handleConfirmOrder";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import NoOrdersState from "@/components/ui/NoOrderState";
 import { orderType } from "@/constants/OrderStatus";
@@ -55,6 +56,7 @@ const OrdersTable = () => {
                 <th className="py-3 px-6 font-medium">Total</th>
                 <th className="py-3 px-6 font-medium">Date</th>
                 <th className="py-3 px-6 font-medium">Status</th>
+                <th className="py-3 px-6 font-medium">Bill</th>
                 <th className="py-3 px-6 font-medium">Action</th>
               </tr>
             </thead>
@@ -104,6 +106,25 @@ const OrdersTable = () => {
                         <span className="w-1.5 h-1.5 rounded-full bg-[#1E7E34]" />
                         {ord.status}
                       </span>
+                    )}
+                  </td>
+                  <td>
+                    {ord.payment_status === "PAID" ? (
+                      <Badge
+                        variant="secondary"
+                        className="bg-green-100 text-green-700 hover:bg-green-100 font-medium px-2 py-0.5 rounded-full"
+                      >
+                        <span className="mr-1 text-lg">•</span>{" "}
+                        {ord.payment_status}
+                      </Badge>
+                    ) : (
+                      <Badge
+                        variant="secondary"
+                        className="bg-red-100 text-red-700 hover:bg-red-100 font-medium px-2 py-0.5 rounded-full"
+                      >
+                        <span className="mr-1 text-lg">•</span>{" "}
+                        {ord.payment_status}
+                      </Badge>
                     )}
                   </td>
 
