@@ -26,10 +26,6 @@ import { useEffect } from "react";
 import { handleSignOut } from "@/app/utilis/handleSignOUt";
 import { MenuItem, Navbar1Props } from "@/types";
 
-const baseClasses =
-  "inline-flex h-10 items-center justify-start rounded-md px-4 py-2 text-md font-medium transition-colors duration-300 w-full";
-const inactiveClasses =
-  "text-[#7a8d8d] hover:text-[#1f6b5d] hover:bg-[#e6f4f1]";
 const Navbar = ({
   menu = [
     { title: "Home", url: "/" },
@@ -57,7 +53,6 @@ const Navbar = ({
   className,
 }: Navbar1Props) => {
   const { data: session } = authClient.useSession();
-  // console.log("Session in Navbar:", session);
   const pathname = usePathname();
   useEffect(() => {
     const existingId = localStorage.getItem("guest_id");
@@ -76,7 +71,7 @@ const Navbar = ({
             <div className="flex items-center">
               <NavigationMenu>
                 <NavigationMenuList>
-                  {menu.map((item) => renderMenuItem(item))}
+                  {menu.map((item) => renderMenuItem(item, pathname))}
                 </NavigationMenuList>
               </NavigationMenu>
             </div>
@@ -135,7 +130,7 @@ const Navbar = ({
                     collapsible
                     className="flex w-full flex-col gap-4"
                   >
-                    {menu.map((item) => renderMobileMenuItem(item))}
+                    {menu.map((item) => renderMobileMenuItem(item, pathname))}
                   </Accordion>
 
                   <a
@@ -177,8 +172,12 @@ const Navbar = ({
     </section>
   );
 };
+const baseClasses =
+  "inline-flex h-10 items-center justify-start rounded-md px-4 py-2 text-md font-medium transition-colors duration-300 w-full";
+const inactiveClasses =
+  "text-[#7a8d8d] hover:text-[#1f6b5d] hover:bg-[#e6f4f1]";
 
-const renderMenuItem = (item: MenuItem) => {
+const renderMenuItem = (item: MenuItem, pathname: string) => {
   if (item.items) {
     return (
       <NavigationMenuItem key={item.title}>
@@ -187,8 +186,7 @@ const renderMenuItem = (item: MenuItem) => {
     );
   }
 
-  const pathname = usePathname();
-  const isActive = pathname.startsWith(item.url);
+  const isActive = pathname === item.url;
   return (
     <NavigationMenuItem key={item.title}>
       <Link
@@ -201,8 +199,7 @@ const renderMenuItem = (item: MenuItem) => {
   );
 };
 
-const renderMobileMenuItem = (item: MenuItem) => {
-  const pathname = usePathname();
+const renderMobileMenuItem = (item: MenuItem, pathname: string) => {
   return (
     <NavigationMenuItem key={item.title}>
       <Link

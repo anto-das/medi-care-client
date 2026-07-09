@@ -14,7 +14,7 @@ import {
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { getSessionData } from "@/app/actions/payment.action";
-import MedicareLoading from "@/components/ui/loading";
+
 
 interface ISession {
   id: string;
@@ -26,7 +26,7 @@ export default function PaymentSuccessPage() {
   const [sessionData, setSessionData] = useState<ISession>();
   const searchParam = useSearchParams();
   const session_id = searchParam.get("session_id");
-  const [loading, setLoading] = useState<boolean>(true);
+ 
 
   useEffect(() => {
     (async () => {
@@ -45,11 +45,6 @@ export default function PaymentSuccessPage() {
     amount: sessionData?.amount,
     status: sessionData?.status,
   };
-  // setLoading(false);
-
-  // if (orderDetails.id) {
-  //   setLoading(false);
-  // }
 
   return (
     <div className="min-h-screen bg-slate-50/50 flex items-center justify-center p-4 antialiased">
