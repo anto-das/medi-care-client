@@ -8,12 +8,12 @@ export const handleSignOut = async () => {
     const { data, error } = await authClient.signOut();
     toast.success("Signed out successfully!", { id: toastId });
     if (data?.success) {
-      window.location.href = "/"; // Redirect to home page
+      window.location.href = "/"; 
     } else {
       toast.error("Failed to sign out. Please try again.", { id: toastId });
     }
   } catch (error) {
-    // console.log(error);
+
     return toast.error("Failed to sign out. Please try again.", {
       id: toastId,
     });

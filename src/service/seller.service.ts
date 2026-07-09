@@ -47,7 +47,7 @@ export const sellerService = {
         ...config,
       });
       const { data } = await res.json();
-      // console.log(data)
+  
       return { data, error: null };
     } catch (error) {
       return {
@@ -74,7 +74,7 @@ export const sellerService = {
         ...config,
       });
       const { data } = await res.json();
-      // console.log(data)
+     
       return { data, error: null };
     } catch (error) {
       return {
@@ -101,7 +101,7 @@ export const sellerService = {
         ...config,
       });
       const { data } = await res.json();
-      // console.log(data)
+      
       return { data, error: null };
     } catch (error) {
       return {
@@ -148,7 +148,7 @@ export const sellerService = {
         body: JSON.stringify(payload),
       });
       const data = await res.json();
-      // console.log(data);
+     
       return { data };
     } catch (error: any) {
       toast.error("something wrong in service");
@@ -191,7 +191,7 @@ export const sellerService = {
         },
       });
       const data = res.json();
-      // console.log(data);
+      
       return data;
     } catch (error) {
       return { data: null, error };

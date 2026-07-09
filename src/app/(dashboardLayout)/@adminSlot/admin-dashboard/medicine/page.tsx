@@ -15,7 +15,7 @@ const page = () => {
     try {
       const { data } = await getMedicine();
       setMedicines(data);
-      // console.log("Medicines fetched in page component:", data);
+      
     } catch (error) {
       console.error("Error fetching medicines in page component:", error);
     }

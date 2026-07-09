@@ -5,7 +5,7 @@ export const imgBB = async (file: File) => {
     let directUrl = "";
     const formData = new FormData();
     formData.append("image", file);
-    // console.log("form data: ",formData)
+
     const imgResponse = await fetch(
       `https://api.imgbb.com/1/upload?key=${env.NEXT_PUBLIC_HOSTING_IMG_KEY}`,
       {
@@ -14,14 +14,14 @@ export const imgBB = async (file: File) => {
         body: formData,
       },
     );
-    // console.log("imgResponse: ", imgResponse);
+
     const response = await imgResponse.json();
-    // console.log("response: ", response);
+
     if (response.success) {
       directUrl = response.data.url;
     }
     return directUrl;
   } catch (err: any) {
-    console.log(err);
+    alert(err);
   }
 };

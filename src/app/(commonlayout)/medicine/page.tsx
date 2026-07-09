@@ -65,7 +65,7 @@ const MedicinePage = () => {
   const handleSearch = useDebouncedCallback((value: string) => {
     setSearchMedi(value);
   }, 400);
-  // console.log("categoires:  ",categories)
+ 
   return (
     <div>
       <h1 className="text-3xl w-11/14 mx-auto lg:py-8  md:text-4xl lg:text-5xl font-bold">
@@ -120,51 +120,3 @@ const MedicinePage = () => {
 
 export default MedicinePage;
 
-// "use client";
-
-// import { useState } from "react";
-// import { Checkbox } from "@/components/ui/checkbox";
-
-//
-
-// function MedicineFilter() {
-//   // সিলেক্টেড ক্যাটাগরিগুলো এই অ্যারেতে থাকবে
-//   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-
-//   const handleCheckboxChange = (categoryId: string, checked: boolean) => {
-//     if (checked) {
-//       // যদি চেক করা হয়, তবে অ্যারেতে অ্যাড হবে
-//       setSelectedCategories((prev) => [...prev, categoryId]);
-//     } else {
-//       // আনচেক করলে অ্যারে থেকে রিমুভ হবে
-//       setSelectedCategories((prev) => prev.filter((id) => id !== categoryId));
-//     }
-//   };
-
-//   console.log("Selected Filters:", selectedCategories);
-
-//   return (
-//     <div className="space-y-4 p-4 border rounded-lg w-64">
-//       <h3 className="font-bold">Filter by Category</h3>
-//       {categories.map((category) => (
-//         <div key={category.id} className="flex items-center space-x-2">
-//           <Checkbox
-//             id={category.id}
-//             checked={selectedCategories.includes(category.id)}
-//             onCheckedChange={(checked: boolean) =>
-//               handleCheckboxChange(category.id, checked)
-//             }
-//           />
-//           <label
-//             htmlFor={category.id}
-//             className="text-sm font-medium cursor-pointer"
-//           >
-//             {category.label}
-//           </label>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// }
-
-// export default MedicineFilter;

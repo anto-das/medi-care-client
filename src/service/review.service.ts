@@ -10,7 +10,7 @@ export const reviewService = {
     rating: number;
     comment: string;
   }) => {
-    // console.log(payload)
+    
     const cookieStore = await cookies();
     const allCookies = cookieStore.toString();
     try {
@@ -24,7 +24,7 @@ export const reviewService = {
       });
       return await result.json();
     } catch (err: any) {
-      // console.log(err);
+      
       return { data: null, error: "your review don't added", details: err };
     }
   },

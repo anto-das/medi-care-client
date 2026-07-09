@@ -4,7 +4,7 @@ import { Order } from "@/types/order.type";
 
 const page = async () => {
   const { data: orders } = await adminService.getAllOrders();
-  //   console.log(data);
+  
   return (
     <div className="w-full mx-auto p-6 bg-[#FAF8F5] min-h-screen">
       {/* Table Heading */}

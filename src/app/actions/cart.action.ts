@@ -14,7 +14,7 @@ export const addCart = async ({
 }) => {
   const { data } = await userService.getSession();
   const user_id = data?.user.id;
-  // console.log({ user_id, id, guest_id });
+ 
   const create = cartService.addToCart({ id, guest_id, user_id, quantity });
   return create;
 };
@@ -36,7 +36,7 @@ export const updateCartQuantity = async (cart_id: string, quantity: number) => {
 };
 
 export const deleteAllCart = async (payload: { guest_id: string }) => {
-  // console.log(payload.guest_id);
+  
   const res = await cartService.deleteAll(payload);
   return res;
 };
