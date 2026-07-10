@@ -13,7 +13,7 @@ const FeaturedProduct = () => {
 
   useEffect(() => {
     (async () => {
-      const { data: medi } = await getMedicine();
+      const { data: medi } = await getMedicine({}, { revalidate: 10 });
       setData(medi);
     })();
   }, []);
