@@ -1,6 +1,6 @@
 # MediCare Client 🏥
 
-This is the frontend web application for the **MediCare** project, built using **Next.js**. It is a **Multi-Vendor E-Pharmacy & Healthcare Marketplace** featuring Role-Based Access Control (RBAC) and automated payment workflows. It connects seamlessly with the [MediCare Server API]([https://github.com](https://medicare-three-hazel.vercel.app/).
+This is the frontend web application for the **MediCare** project, built using **Next.js**. It is a **Multi-Vendor E-Pharmacy & Healthcare Marketplace** featuring Role-Based Access Control (RBAC) and automated payment workflows. It connects seamlessly with the [MediCare Server API]([https://github.com](https://medicare-three-hazel.vercel.app/)).
 
 ---
 
