@@ -28,6 +28,7 @@ import {
 import Logo from "../ui/logo";
 
 import SignOut from "../ui/signOutBtn";
+import { useCart } from "@/hooks/MedicineContext";
 
 // Standardizing menu styles for professional layout unity
 const navLinkClasses = (isActive: boolean) =>
@@ -63,6 +64,7 @@ const Navbar = ({
   const { data: session } = authClient.useSession();
   const user = session?.user;
   const pathname = usePathname();
+  const { carts } = useCart();
 
   return (
     <header
@@ -106,7 +108,7 @@ const Navbar = ({
               <ShoppingCart className="h-5 w-5 transition-transform group-hover:scale-105" />
               {/* Dynamic Cart Floating Counter Badge */}
               <Badge className="absolute -top-1 -right-1 h-5 min-w-5 flex items-center justify-center p-0 rounded-full bg-emerald-600 text-white font-bold text-[10px] border border-white">
-                0
+                {carts.length}
               </Badge>
             </Link>
 

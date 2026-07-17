@@ -1,10 +1,9 @@
 "use client";
 
-import { addCart } from "@/app/actions/cart.action";
 import { handleAddToCart } from "@/app/utilis/handleAddToCart";
+import { useCart } from "@/hooks/MedicineContext";
 import { Medicine } from "@/types";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 
 const MediCard = ({ medicine }: { medicine: Medicine }) => {
   const {
@@ -18,6 +17,7 @@ const MediCard = ({ medicine }: { medicine: Medicine }) => {
     stock_quantity,
   } = medicine;
   const router = useRouter();
+  const { guest_id, setCarts, user_id } = useCart();
 
   const handleCardClick = (medicine_id: string) => {
     router.push(`/medicine/${medicine_id}`); // আপনার ডিটেইল পেজের পাথ দিন
@@ -55,7 +55,7 @@ const MediCard = ({ medicine }: { medicine: Medicine }) => {
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                handleAddToCart(medicine_id, 1);
+                handleAddToCart(medicine_id, 1, setCarts, user_id, guest_id);
               }}
               className="bg-[#0b5e4e] hover:bg-[#098169] text-white font-bold py-2 px-4 rounded"
             >

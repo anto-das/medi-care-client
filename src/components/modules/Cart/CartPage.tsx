@@ -8,55 +8,39 @@ import {
 } from "@/app/actions/cart.action";
 import { authClient } from "@/lib/auth-client";
 import { useEffect, useMemo, useState } from "react";
-import { Trash2, ArrowRight, ShieldCheck, AlertCircle } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import CartItemCard from "@/components/ui/cartItemCard";
-import { CartItem } from "@/types";
+
 import Link from "next/link";
 import CheckOutAside from "@/components/ui/CheckOutAside";
 import { useDebounce } from "@/hooks/useDebounce";
 import { toast } from "sonner";
 import EmptyCart from "@/components/ui/emptyCart";
 import Loading from "@/components/ui/loading";
+import { useCart } from "@/hooks/MedicineContext";
 
 // Types definition for better DX
 
 const CartPage = () => {
   const { data: session } = authClient.useSession();
   const user_id = session?.user.id;
-  const [guest_id, setGuestId] = useState<string | null>(null);
-  const [carts, setCartsItems] = useState<CartItem[]>([]);
+
+  const { carts, setCarts, loading, guest_id } = useCart();
+
+  const [isMounted, setIsMounted] = useState(false);
+
+  // 2. useEffect diye Browser Mount Complete Tracker Active Korun
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   const [pendingUpdate, setPendingUpdate] = useState<{
     cart_id: string;
     quantity: number;
   } | null>(null);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const id = localStorage.getItem("guest_id");
-    setGuestId(id);
-  }, []);
-
-  // get medicine useEffect
-  useEffect(() => {
-    const fetchCart = async () => {
-      if (!guest_id && !user_id) return;
-      try {
-        setLoading(true);
-        const payload = { user_id: user_id, guest_id: guest_id as string };
-        const res = await getCart(payload);
-        setCartsItems(res);
-        if (res) {
-          setLoading(false);
-        }
-      } catch (error) {
-        console.error("Cart fetch error:", error);
-      }
-    };
-    fetchCart();
-  }, [guest_id, user_id]);
   const debouncedCarts = useDebounce(carts, 700);
   const handleQuantityChange = async (cart_id: string, action: string) => {
-    setCartsItems((prevCarts) =>
+    setCarts((prevCarts) =>
       prevCarts.map((item) => {
         if (item.cart_id === cart_id) {
           const currentQty = (item as any).quantity || 1;
@@ -81,7 +65,7 @@ const CartPage = () => {
 
   // update quantity useEffect
   useEffect(() => {
-    if (debouncedCarts.length > 0) {
+    if (debouncedCarts?.length > 0) {
       updateCartQuantity(
         pendingUpdate?.cart_id as string,
         pendingUpdate?.quantity as number,
@@ -96,7 +80,7 @@ const CartPage = () => {
       const deleteRes = await deleteCartItem(id);
       toast.success(deleteRes.message, { id: toastId });
       const res = await getCart(payload);
-      setCartsItems(res);
+      setCarts(res);
     } catch (error: any) {
       toast.error("failed to delete..", { id: toastId });
     }
@@ -110,7 +94,7 @@ const CartPage = () => {
         const delAll = await deleteAllCart(payload);
         delAll.success && toast.success(delAll.message, { id: toastId });
         const res = await getCart(payload);
-        setCartsItems(res);
+        setCarts(res);
       }
     } catch (err: any) {
       toast.error(err.message, { id: toastId });
@@ -130,6 +114,10 @@ const CartPage = () => {
   const deliveryFee = carts?.length > 0 ? 60 : 0;
   const discount = carts?.length > 0 ? 25 : 0;
   const total = subtotal + deliveryFee - discount;
+
+  if (!isMounted) {
+    return <Loading />;
+  }
 
   if (loading) {
     return <Loading />;
