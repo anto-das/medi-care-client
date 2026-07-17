@@ -1,25 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Geist,  Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
-import { userService } from "@/service/user.service";
+
 import Loading from "@/components/ui/loading";
 import { Suspense } from "react";
-import { Roles } from "@/constants/Roles";
-import { redirect } from "next/navigation";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+
+
+
 
 export const metadata: Metadata = {
-  title: "My Medi Store",
+  title: "MediCare",
   description:
     "Your one-stop shop for all your medical needs. Find a wide range of products, from prescription medications to health and wellness essentials, all in one convenient place.",
   icons: {

@@ -10,7 +10,6 @@ export const reviewService = {
     rating: number;
     comment: string;
   }) => {
-    
     const cookieStore = await cookies();
     const allCookies = cookieStore.toString();
     try {
@@ -24,13 +23,14 @@ export const reviewService = {
       });
       return await result.json();
     } catch (err: any) {
-      
       return { data: null, error: "your review don't added", details: err };
     }
   },
   getReviews: async () => {
     try {
-      const res = await fetch(`${env.BACKEND_URL}/api/review`);
+      const res = await fetch(`${env.BACKEND_URL}/api/review`, {
+        cache: "no-store",
+      });
       const result = await res.json();
       return { result, error: null };
     } catch (err: any) {

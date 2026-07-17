@@ -1,13 +1,22 @@
 "use client";
 
-import { Menu } from "lucide-react";
-import { Accordion } from "@/components/ui/accordion";
+import { useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Menu, ShoppingCart, LogOut, UserPlus, LogIn } from "lucide-react";
+import { v4 as uuid } from "uuid";
+
+import { cn } from "@/lib/utils";
+import { authClient } from "@/lib/auth-client";
+
+import { Navbar1Props } from "@/types";
+
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
-  NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import {
   Sheet,
@@ -16,35 +25,34 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
 import Logo from "../ui/logo";
-import { usePathname } from "next/navigation";
-import { authClient } from "@/lib/auth-client";
-import { v4 as uuid } from "uuid";
-import { useEffect } from "react";
-import { handleSignOut } from "@/app/utilis/handleSignOUt";
-import { MenuItem, Navbar1Props } from "@/types";
+
+import SignOut from "../ui/signOutBtn";
+
+// Standardizing menu styles for professional layout unity
+const navLinkClasses = (isActive: boolean) =>
+  cn(
+    "relative inline-flex h-9 items-center justify-center rounded-full px-4 text-sm font-semibold transition-all duration-200 select-none",
+    isActive
+      ? "text-emerald-700 bg-emerald-50/80 shadow-sm border border-emerald-100/50"
+      : "text-slate-600 hover:text-emerald-600 hover:bg-slate-50",
+  );
+
+const mobileNavLinkClasses = (isActive: boolean) =>
+  cn(
+    "flex w-full items-center rounded-xl px-4 py-3 text-sm font-bold transition-all",
+    isActive
+      ? "text-emerald-700 bg-emerald-50 border border-emerald-100/40"
+      : "text-slate-600 hover:text-emerald-600 hover:bg-slate-50",
+  );
 
 const Navbar = ({
   menu = [
     { title: "Home", url: "/" },
-    {
-      title: "Medicines",
-      url: "/medicine",
-    },
-    {
-      title: "Health Blog",
-      url: "/blog",
-    },
-    {
-      title: "Offers",
-      url: "/offers",
-    },
-    {
-      title: "Dashboard",
-      url: "/customer-dashboard",
-    },
+    { title: "Medicines", url: "/medicine" },
+    { title: "Health Blog", url: "/blog" },
+    { title: "Offers", url: "/offers" },
+    { title: "Dashboard", url: "/customer-dashboard" },
   ],
   auth = {
     login: { title: "Sign in", url: "/sign-in" },
@@ -53,162 +61,162 @@ const Navbar = ({
   className,
 }: Navbar1Props) => {
   const { data: session } = authClient.useSession();
+  const user = session?.user;
   const pathname = usePathname();
-  useEffect(() => {
-    const existingId = localStorage.getItem("guest_id");
-    if (!existingId) {
-      localStorage.setItem("guest_id", uuid());
-    }
-  }, []);
+
   return (
-    <section className={cn("py-4 z-10 sticky top-0 bg-[#f8f8f8ef]", className)}>
-      <div className="w-11/12 mx-auto">
-        {/* Desktop Menu */}
-        <nav className="hidden items-center justify-between lg:flex">
-          <div className="flex items-center gap-6">
-            {/* Logo */}
-            <Logo></Logo>
-            <div className="flex items-center">
-              <NavigationMenu>
-                <NavigationMenuList>
-                  {menu.map((item) => renderMenuItem(item, pathname))}
-                </NavigationMenuList>
-              </NavigationMenu>
-            </div>
+    <header
+      className={cn(
+        "sticky top-0 z-50 w-full border-b border-slate-100 bg-white/80 backdrop-blur-md transition-all",
+        className,
+      )}
+    >
+      <div className="mx-auto w-11/12 max-w-7xl h-16 flex items-center justify-between">
+        {/* DESKTOP VIEW LAYOUT */}
+        <div className="hidden lg:flex items-center justify-between w-full">
+          {/* Left section: Logo & Nav items */}
+          <div className="flex items-center gap-8">
+            <Logo />
+            <NavigationMenu>
+              <NavigationMenuList className="gap-1.5">
+                {menu.map((item) => {
+                  const isActive = pathname === item.url;
+                  return (
+                    <NavigationMenuItem key={item.title}>
+                      <Link
+                        href={item.url}
+                        className={navLinkClasses(isActive)}
+                      >
+                        {item.title}
+                      </Link>
+                    </NavigationMenuItem>
+                  );
+                })}
+              </NavigationMenuList>
+            </NavigationMenu>
           </div>
 
-          <div className="flex gap-5 items-center justify-end w-1/2">
-            <Link href={"/cart"} className="border p-1 rounded-md text-xl">
-              {" "}
-              🛒
+          {/* Right section: System Utilities & Profiles */}
+          <div className="flex items-center gap-4">
+            {/* Interactive Cart Button */}
+            <Link
+              href="/cart"
+              className="relative p-2.5 rounded-full border border-slate-100 hover:border-slate-200 hover:bg-slate-50 transition-all text-slate-600 hover:text-slate-900 group"
+            >
+              <ShoppingCart className="h-5 w-5 transition-transform group-hover:scale-105" />
+              {/* Dynamic Cart Floating Counter Badge */}
+              <Badge className="absolute -top-1 -right-1 h-5 min-w-5 flex items-center justify-center p-0 rounded-full bg-emerald-600 text-white font-bold text-[10px] border border-white">
+                0
+              </Badge>
             </Link>
+
+            {/* Conditional Authentication Gate elements */}
+            <div className="h-5 w-px bg-slate-200 mx-1" />
+
             <Link
               href={auth.login.url}
-              className="rounded-md capitalize bg-white text-[#42534e] border border-[#ddeae7] hover:border-[#12725c] hover:text-[#12725c] px-4 py-2 text-sm font-bold font-[Sans-serif]"
+              className="inline-flex h-10 items-center justify-center rounded-xl text-sm font-bold text-slate-700 hover:text-emerald-700 px-4 transition-colors"
             >
               {auth.login.title}
             </Link>
-            {session?.user ? (
-              <>
-                <button
-                  onClick={handleSignOut}
-                  className="rounded-md capitalize bg-[#e22929] px-4 py-2 text-sm font-bold text-[#e2fff0] font-[Sans-serif]"
-                >
-                  Sign Out
-                </button>
-              </>
+
+            {user ? (
+              <SignOut />
             ) : (
-              <Link
-                href={auth.signup.url}
-                className="rounded-md capitalize bg-[#0b5e4e] hover:bg-[#0e856d] px-4 py-2 text-sm font-bold text-[#fafcfb] font-[Sans-serif]"
+              <Button
+                asChild
+                className="h-10 px-5 rounded-xl font-bold bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white active:scale-[0.98] transition-all shadow-md shadow-emerald-600/10"
               >
-                {auth.signup.title}
-              </Link>
+                <Link href={auth.signup.url}>{auth.signup.title}</Link>
+              </Button>
             )}
           </div>
-        </nav>
+        </div>
 
-        {/* Mobile Menu */}
-        <div className="block lg:hidden">
-          <div className="flex items-center justify-between">
-            <Logo></Logo>
+        {/* MOBILE VIEW LAYOUT */}
+        <div className="flex lg:hidden items-center justify-between w-full">
+          <Logo />
+
+          <div className="flex items-center gap-3">
+            {/* Direct Access Mobile Cart shortcut */}
+            <Link
+              href="/cart"
+              className="relative p-2 rounded-xl border border-slate-100 text-slate-600"
+            >
+              <ShoppingCart className="h-5 w-5" />
+              <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-emerald-600 text-white text-[9px] font-black flex items-center justify-center">
+                0
+              </span>
+            </Link>
+
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="outline" size="icon">
-                  <Menu className="size-4" />
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="rounded-xl border-slate-200"
+                >
+                  <Menu className="h-5 w-5 text-slate-700" />
                 </Button>
               </SheetTrigger>
-              <SheetContent className="overflow-y-auto">
-                <SheetHeader>
-                  <SheetTitle>
-                    <Logo></Logo>
-                  </SheetTitle>
-                </SheetHeader>
-                <div className="flex flex-col gap-6 p-4">
-                  <Accordion
-                    type="single"
-                    collapsible
-                    className="flex w-full flex-col gap-4"
-                  >
-                    {menu.map((item) => renderMobileMenuItem(item, pathname))}
-                  </Accordion>
+              <SheetContent
+                side="right"
+                className="w-[300px] sm:w-[340px] flex flex-col justify-between p-6"
+              >
+                <div className="space-y-6">
+                  <SheetHeader className="text-left border-b border-slate-50 pb-4">
+                    <SheetTitle>
+                      <Logo />
+                    </SheetTitle>
+                  </SheetHeader>
 
-                  <a
-                    className={`${baseClasses} ${pathname === "/cart" ? "px-4 py-2 text-md font-medium text-[#1f6b5d] bg-[#e6f4f1]" : inactiveClasses}`}
-                  >
-                    🛒 My cart
-                  </a>
-                  <div className="flex items-center w-full gap-3">
-                    <Link
-                      href={auth.login.url}
-                      className="rounded-md capitalize bg-white text-[#42534e] border border-[#ddeae7] hover:border-[#12725c] hover:text-[#12725c] px-4 py-1.5 text-sm font-bold w-full font-[Sans-serif] text-center"
-                    >
-                      {auth.login.title}
-                    </Link>
-                    {session?.user ? (
-                      <>
-                        <button
-                          onClick={handleSignOut}
-                          className="rounded-md capitalize bg-[#e22929] px-4 py-2 text-sm w-full font-bold text-[#e2fff0] font-[Sans-serif]"
+                  {/* Mobile Navigation Structure */}
+                  <div className="flex flex-col gap-1">
+                    {menu.map((item) => {
+                      const isActive = pathname === item.url;
+                      return (
+                        <Link
+                          key={item.title}
+                          href={item.url}
+                          className={mobileNavLinkClasses(isActive)}
                         >
-                          Sign Out
-                        </button>
-                      </>
-                    ) : (
-                      <Link
-                        href={auth.signup.url}
-                        className="rounded-md capitalize bg-[#0b5e4e] hover:bg-[#0e856d] px-4 py-2 text-sm font-bold text-[#fafcfb] font-[Sans-serif] w-full"
-                      >
+                          {item.title}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Bottom Footer User Profiles inside Mobile Sheet */}
+                <div className="space-y-4 pt-6 border-t border-slate-100">
+                  <Link
+                    href={auth.login.url}
+                    className="flex h-11 items-center justify-center rounded-xl text-sm font-bold text-slate-700 border border-slate-200 hover:bg-slate-50 transition-colors w-full"
+                  >
+                    <LogIn className="h-4 w-4 mr-2 text-slate-500" />
+                    {auth.login.title}
+                  </Link>
+
+                  {user ? (
+                    <SignOut />
+                  ) : (
+                    <Button
+                      asChild
+                      className="w-full h-11 rounded-xl font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-none"
+                    >
+                      <Link href={auth.signup.url}>
+                        <UserPlus className="h-4 w-4 mr-2" />
                         {auth.signup.title}
                       </Link>
-                    )}
-                  </div>
+                    </Button>
+                  )}
                 </div>
               </SheetContent>
             </Sheet>
           </div>
         </div>
       </div>
-    </section>
-  );
-};
-const baseClasses =
-  "inline-flex h-10 items-center justify-start rounded-md px-4 py-2 text-md font-medium transition-colors duration-300 w-full";
-const inactiveClasses =
-  "text-[#7a8d8d] hover:text-[#1f6b5d] hover:bg-[#e6f4f1]";
-
-const renderMenuItem = (item: MenuItem, pathname: string) => {
-  if (item.items) {
-    return (
-      <NavigationMenuItem key={item.title}>
-        <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>
-      </NavigationMenuItem>
-    );
-  }
-
-  const isActive = pathname === item.url;
-  return (
-    <NavigationMenuItem key={item.title}>
-      <Link
-        href={item.url}
-        className={`${baseClasses} ${isActive ? "px-4 py-2 text-md font-medium text-[#1f6b5d] bg-[#e6f4f1]" : inactiveClasses}`}
-      >
-        {item.title}
-      </Link>
-    </NavigationMenuItem>
-  );
-};
-
-const renderMobileMenuItem = (item: MenuItem, pathname: string) => {
-  return (
-    <NavigationMenuItem key={item.title}>
-      <Link
-        href={item.url}
-        className={`${baseClasses} ${pathname === item.url ? "px-4 py-2 text-md font-medium text-[#1f6b5d] bg-[#e6f4f1]" : inactiveClasses}`}
-      >
-        {item.title}
-      </Link>
-    </NavigationMenuItem>
+    </header>
   );
 };
 

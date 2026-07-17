@@ -50,11 +50,11 @@ const PaymentMethod = ({
         toast.success(result.message, { id: loadingId });
         setIsModalOpen(true);
         await deleteAllCart(payload);
-        window.location.href = "/customer-dashboard/orders";
       } else {
         toast.error(result.message, { id: loadingId });
       }
     } catch (error: any) {
+      
       throw new Error(error);
     }
   };

@@ -4,10 +4,10 @@ import { ApprovalStatus, Medicine } from "@/types";
 
 const DashboardMedicinePage = async () => {
   // await new Promise((resolve) => setTimeout(resolve, 2000));
-  const medicines = await medicineService.getMedicines(undefined, {
+  const { data } = await medicineService.getMedicines(undefined, {
     revalidate: 10,
   });
-  const filteredMedicines = medicines?.data.filter(
+  const filteredMedicines = data?.filter(
     (medicine: Medicine) => medicine.approval_status === "APPROVED",
   );
 

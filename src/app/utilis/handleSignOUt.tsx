@@ -1,5 +1,5 @@
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/router";
+
 import { toast } from "sonner";
 
 export const handleSignOut = async () => {
@@ -8,14 +8,15 @@ export const handleSignOut = async () => {
     const { data, error } = await authClient.signOut();
     toast.success("Signed out successfully!", { id: toastId });
     if (data?.success) {
-      window.location.href = "/"; 
+      window.location.href = "/";
     } else {
       toast.error("Failed to sign out. Please try again.", { id: toastId });
     }
   } catch (error) {
-
     return toast.error("Failed to sign out. Please try again.", {
       id: toastId,
     });
   }
 };
+
+

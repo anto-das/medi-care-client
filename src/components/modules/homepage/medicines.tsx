@@ -1,4 +1,3 @@
-import { getMedicine } from "@/app/actions/medicine.action";
 import EmptyMedicineState from "@/components/ui/EmptyMedicine";
 import MediCard from "@/components/ui/mediCard";
 import { medicineService } from "@/service/medicine.service";
@@ -8,7 +7,7 @@ import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
 
 const Medicines = async () => {
-  const { data } = await medicineService.getMedicines({}, { revalidate: 1000 });
+  const { data } = await medicineService.getMedicines();
   const medicines = data || [];
   const filteredMedicines = medicines?.filter(
     (medicine: Medicine) => medicine.approval_status === "APPROVED",
