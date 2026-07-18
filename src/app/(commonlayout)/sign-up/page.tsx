@@ -1,9 +1,10 @@
 import { Signup } from "@/components/modules/authentication/signup";
 
+
 const SignUpPage = () => {
   return (
     <div>
-      <Signup ></Signup>
+      <Signup></Signup>
     </div>
   );
 };

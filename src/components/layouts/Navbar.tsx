@@ -108,7 +108,7 @@ const Navbar = ({
               <ShoppingCart className="h-5 w-5 transition-transform group-hover:scale-105" />
               {/* Dynamic Cart Floating Counter Badge */}
               <Badge className="absolute -top-1 -right-1 h-5 min-w-5 flex items-center justify-center p-0 rounded-full bg-emerald-600 text-white font-bold text-[10px] border border-white">
-                {carts.length}
+                {carts.length || 0}
               </Badge>
             </Link>
 
@@ -122,7 +122,7 @@ const Navbar = ({
               {auth.login.title}
             </Link>
 
-            {user ? (
+            {user?.emailVerified ? (
               <SignOut />
             ) : (
               <Button
@@ -199,7 +199,7 @@ const Navbar = ({
                     {auth.login.title}
                   </Link>
 
-                  {user ? (
+                  {user?.emailVerified ? (
                     <SignOut />
                   ) : (
                     <Button

@@ -1,35 +1,42 @@
+"use client";
+
 import React from "react";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
-
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
-interface Footer7Props {
-  logo?: {
-    url: string;
-    src: string;
-    alt: string;
-    title: string;
-  };
-  className?: string;
-  sections?: Array<{
-    title: string;
-    links: Array<{ name: string; href: string }>;
-  }>;
-  description?: string;
-  socialLinks?: Array<{
-    icon: React.ReactElement;
-    href: string;
-    label: string;
-  }>;
-  copyright?: string;
-  legalLinks?: Array<{
-    name: string;
-    href: string;
-  }>;
+interface FooterLink {
+  name: string;
+  href: string;
 }
 
-const defaultSections = [
+interface FooterSection {
+  title: string;
+  links: FooterLink[];
+}
+
+interface SocialLink {
+  icon: React.ReactElement;
+  href: string;
+  label: string;
+}
+
+interface LegalLink {
+  name: string;
+  href: string;
+}
+
+interface Footer7Props {
+  className?: string;
+  sections?: FooterSection[];
+  description?: string;
+  socialLinks?: SocialLink[];
+  copyright?: string;
+  legalLinks?: LegalLink[];
+}
+
+// Fully Functional Support & Category Navigation Schema
+const defaultSections: FooterSection[] = [
   {
     title: "Products",
     links: [
@@ -53,29 +60,29 @@ const defaultSections = [
   {
     title: "SUPPORT",
     links: [
-      { name: "Help Center", href: "#" },
-      { name: "Track Order", href: "#" },
-      { name: "Return Policy", href: "#" },
-      { name: "Privacy Policy", href: "#" },
-      { name: "Contact Us", href: "#" },
+      { name: "Help Center", href: "/support/help" },
+      { name: "Track Order", href: "/orders/track" },
+      { name: "Return Policy", href: "/support/return-policy" },
+      { name: "Privacy Policy", href: "/support/privacy-policy" },
+      { name: "Contact Us", href: "/support/contact" },
     ],
   },
 ];
 
-const defaultSocialLinks = [
-  { icon: <FaInstagram className="size-5" />, href: "#", label: "Instagram" },
+const defaultSocialLinks: SocialLink[] = [
+  { icon: <FaInstagram className="h-5 w-5" />, href: "#", label: "Instagram" },
   {
-    icon: <FaFacebook className="size-5" />,
-    href: "https://www.facebook.com/ahir.anto.2025",
+    icon: <FaFacebook className="h-5 w-5" />,
+    href: "https://facebook.com",
     label: "Facebook",
   },
-  { icon: <FaTwitter className="size-5" />, href: "#", label: "Twitter" },
-  { icon: <FaLinkedin className="size-5" />, href: "#", label: "LinkedIn" },
+  { icon: <FaTwitter className="h-5 w-5" />, href: "#", label: "Twitter" },
+  { icon: <FaLinkedin className="h-5 w-5" />, href: "#", label: "LinkedIn" },
 ];
 
-const defaultLegalLinks = [
-  { name: "Terms and Conditions", href: "#" },
-  { name: "Privacy Policy", href: "#" },
+const defaultLegalLinks: LegalLink[] = [
+  { name: "Terms and Conditions", href: "/support/terms" },
+  { name: "Privacy Policy", href: "/support/privacy-policy" },
 ];
 
 const Footer = ({
@@ -87,54 +94,88 @@ const Footer = ({
   className,
 }: Footer7Props) => {
   return (
-    <section className={cn("pt-0", className)}>
-      <div className="w-full lg:px-20 py-16 px-6 bg-[#0f1f1b]">
-        <div className="flex w-full flex-col justify-between gap-10 lg:flex-row lg:items-start lg:text-left">
-          <div className="flex w-full flex-col justify-between gap-6 lg:items-start">
-            {/* Logo */}
-            <span className="font-bold text-3xl text-white">
-              Medi<span className="font-black text-[#60d4bb]">Care</span>{" "}
-            </span>
-            <p className="max-w-[70%] text-sm text-[#7a7c79]">{description}</p>
-            <ul className="flex items-center space-x-6 text-muted-foreground">
+    <footer className={cn("w-full bg-[#0b1512] text-slate-300 border-t border-emerald-950/40", className)}>
+      <div className="mx-auto w-11/12 max-w-7xl py-16 px-4 sm:px-6 lg:px-8">
+        
+        {/* Main Content Layout Grid */}
+        <div className="grid grid-cols-1 gap-10 xl:grid-cols-3 xl:gap-8 pb-12 border-b border-emerald-900/30">
+          
+          {/* Brand/Logo Info Section */}
+          <div className="space-y-6 xl:col-span-1">
+            <Link href="/" className="inline-block outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded-lg">
+              <span className="font-bold text-3xl text-white tracking-tight select-none">
+                Medi<span className="font-black text-emerald-400">Care</span>
+              </span>
+            </Link>
+            <p className="text-sm leading-relaxed text-slate-400 max-w-sm">
+              {description}
+            </p>
+            
+            {/* Social Connection Registry */}
+            <div className="flex items-center space-x-5">
               {socialLinks.map((social, idx) => (
-                <li
+                <Link
                   key={idx}
-                  className="font-medium transition-colors duration-300 hover:text-[#31ddbb]"
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.label}
+                  className="p-2 rounded-xl bg-emerald-950/50 border border-emerald-900/30 text-slate-400 hover:text-emerald-400 hover:border-emerald-500/30 transition-all duration-200"
                 >
-                  <Link href={social.href} target="_blank">
-                    {social.icon}
-                  </Link>
-                </li>
+                  {social.icon}
+                </Link>
               ))}
-            </ul>
+            </div>
           </div>
-          <div className="grid w-full gap-6 md:grid-cols-3 lg:gap-20">
+
+          {/* Navigation Links Mapping Section */}
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-3 xl:col-span-2">
             {sections.map((section, sectionIdx) => (
-              <div key={sectionIdx}>
-                <h3 className="mb-4 text-gray-300 uppercase text-sm font-bold">
+              <div key={sectionIdx} className="space-y-4">
+                <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider select-none">
                   {section.title}
                 </h3>
-                <ul className="space-y-3 text-sm text-muted-foreground">
+                <ul className="space-y-2.5">
                   {section.links.map((link, linkIdx) => (
-                    <li
-                      key={linkIdx}
-                      className=" hover:text-gray-200 font-md transition-colors duration-300"
-                    >
-                      <Link href={link.href}>{link.name}</Link>
+                    <li key={linkIdx}>
+                      <Link 
+                        href={link.href}
+                        className="text-sm text-slate-400 hover:text-emerald-400 font-medium transition-colors duration-200 inline-block py-0.5 outline-none focus-visible:text-emerald-400"
+                      >
+                        {link.name}
+                      </Link>
                     </li>
                   ))}
                 </ul>
               </div>
             ))}
           </div>
+
         </div>
-        <div className="mt-8 flex flex-col justify-between gap-4 border-t border-[#53514c80] py-8 text-xs font-medium text-muted-foreground md:flex-row md:items-center md:text-left">
-          <p>Made with ❤️ for Bangladesh</p>
-          <p className="order-2 lg:order-1">{copyright}</p>
+
+        {/* Bottom Utility Metadata Footer Section */}
+        <div className="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-medium text-slate-500">
+          <div className="flex items-center gap-6 order-2 sm:order-1 text-center sm:text-left">
+            <p>{copyright}</p>
+            <div className="hidden md:flex items-center gap-4">
+              {legalLinks.map((legal, index) => (
+                <Link 
+                  key={index} 
+                  href={legal.href}
+                  className="hover:text-slate-400 transition-colors duration-150"
+                >
+                  {legal.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+          <p className="flex items-center gap-1.5 order-1 sm:order-2 bg-emerald-950/30 border border-emerald-900/20 px-3 py-1.5 rounded-full text-slate-400">
+            Made with <span className="text-emerald-500 animate-pulse text-sm">❤️</span> for Bangladesh
+          </p>
         </div>
+
       </div>
-    </section>
+    </footer>
   );
 };
 

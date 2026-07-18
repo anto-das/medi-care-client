@@ -19,10 +19,14 @@ import { orderService } from "@/service/order.service";
 import { Order } from "@/types";
 import Link from "next/link";
 import EmptyOrder from "@/components/modules/dashboard/customer/orders/EmptyOrders";
+import { redirect } from "next/navigation";
 
 export default async function OrderManagement() {
   const { data } = await orderService.getOrders();
   const orders = data?.data;
+  if(orders === undefined){
+    return redirect("/sign-in")
+  }
   if (orders.length === 0) {
     return <EmptyOrder />;
   }

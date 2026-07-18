@@ -1,25 +1,27 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useForm } from "@tanstack/react-form";
+import * as z from "zod";
+import { toast } from "sonner";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaGoogle } from "react-icons/fa";
+import { Loader2, KeyRound, Mail, ShieldAlert } from "lucide-react";
+
 import Divider from "@/components/separator-with-text-1";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
-
-import Link from "next/link";
-import { useForm } from "@tanstack/react-form";
-import { FaGoogle } from "react-icons/fa";
+import { authClient } from "@/lib/auth-client";
+import { Roles } from "@/constants/Roles";
 import {
   Field,
   FieldError,
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import * as z from "zod";
-import { toast } from "sonner";
-import { redirect, useRouter } from "next/navigation";
-import { Roles } from "@/constants/Roles";
 
 interface Signup2Props {
   heading?: string;
@@ -30,6 +32,12 @@ interface Signup2Props {
   className?: string;
 }
 
+const DEMO_ACCOUNTS = [
+  { label: "Customer", email: "customer@medi-store.com", pass: "customer123" },
+  { label: "Seller", email: "seller@medi-store.com", pass: "seller123" },
+  { label: "Admin", email: "admin@medi-store.com", pass: "admin123" },
+];
+
 const SignInPage = ({
   buttonText = "Sign In",
   signupText = "Don't have an account?",
@@ -37,11 +45,23 @@ const SignInPage = ({
   className,
 }: Signup2Props) => {
   const router = useRouter();
-  // console.log(router);
+  const [mounted, setMounted] = useState(false);
+  const [isPending, setIsPending] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+
+  // Sync state explicitly to avoid TanStack field sync mismatches
+  const [emailState, setEmailState] = useState("");
+  const [passState, setPassState] = useState("");
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const formSchema = z.object({
     email: z.string().email("Invalid email address"),
     password: z.string().min(8, "Password must be at least 8 characters"),
   });
+
   const form = useForm({
     defaultValues: {
       email: "",
@@ -51,173 +71,265 @@ const SignInPage = ({
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
+      setIsPending(true);
       const toastId = toast.loading("Signing in...");
       try {
         const result = await authClient.signIn.email({
-          email: value.email,
-          password: value.password,
+          email: value.email || emailState,
+          password: value.password || passState,
         });
         const { data, error } = result;
         if (error) {
+          setIsPending(false);
           return toast.error(error.message, { id: toastId });
         }
+
         const user: any = data?.user;
+        toast.success("Signed in successfully!", { id: toastId });
+
         if (user?.role === Roles.SELLER) {
-          toast.success("Signed in successfully!", { id: toastId });
           window.location.href = "/seller-dashboard";
         } else if (user?.role === Roles.ADMIN) {
-          toast.success("Signed in successfully!", { id: toastId });
           window.location.href = "/admin-dashboard";
-        } else if (user?.role === Roles.CUSTOMER) {
-          toast.success("Signed in successfully!", { id: toastId });
+        } else {
           router.push("/");
         }
       } catch (e) {
+        setIsPending(false);
         toast.error("Failed to sign in. Please try again.", { id: toastId });
       }
-      // Handle form submission logic here
     },
   });
+
+  const handleDemoInject = (email: string, pass: string) => {
+    setEmailState(email);
+    setPassState(pass);
+    form.setFieldValue("email", email);
+    form.setFieldValue("password", pass);
+  };
+
   const handleSignWithGoogle = async () => {
-    const res = await authClient.signIn.social({
-      provider: "google",
-      callbackURL: `${process.env.NEXT_PUBLIC_APP_URL}/`, // Adjust the callback URL as needed
-    });
+    setGoogleLoading(true);
     const toastId = toast.loading("Redirecting to Google...");
     try {
-      const { data, error } = res;
-      console.log("Google Sign-In Response:", data, error);
-      if (error) {
-        toast.error(error.message, { id: toastId });
+      const res = await authClient.signIn.social({
+        provider: "google",
+        callbackURL: `${process.env.NEXT_PUBLIC_APP_URL}/`,
+      });
+      if (res?.error) {
+        setGoogleLoading(false);
+        toast.error(res.error.message, { id: toastId });
         return;
       }
-      if (data) {
-        toast.success("Redirected to Google successfully!", { id: toastId });
-        router.push("/");
-      }
     } catch (error) {
+      setGoogleLoading(false);
       toast.error("Failed to redirect to Google.", { id: toastId });
     }
   };
 
+  if (!mounted) return null;
+
   return (
     <section
       className={cn(
-        "min-h-screen flex justify-center items-center bg-muted",
+        "min-h-screen w-full flex items-center justify-center bg-slate-50 p-4 select-none",
         className,
       )}
     >
-      <div className=" items-center gap-6 lg:justify-evenly  shadow-md w-11/12 md:w-11/12 lg:w-1/4 mx-auto my-10 rounded-xl">
-        {/* Logo */}
-        <div className="bg-[#0c705d] rounded-t-xl py-5 w-full space-y-5">
-          <h1 className="text-4xl text-center">🌱</h1>
-          <h2 className="text-3xl font-semibold text-center text-gray-200 py-5">
-            Create Your Account{" "}
-          </h2>
-          <p className="text-center text-gray-300">
-            Join 2 million+ MediCare customers
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="w-full max-w-sm bg-white rounded-2xl border border-slate-100 shadow-sm p-6 sm:p-8 space-y-6"
+      >
+        {/* Brand Header */}
+        <div className="space-y-1.5 text-center">
+          <span className="text-2xl font-bold tracking-tight text-slate-900">
+            Medi<span className="text-[#0c705d] font-black">Care</span>
+          </span>
+          <p className="text-xs font-medium text-slate-400">
+            Sign in to manage your health portal
           </p>
         </div>
-        {/* sign up sign in button */}
 
-        <div className="bg-background rounded-b-xl w-full flex flex-col justify-center items-center  space-y-5">
-          {/* sign up form */}
-          <form
-            id="sign up form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              form.handleSubmit();
-            }}
-            className="w-full"
-          >
-            <FieldGroup className="flex w-full flex-col items-center gap-y-4 rounded-md px-0 py-3 justify-center">
-              <form.Field
-                name="email"
-                children={(field) => {
-                  const isInvalid =
-                    field.state.meta.isTouched && !field.state.meta.isValid;
-                  return (
-                    <Field
-                      data-invalid={isInvalid}
-                      className="w-11/16 flex-col gap-2"
+        {/* Demo Fast Sandbox Login */}
+        <div className="bg-slate-50 border border-slate-100/80 rounded-xl p-3.5 space-y-2">
+          <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+            <ShieldAlert className="h-3 w-3 text-amber-500" /> Quick Sandbox
+            Access
+          </div>
+          <div className="grid grid-cols-3 gap-1.5">
+            {DEMO_ACCOUNTS.map((account) => (
+              <button
+                key={account.label}
+                type="button"
+                onClick={() => handleDemoInject(account.email, account.pass)}
+                className="py-1.5 text-[11px] font-bold rounded-lg border border-slate-200 bg-white text-slate-600 hover:text-[#0c705d] hover:border-[#0c705d]/30 hover:bg-emerald-50/10 transition-all active:scale-95"
+              >
+                {account.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Standard Credentials Input Form */}
+        <form
+          id="medicare-minimal-signin"
+          onSubmit={(e) => {
+            e.preventDefault();
+            form.handleSubmit();
+          }}
+          className="space-y-4"
+        >
+          <FieldGroup className="flex flex-col gap-3.5">
+            <form.Field
+              name="email"
+              children={(field) => {
+                const isInvalid =
+                  field.state.meta.isTouched && !field.state.meta.isValid;
+                return (
+                  <Field
+                    data-invalid={isInvalid}
+                    className="flex flex-col gap-1"
+                  >
+                    <FieldLabel
+                      htmlFor="email"
+                      className="text-xs font-bold text-slate-600"
                     >
-                      <FieldLabel htmlFor="email" className="text-lg font-bold">
-                        Email
-                      </FieldLabel>
+                      Email
+                    </FieldLabel>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
                       <Input
                         id="email"
                         type="email"
-                        placeholder="Email"
-                        className="text-lg py-5 placeholder:text-lg focus:text-lg"
-                        onChange={(e) => field.handleChange(e.target.value)}
+                        placeholder="your@email.com"
+                        value={emailState}
+                        className="pl-9 h-10 text-xs rounded-lg border-slate-200 focus-visible:ring-[#0c705d]"
+                        onChange={(e) => {
+                          setEmailState(e.target.value);
+                          field.handleChange(e.target.value);
+                        }}
                         required
                       />
+                    </div>
+                    <AnimatePresence>
                       {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                        >
+                          <FieldError
+                            className="text-[11px] font-semibold text-rose-500 mt-0.5"
+                            errors={field.state.meta.errors}
+                          />
+                        </motion.div>
                       )}
-                    </Field>
-                  );
-                }}
-              />
-              <form.Field
-                name="password"
-                children={(field) => {
-                  const isInvalid =
-                    field.state.meta.isTouched && !field.state.meta.isValid;
+                    </AnimatePresence>
+                  </Field>
+                );
+              }}
+            />
 
-                  return (
-                    <Field
-                      data-invalid={isInvalid}
-                      className="w-11/16 flex-col gap-2"
-                    >
+            <form.Field
+              name="password"
+              children={(field) => {
+                const isInvalid =
+                  field.state.meta.isTouched && !field.state.meta.isValid;
+                return (
+                  <Field
+                    data-invalid={isInvalid}
+                    className="flex flex-col gap-1"
+                  >
+                    <div className="flex justify-between items-center">
                       <FieldLabel
                         htmlFor="password"
-                        className="text-lg font-bold"
+                        className="text-xs font-bold text-slate-600"
                       >
                         Password
                       </FieldLabel>
+                      <Link
+                        href="/forgot-password"
+                        className="text-[11px] font-medium text-[#0c705d] hover:underline"
+                      >
+                        Forgot?
+                      </Link>
+                    </div>
+                    <div className="relative">
+                      <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
                       <Input
                         id="password"
                         type="password"
-                        placeholder="Password"
-                        className="text-lg py-5 placeholder:text-lg focus:text-lg"
-                        onChange={(e) => field.handleChange(e.target.value)}
+                        placeholder="••••••••"
+                        value={passState}
+                        className="pl-9 h-10 text-xs rounded-lg border-slate-200 focus-visible:ring-[#0c705d]"
+                        onChange={(e) => {
+                          setPassState(e.target.value);
+                          field.handleChange(e.target.value);
+                        }}
                         required
                       />
+                    </div>
+                    <AnimatePresence>
                       {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                        >
+                          <FieldError
+                            className="text-[11px] font-semibold text-rose-500 mt-0.5"
+                            errors={field.state.meta.errors}
+                          />
+                        </motion.div>
                       )}
-                    </Field>
-                  );
-                }}
-              />
-            </FieldGroup>
-          </form>
-          <Button type="submit" form="sign up form" className="w-11/16">
+                    </AnimatePresence>
+                  </Field>
+                );
+              }}
+            />
+          </FieldGroup>
+
+          <Button
+            type="submit"
+            disabled={isPending}
+            className="w-full h-10 rounded-lg text-xs font-bold bg-[#0c705d] hover:bg-[#084f41] text-white transition-all shadow-none mt-2"
+          >
+            {isPending ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin mr-1 inline" />
+            ) : null}
             {buttonText}
           </Button>
-          <Divider />
-          <div className="w-11/16 mx-auto">
-            <button
-              onClick={handleSignWithGoogle}
-              className="flex items-center gap-2 border border-[#0c705d] text-[#0c705d] hover:bg-[#0c705d] hover:text-white transition-colors duration-300 rounded-md px-4 py-2 w-full justify-center text-lg font-bold hover:text-lg hover:font-bold"
-            >
-              {" "}
-              <FaGoogle /> Google{""}
-            </button>
-          </div>
+        </form>
 
-          <div className="flex justify-center items-center gap-1 text-sm text-muted-foreground pb-5">
-            <p>{signupText}</p>
+        <Divider />
+
+        {/* Third Party Authorization Gateway */}
+        <div className="w-full space-y-3">
+          <button
+            type="button"
+            onClick={handleSignWithGoogle}
+            disabled={googleLoading}
+            className="flex items-center justify-center gap-2 border border-slate-200 text-slate-600 hover:bg-slate-50 transition-all rounded-lg h-10 w-full text-xs font-bold"
+          >
+            {googleLoading ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <FaGoogle className="h-3.5 w-3.5" />
+            )}
+            Continue with Google
+          </button>
+
+          <p className="text-[11px] text-center text-slate-500">
+            {signupText}{" "}
             <Link
               href={signupUrl}
-              className="font-bold font-[sans-serif] text-[#0c705d]"
+              className="font-bold text-[#0c705d] hover:underline"
             >
               Sign up
             </Link>
-          </div>
+          </p>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

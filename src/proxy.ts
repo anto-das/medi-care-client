@@ -12,12 +12,11 @@ export async function proxy(request: NextRequest) {
   const { data } = await userService.getSession();
 
   if (data) {
-    isAuthenticated = true;
-    isAdmin = data?.user.role === Roles.ADMIN;
-    isSeller = data?.user.role === Roles.SELLER;
-    isCustomer = data?.user.role === Roles.CUSTOMER;
+    isAuthenticated = data.user?.emailVerified === true;
+    isAdmin = data.user.role === Roles.ADMIN;
+    isSeller = data.user.role === Roles.SELLER;
+    isCustomer = data.user.role === Roles.CUSTOMER;
   }
-
   // ১. হোম রুট (/) এর জন্য প্রটেকশন
   if (pathname === "/") {
     if (isSeller)
