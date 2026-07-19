@@ -41,7 +41,7 @@ const MedicalCard = ({ article }: { article: Article }) => {
   return (
     <article className="group flex flex-col justify-between w-full max-w-sm bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
       {/* 1. Card Image & Source Badge */}
-      <div className="relative h-48 w-full bg-gray-100 overflow-hidden">
+      <div className="relative h-36 w-full bg-gray-100 overflow-hidden">
         <img
           src={article.urlToImage}
           alt={article.title}

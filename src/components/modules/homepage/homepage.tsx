@@ -9,6 +9,7 @@ import CategoriesMarque from "@/components/ui/categoriesMarque";
 import CategoryMarquee from "@/components/ui/categoriesMarque";
 import CustomerVoiceSection from "./feedback";
 import { ChartBarDemoLegend } from "./chart";
+import HomePageBlog from "./HomePageBlog";
 
 const Homepage = () => {
   return (
@@ -23,6 +24,7 @@ const Homepage = () => {
       <ChartBarDemoLegend />
       {/* prescription */}
       <CustomerVoiceSection></CustomerVoiceSection>
+      <HomePageBlog />
     </div>
   );
 };
