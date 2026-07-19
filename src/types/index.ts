@@ -6,3 +6,4 @@ export type * from "@/types/order.type";
 export type * from "@/types/sellerMedicine";
 export type * from "@/types/status";
 export type * from "@/types/orderStatus";
+export type * from "@/types/categoryType";
