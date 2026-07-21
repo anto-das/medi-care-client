@@ -10,6 +10,7 @@ import CategoryMarquee from "@/components/ui/categoriesMarque";
 import CustomerVoiceSection from "./feedback";
 import { ChartBarDemoLegend } from "./chart";
 import HomePageBlog from "./HomePageBlog";
+import MedicareNewsletter from "@/components/ui/medicareNewsLetter";
 
 const Homepage = () => {
   return (
@@ -25,6 +26,7 @@ const Homepage = () => {
       {/* prescription */}
       <CustomerVoiceSection></CustomerVoiceSection>
       <HomePageBlog />
+      <MedicareNewsletter />
     </div>
   );
 };
