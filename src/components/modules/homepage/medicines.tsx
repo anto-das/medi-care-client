@@ -19,7 +19,10 @@ const Medicines = async () => {
   }
 
   return (
-    <section className="w-full py-16 bg-linear-to-b from-white via-emerald-50/10 to-white border-y border-emerald-950/5 select-none overflow-hidden relative">
+    <section
+      data-aos="fade-up"
+      className="w-full py-16 bg-linear-to-b from-white via-emerald-50/10 to-white border-y border-emerald-950/5 select-none overflow-hidden relative"
+    >
       {/* Soft Brand Glow Spheres */}
       <div className="absolute top-12 left-[-5%] w-[450px] h-[450px] bg-[#0c705d]/5 rounded-full blur-[110px] pointer-events-none" />
       <div className="absolute bottom-12 right-[-5%] w-[450px] h-[450px] bg-teal-500/5 rounded-full blur-[110px] pointer-events-none" />

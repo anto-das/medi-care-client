@@ -64,7 +64,7 @@ const CheckoutPage = () => {
   const discount = carts.length > 0 ? 25 : 0;
   const total = subtotal + deliveryFee - discount;
 
-  const orderedItems = carts.map((item:any) => ({
+  const orderedItems = carts.map((item: any) => ({
     medicine_id: item.medicine_id,
     quantity: item.quantity,
     price: Number(item.price),
@@ -79,7 +79,10 @@ const CheckoutPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#FDFDFB] p-4 md:p-10 font-sans text-slate-900">
+    <div
+      data-aos="fade-up"
+      className="min-h-screen bg-[#FDFDFB] p-4 md:p-10 font-sans text-slate-900"
+    >
       <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl font-extrabold tracking-tight mb-10 italic">
           Checkout

@@ -5,7 +5,10 @@ import Testimonial from "@/components/ui/testimonial";
 
 const CustomerVoiceSection = () => {
   return (
-    <div className="w-full my-16 py-20 bg-linear-to-b from-white via-emerald-50/15 to-white border-y border-emerald-950/5 select-none relative overflow-hidden space-y-20">
+    <div
+      data-aos="fade-up"
+      className="w-full my-16 py-20 bg-linear-to-b from-white via-emerald-50/15 to-white border-y border-emerald-950/5 select-none relative overflow-hidden space-y-20"
+    >
       {/* Premium Aurora Background Light Rays */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-150 h-[400px] bg-[#0c705d]/5 rounded-full blur-[130px] pointer-events-none" />
       <div className="absolute bottom-10 right-[-10%] w-[400px] h-[400px] bg-teal-500/5 rounded-full blur-[110px] pointer-events-none" />

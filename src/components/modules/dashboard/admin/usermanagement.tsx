@@ -102,7 +102,7 @@ export default function UserManagement() {
     }
   };
   return (
-    <div className="w-full mx-auto p-6 bg-[#FAFAF9] min-h-screen">
+    <div data-aos="fade-up" className="w-full mx-auto p-6 bg-[#FAFAF9] min-h-screen">
       {/* হেডার সেকশন */}
       <UserDashboardHeader />
 

@@ -1,17 +1,29 @@
 "use client";
 
 import { getMedicine } from "@/app/actions/medicine.action";
-import { 
-  Pill, HeartPulse, Thermometer, Wind, Flame, 
-  Activity, Droplet, ShieldAlert, Sparkles, Brain, 
-  Zap, Waves, ArrowDownCircle, ShieldCheck, Stethoscope, 
-  Moon, VolumeX, EyeOff, 
-  HelpCircle
-} from 'lucide-react';
+import {
+  Pill,
+  HeartPulse,
+  Thermometer,
+  Wind,
+  Flame,
+  Activity,
+  Droplet,
+  ShieldAlert,
+  Sparkles,
+  Brain,
+  Zap,
+  Waves,
+  ArrowDownCircle,
+  ShieldCheck,
+  Stethoscope,
+  Moon,
+  VolumeX,
+  EyeOff,
+  HelpCircle,
+} from "lucide-react";
 
 import { useEffect, useState } from "react";
-
-
 
 // ১. প্রথমে প্রপস-এর ইন্টারফেসটি তৈরি করুন
 interface MedicineCategoriesGridProps {
@@ -41,128 +53,128 @@ export default function MedicineCategoriesGrid({
     string,
     { color: string; bgLight: string; icon: any; count: number }
   > = {
-  ANTIBIOTICS: {
-    color: "from-emerald-500 to-teal-600",
-    bgLight: "bg-emerald-50 text-emerald-700",
-    icon: Pill,
-    count: 0,
-  },
-  ANALGESICS: {
-    color: "from-blue-500 to-indigo-600",
-    bgLight: "bg-blue-50 text-blue-700",
-    icon: HeartPulse,
-    count: 0,
-  },
-  ANTIPYRETICS: {
-    color: "from-orange-500 to-red-600",
-    bgLight: "bg-orange-50 text-orange-700",
-    icon: Thermometer,
-    count: 0,
-  },
-  ANTIHISTAMINES: {
-    color: "from-cyan-500 to-blue-600",
-    bgLight: "bg-cyan-50 text-cyan-700",
-    icon: Wind,
-    count: 0,
-  },
-  ANTACIDS: {
-    color: "from-amber-500 to-orange-600",
-    bgLight: "bg-amber-50 text-amber-700",
-    icon: Flame,
-    count: 0,
-  },
-  ANTIHYPERTENSIVES: {
-    color: "from-rose-500 to-pink-600",
-    bgLight: "bg-rose-50 text-rose-700",
-    icon: Activity,
-    count: 0,
-  },
-  ANTIDIABETICS: {
-    color: "from-teal-500 to-cyan-600",
-    bgLight: "bg-teal-50 text-teal-700",
-    icon: Droplet,
-    count: 0,
-  },
-  ANTICOAGULANTS: {
-    color: "from-red-500 to-rose-600",
-    bgLight: "bg-red-50 text-red-700",
-    icon: ShieldAlert,
-    count: 0,
-  },
-  BRONCHODILATORS: {
-    color: "from-sky-500 to-blue-600",
-    bgLight: "bg-sky-50 text-sky-700",
-    icon: Wind, // Assumed Lucide icon
-    count: 0,
-  },
-  ANTIVIRALS: {
-    color: "from-violet-500 to-purple-600",
-    bgLight: "bg-violet-50 text-violet-700",
-    icon: Sparkles,
-    count: 0,
-  },
-  ANTIFUNGALS: {
-    color: "from-fuchsia-500 to-pink-600",
-    bgLight: "bg-fuchsia-50 text-fuchsia-700",
-    icon: Pill,
-    count: 0,
-  },
-  // 🔽 Added remaining 9 categories below 🔽
-  ANTIDEPRESSANTS: {
-    color: "from-indigo-500 to-purple-600",
-    bgLight: "bg-indigo-50 text-indigo-700",
-    icon: Brain, // Lucide icon for mental health
-    count: 0,
-  },
-  ANTICONVULSANTS: {
-    color: "from-purple-600 to-deepPurple-700", 
-    bgLight: "bg-purple-50 text-purple-700",
-    icon: Zap, // Lucide icon for electric brain impulses
-    count: 0,
-  },
-  DIURETICS: {
-    color: "from-lime-500 to-green-600",
-    bgLight: "bg-lime-50 text-lime-700",
-    icon: Waves, // Lucide icon representing water balancing
-    count: 0,
-  },
-  LAXATIVES: {
-    color: "from-yellow-600 to-amber-700",
-    bgLight: "bg-yellow-50 text-yellow-800",
-    icon: ArrowDownCircle, // Lucide icon representing clearing/flow
-    count: 0,
-  },
-  STATINS: {
-    color: "from-green-500 to-emerald-600",
-    bgLight: "bg-green-50 text-green-700",
-    icon: ShieldCheck, // Lucide icon representing cardiovascular safety
-    count: 0,
-  },
-  CORTICOSTEROIDS: {
-    color: "from-violet-600 to-indigo-700",
-    bgLight: "bg-violet-50 text-violet-800",
-    icon: Stethoscope, // Lucide icon for medical strength
-    count: 0,
-  },
-  ANESTHETICS: {
-    color: "from-slate-500 to-gray-700",
-    bgLight: "bg-slate-100 text-slate-700",
-    icon: Moon, // Lucide icon representing sleep/numbness
-    count: 0,
-  },
-  ANTITUSSIVES: {
-    color: "from-emerald-400 to-teal-500",
-    bgLight: "bg-emerald-50 text-emerald-800",
-    icon: VolumeX, // Lucide icon representing stopping the cough noise
-    count: 0,
-  },
-  SEDATIVES: {
-    color: "from-blue-600 to-slate-700",
-    bgLight: "bg-blue-50 text-blue-900",
-    icon: EyeOff, // Lucide icon representing rest/sleepiness
-    count: 0,
-  },
-};
+    ANTIBIOTICS: {
+      color: "from-emerald-500 to-teal-600",
+      bgLight: "bg-emerald-50 text-emerald-700",
+      icon: Pill,
+      count: 0,
+    },
+    ANALGESICS: {
+      color: "from-blue-500 to-indigo-600",
+      bgLight: "bg-blue-50 text-blue-700",
+      icon: HeartPulse,
+      count: 0,
+    },
+    ANTIPYRETICS: {
+      color: "from-orange-500 to-red-600",
+      bgLight: "bg-orange-50 text-orange-700",
+      icon: Thermometer,
+      count: 0,
+    },
+    ANTIHISTAMINES: {
+      color: "from-cyan-500 to-blue-600",
+      bgLight: "bg-cyan-50 text-cyan-700",
+      icon: Wind,
+      count: 0,
+    },
+    ANTACIDS: {
+      color: "from-amber-500 to-orange-600",
+      bgLight: "bg-amber-50 text-amber-700",
+      icon: Flame,
+      count: 0,
+    },
+    ANTIHYPERTENSIVES: {
+      color: "from-rose-500 to-pink-600",
+      bgLight: "bg-rose-50 text-rose-700",
+      icon: Activity,
+      count: 0,
+    },
+    ANTIDIABETICS: {
+      color: "from-teal-500 to-cyan-600",
+      bgLight: "bg-teal-50 text-teal-700",
+      icon: Droplet,
+      count: 0,
+    },
+    ANTICOAGULANTS: {
+      color: "from-red-500 to-rose-600",
+      bgLight: "bg-red-50 text-red-700",
+      icon: ShieldAlert,
+      count: 0,
+    },
+    BRONCHODILATORS: {
+      color: "from-sky-500 to-blue-600",
+      bgLight: "bg-sky-50 text-sky-700",
+      icon: Wind, // Assumed Lucide icon
+      count: 0,
+    },
+    ANTIVIRALS: {
+      color: "from-violet-500 to-purple-600",
+      bgLight: "bg-violet-50 text-violet-700",
+      icon: Sparkles,
+      count: 0,
+    },
+    ANTIFUNGALS: {
+      color: "from-fuchsia-500 to-pink-600",
+      bgLight: "bg-fuchsia-50 text-fuchsia-700",
+      icon: Pill,
+      count: 0,
+    },
+    // 🔽 Added remaining 9 categories below 🔽
+    ANTIDEPRESSANTS: {
+      color: "from-indigo-500 to-purple-600",
+      bgLight: "bg-indigo-50 text-indigo-700",
+      icon: Brain, // Lucide icon for mental health
+      count: 0,
+    },
+    ANTICONVULSANTS: {
+      color: "from-purple-600 to-deepPurple-700",
+      bgLight: "bg-purple-50 text-purple-700",
+      icon: Zap, // Lucide icon for electric brain impulses
+      count: 0,
+    },
+    DIURETICS: {
+      color: "from-lime-500 to-green-600",
+      bgLight: "bg-lime-50 text-lime-700",
+      icon: Waves, // Lucide icon representing water balancing
+      count: 0,
+    },
+    LAXATIVES: {
+      color: "from-yellow-600 to-amber-700",
+      bgLight: "bg-yellow-50 text-yellow-800",
+      icon: ArrowDownCircle, // Lucide icon representing clearing/flow
+      count: 0,
+    },
+    STATINS: {
+      color: "from-green-500 to-emerald-600",
+      bgLight: "bg-green-50 text-green-700",
+      icon: ShieldCheck, // Lucide icon representing cardiovascular safety
+      count: 0,
+    },
+    CORTICOSTEROIDS: {
+      color: "from-violet-600 to-indigo-700",
+      bgLight: "bg-violet-50 text-violet-800",
+      icon: Stethoscope, // Lucide icon for medical strength
+      count: 0,
+    },
+    ANESTHETICS: {
+      color: "from-slate-500 to-gray-700",
+      bgLight: "bg-slate-100 text-slate-700",
+      icon: Moon, // Lucide icon representing sleep/numbness
+      count: 0,
+    },
+    ANTITUSSIVES: {
+      color: "from-emerald-400 to-teal-500",
+      bgLight: "bg-emerald-50 text-emerald-800",
+      icon: VolumeX, // Lucide icon representing stopping the cough noise
+      count: 0,
+    },
+    SEDATIVES: {
+      color: "from-blue-600 to-slate-700",
+      bgLight: "bg-blue-50 text-blue-900",
+      icon: EyeOff, // Lucide icon representing rest/sleepiness
+      count: 0,
+    },
+  };
 
   // ডিফল্ট স্টাইলেও কাউন্ট ফিল্ড যোগ করা হয়েছে সেফটির জন্য
   const defaultStyle = {
@@ -173,7 +185,7 @@ export default function MedicineCategoriesGrid({
   };
 
   return (
-    <div className="min-h-screen bg-slate-50/50 p-6 md:p-12">
+    <div data-aos="fade-up" className="min-h-screen bg-slate-50/50 p-6 md:p-12">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-200 pb-6">

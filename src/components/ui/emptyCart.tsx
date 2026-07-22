@@ -3,7 +3,10 @@ import Link from "next/link";
 
 const EmptyCart = () => {
   return (
-    <div className="h-[70vh] flex flex-col items-center justify-center space-y-4">
+    <div
+      data-aos="fade-up"
+      className="h-[70vh] flex flex-col items-center justify-center space-y-4"
+    >
       <div className="bg-gray-100 p-8 rounded-full text-gray-400">
         <AlertCircle size={60} />
       </div>

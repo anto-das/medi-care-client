@@ -5,7 +5,10 @@ import OrderTable from "@/components/ui/orderTable";
 
 const AdminDashboard = () => {
   return (
-    <div className="min-h-screen bg-[#fbfbf9] p-10 font-sans text-slate-900">
+    <div
+      data-aos="fade-up"
+      className="min-h-screen bg-[#fbfbf9] p-10 font-sans text-slate-900"
+    >
       {/* 1. Header Section */}
       <header className="mb-10 flex items-center justify-between">
         <div>

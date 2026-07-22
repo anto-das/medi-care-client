@@ -13,6 +13,7 @@
     "@t3-oss/env-nextjs": "^0.13.11",
     "@tanstack/react-form": "^1.28.6",
     "@tanstack/react-table": "^8.21.3",
+    "aos": "^2.3.4",
     "better-auth": "^1.5.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -35,6 +36,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/aos": "^3.0.8",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

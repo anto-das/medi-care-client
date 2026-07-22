@@ -13,7 +13,10 @@ export default async function SellerManagement() {
 
   // const pendingSeller = filteredData.filter((user :any) =>user.status === "")
   return (
-    <div className="w-full mx-auto p-6 bg-[#FCF9F4] min-h-screen font-sans">
+    <div
+      data-aos="fade-up"
+      className="w-full mx-auto p-6 bg-[#FCF9F4] min-h-screen font-sans"
+    >
       {/* Header Section */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 tracking-tight">

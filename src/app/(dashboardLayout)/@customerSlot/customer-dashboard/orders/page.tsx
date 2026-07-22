@@ -31,7 +31,7 @@ export default async function OrderManagement() {
     return <EmptyOrder />;
   }
   return (
-    <div className="p-6 bg-white min-h-screen">
+    <div data-aos="fade-up" className="p-6 bg-white min-h-screen">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-6">
         <div>

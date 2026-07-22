@@ -39,9 +39,11 @@ const featureData = [
 
 const WhyMedicineCare = () => {
   return (
-    <section className="w-full py-16 bg-slate-50/50 relative overflow-hidden select-none">
+    <section
+      data-aos="fade-up"
+      className="w-full py-16 bg-slate-50/50 relative overflow-hidden select-none"
+    >
       <div className="mx-auto w-11/12 max-w-7xl space-y-12 relative z-10">
-        
         {/* Section Title Header */}
         <div className="text-center max-w-xl mx-auto space-y-2">
           <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
@@ -62,12 +64,16 @@ const WhyMedicineCare = () => {
                 className="group relative bg-white border border-[#dde8e2] rounded-[24px] p-7 transition-all duration-500 hover:shadow-[0_20px_40px_-15px_rgba(12,112,93,0.08)] flex flex-col justify-between overflow-hidden"
               >
                 {/* Top Border Gradient Hover Glow Line */}
-                <div className={`absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r ${item.color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`} />
+                <div
+                  className={`absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r ${item.color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`}
+                />
 
                 <div className="space-y-6">
                   {/* Floating Multi-layered Rounded Icon Frame */}
                   <div className="flex items-center justify-between">
-                    <div className={`h-11 w-11 flex items-center justify-center rounded-2xl ${item.bgAccent} border transition-all duration-500 group-hover:scale-105 shadow-sm relative overflow-hidden`}>
+                    <div
+                      className={`h-11 w-11 flex items-center justify-center rounded-2xl ${item.bgAccent} border transition-all duration-500 group-hover:scale-105 shadow-sm relative overflow-hidden`}
+                    >
                       <Icon className="h-5 w-5 stroke-[2.2]" />
                     </div>
                     <span className="text-xl filter grayscale group-hover:grayscale-0 opacity-40 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-105">
@@ -80,7 +86,9 @@ const WhyMedicineCare = () => {
                     <h3 className="text-lg font-extrabold text-slate-800 tracking-tight transition-colors group-hover:text-slate-900">
                       {item.title}
                     </h3>
-                    <p className={`text-xs leading-relaxed text-[#8da197] font-medium group-hover:text-slate-500 transition-colors duration-300 ${item.isManrope ? 'font-manrope' : ''}`}>
+                    <p
+                      className={`text-xs leading-relaxed text-[#8da197] font-medium group-hover:text-slate-500 transition-colors duration-300 ${item.isManrope ? "font-manrope" : ""}`}
+                    >
                       {item.desc}
                     </p>
                   </div>
@@ -93,12 +101,10 @@ const WhyMedicineCare = () => {
                   </span>
                   <ArrowUpRight className="h-3 w-3 text-slate-300 group-hover:text-[#0c705d] transform translate-x-0 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all duration-300" />
                 </div>
-
               </div>
             );
           })}
         </div>
-
       </div>
     </section>
   );

@@ -46,7 +46,7 @@ const FilteredSection = ({
   }, []);
 
   return (
-    <div className="w-full max-w-md space-y-4" ref={dropdownRef}>
+    <div data-aos="fade-up" className="w-full max-w-md space-y-4" ref={dropdownRef}>
       
       {/* 1. Main Fancy Custom Select Trigger Button */}
       <div className="relative">

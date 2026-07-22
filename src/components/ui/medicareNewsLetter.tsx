@@ -23,7 +23,11 @@ export default function MedicareNewsletter() {
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 py-16 md:py-24">
+    <div
+      suppressHydrationWarning={true}
+      data-aos="fade-up"
+      className="w-full max-w-6xl mx-auto px-4 py-16 md:py-24"
+    >
       {/* 🌟 প্রধান প্রফেশনাল টাইটেল বক্স */}
       <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-100/80 dark:border-emerald-900/30 backdrop-blur-sm">

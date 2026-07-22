@@ -17,7 +17,10 @@ export default function NoOrdersState({
   onNavigateToMedicines,
 }: NoOrdersStateProps) {
   return (
-    <div className="flex items-center justify-center min-h-full w-full p-4">
+    <div
+      data-aos="fade-up"
+      className="flex items-center justify-center min-h-full w-full p-4"
+    >
       <Card className="w-full max-w-md border-dashed border-2 border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm shadow-none">
         <CardContent className="flex flex-col items-center justify-center p-8 text-center">
           {/* Animated Illustration/Icon Area */}
@@ -46,7 +49,8 @@ export default function NoOrdersState({
               No Orders Found Yet
             </h3>
             <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 max-w-[320px] mx-auto">
-              Your Medi Care shop hasn't received any orders at the moment. Keep your inventory updated and wait for new requests.
+              Your Medi Care shop hasn't received any orders at the moment. Keep
+              your inventory updated and wait for new requests.
             </p>
           </motion.div>
 
@@ -70,14 +74,14 @@ export default function NoOrdersState({
 
             {/* Medicine Management Button */}
             <Link href={"/seller-dashboard/medicine"}>
-            <Button
-              size="sm"
-              onClick={onNavigateToMedicines}
-              className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white dark:bg-emerald-600 dark:hover:bg-emerald-500 shadow-sm shadow-emerald-600/10"
-            >
-              <PlusCircle className="w-4 h-4 mr-2" />
-              Manage Inventory
-            </Button>
+              <Button
+                size="sm"
+                onClick={onNavigateToMedicines}
+                className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white dark:bg-emerald-600 dark:hover:bg-emerald-500 shadow-sm shadow-emerald-600/10"
+              >
+                <PlusCircle className="w-4 h-4 mr-2" />
+                Manage Inventory
+              </Button>
             </Link>
           </motion.div>
         </CardContent>

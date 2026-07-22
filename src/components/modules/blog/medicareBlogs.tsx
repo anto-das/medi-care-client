@@ -13,7 +13,10 @@ export default async function MedicareBlogs() {
   }
 
   return (
-    <div className="w-full min-h-screen bg-slate-50/50 dark:bg-slate-950/20 py-12 md:py-20 transition-colors duration-300">
+    <div
+      data-aos="fade-up"
+      className="w-full min-h-screen bg-slate-50/50 dark:bg-slate-950/20 py-12 md:py-20 transition-colors duration-300"
+    >
       {/* ১. প্রফেশনাল হেডার/হিরো সেকশন */}
       <div className="w-11/12 max-w-7xl mx-auto mb-12 md:mb-16 text-center md:text-start flex flex-col md:flex-row md:items-end md:justify-between gap-4 border-b border-slate-100 dark:border-slate-900 pb-8">
         <div className="space-y-2">

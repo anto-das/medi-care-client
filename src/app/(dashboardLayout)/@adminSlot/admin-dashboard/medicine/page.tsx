@@ -62,7 +62,7 @@ const page = () => {
   };
 
   return (
-    <div className="w-full mx-auto p-8 bg-[#FAF8F5] min-h-screen text-gray-700">
+    <div data-aos="fade-up" className="w-full mx-auto p-8 bg-[#FAF8F5] min-h-screen text-gray-700">
       {/* হেডার সেকশন এবং এক্সপোর্ট বাটন */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-serif font-black text-gray-950">

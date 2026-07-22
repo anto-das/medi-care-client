@@ -25,7 +25,10 @@ const OrdersTable = () => {
     return <NoOrdersState />;
   }
   return (
-    <div className="w-full max-w-full mx-auto p-6 bg-[#FCFCFB] min-h-screen">
+    <div
+      data-aos="fade-up"
+      className="w-full max-w-full mx-auto p-6 bg-[#FCFCFB] min-h-screen"
+    >
       {/* Table Container with shadcn-like Card Styling */}
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
         {/* Top Filter & Search Bar */}

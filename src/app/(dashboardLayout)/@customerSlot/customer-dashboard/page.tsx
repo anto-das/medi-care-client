@@ -16,7 +16,10 @@ const DashboardMedicinePage = async () => {
     ) || [];
 
   return (
-    <div className="bg-slate-50/50 dark:bg-slate-950/20 p-4 md:p-8 min-h-screen transition-colors duration-300">
+    <div
+      data-aos="fade-up"
+      className="bg-slate-50/50 dark:bg-slate-950/20 p-4 md:p-8 min-h-screen transition-colors duration-300"
+    >
       <div className="w-full max-w-7xl mx-auto space-y-8">
         {/* 🌟 ড্যাশবোর্ড পেজ হেডার এবং ইনফো কাউন্টার */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-100 dark:border-slate-900 pb-6">

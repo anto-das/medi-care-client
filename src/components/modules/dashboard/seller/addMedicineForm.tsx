@@ -136,7 +136,7 @@ export default function AddMedicineForm() {
     },
   });
   return (
-    <div className="max-w-full mx-auto p-6 bg-[#faf8f4] min-h-screen font-sans">
+    <div data-aos="fade-up" className="max-w-full mx-auto p-6 bg-[#faf8f4] min-h-screen font-sans">
       {/* Back Button */}
       <Link href={"/seller-dashboard/medicine"}>
         <Button className="mb-4 gap-2 text-gray-900 border border-gray-300 hover:border-black bg-transparent">

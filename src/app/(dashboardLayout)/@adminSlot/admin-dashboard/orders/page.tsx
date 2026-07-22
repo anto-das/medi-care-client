@@ -6,7 +6,7 @@ const page = async () => {
   const { data: orders } = await adminService.getAllOrders();
   
   return (
-    <div className="w-full mx-auto p-6 bg-[#FAF8F5] min-h-screen">
+    <div data-aos="fade-up" className="w-full mx-auto p-6 bg-[#FAF8F5] min-h-screen">
       {/* Table Heading */}
       <h2 className="text-2xl font-serif font-bold text-gray-900 mb-6">
         All Platform Orders

@@ -128,7 +128,10 @@ const CartPage = () => {
   }
 
   return (
-    <main className="bg-[#F9FAFB] min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+    <main
+      data-aos="fade-up"
+      className="bg-[#F9FAFB] min-h-screen py-12 px-4 sm:px-6 lg:px-8"
+    >
       <div className="max-w-7xl mx-auto">
         <header className="mb-10">
           <h1 className="text-4xl font-extrabold text-[#111827] tracking-tight">

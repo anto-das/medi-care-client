@@ -87,7 +87,10 @@ export default function MyMedicines() {
   };
 
   return (
-    <div className="w-full max-w-full mx-auto p-6 bg-[#FCFCFA] min-h-screen text-[#1E293B]">
+    <div
+      data-aos="fade-up"
+      className="w-full max-w-full mx-auto p-6 bg-[#FCFCFA] min-h-screen text-[#1E293B]"
+    >
       {/* হেডার সেকশন */}
 
       {/* অ্যালার্ট ব্যানার */}

@@ -7,6 +7,7 @@ import Loading from "@/components/ui/loading";
 import { Suspense } from "react";
 import { GuestTracker } from "@/components/modules/middleware/GuestTracker";
 import { CartProvider } from "@/hooks/MedicineContext";
+import AOSInit from "@/hooks/AOSInit";
 
 export const metadata: Metadata = {
   title: "MediCare",
@@ -37,6 +38,7 @@ export default async function RootLayout({
         <CartProvider>
           <body className={`min-h-full flex flex-col `}>
             <Suspense fallback={<Loading />}>
+              <AOSInit />
               {children}{" "}
               <Toaster duration={1000} richColors position="top-right" />{" "}
             </Suspense>

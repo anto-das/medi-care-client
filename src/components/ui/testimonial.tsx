@@ -3,7 +3,7 @@ import EmptyReview from "./EmptyReview";
 
 const Testimonial = async () => {
   const { result } = await reviewService.getReviews();
-  const data = result?.data || [];
+  const data = result?.data.slice(0, 3) || [];
 
   if (data.length === 0) {
     return <EmptyReview productName="our service" />;
