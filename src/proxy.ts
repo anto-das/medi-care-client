@@ -13,9 +13,9 @@ export async function proxy(request: NextRequest) {
 
   if (data) {
     isAuthenticated = data.user?.emailVerified === true;
-    isAdmin = data.user.role === Roles.ADMIN;
-    isSeller = data.user.role === Roles.SELLER;
-    isCustomer = data.user.role === Roles.CUSTOMER;
+    isAdmin = data.user?.role === Roles.ADMIN;
+    isSeller = data.user?.role === Roles.SELLER;
+    isCustomer = data.user?.role === Roles.CUSTOMER;
   }
   // ১. হোম রুট (/) এর জন্য প্রটেকশন
   if (pathname === "/") {

@@ -46,9 +46,9 @@ export const CartProvider = ({
   const fetchCart = async () => {
     if (!guest_id && !user_id) return;
     try {
-      setLoading(true);
       const payload = { user_id: user_id, guest_id: guest_id as string };
       const res = await getCart(payload);
+
       setCarts(res);
       if (res) {
         setLoading(false);

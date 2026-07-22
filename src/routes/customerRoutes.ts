@@ -16,10 +16,6 @@ export const customerRoutes: Routes = {
       href: "/customer-dashboard/orders",
     },
 
-    {
-      label: "❤️ Wishlist",
-      href: "/customer-dashboard/wishlist",
-    },
     // {
     //   label: "👤 Profile",
     //   href: "/customer-dashboard/profile",

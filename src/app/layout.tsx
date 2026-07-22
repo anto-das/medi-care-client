@@ -1,15 +1,12 @@
 import type { Metadata } from "next";
-import { Geist,  Inter } from "next/font/google";
+import { Geist, Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 
 import Loading from "@/components/ui/loading";
 import { Suspense } from "react";
-
-
-
-
-
+import { GuestTracker } from "@/components/modules/middleware/GuestTracker";
+import { CartProvider } from "@/hooks/MedicineContext";
 
 export const metadata: Metadata = {
   title: "MediCare",
@@ -36,12 +33,16 @@ export default async function RootLayout({
       className={`${inter.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className={`min-h-full flex flex-col `}>
-        <Suspense fallback={<Loading />}>
-          {children}{" "}
-          <Toaster duration={1000} richColors position="top-right" />{" "}
-        </Suspense>
-      </body>
+      <GuestTracker>
+        <CartProvider>
+          <body className={`min-h-full flex flex-col `}>
+            <Suspense fallback={<Loading />}>
+              {children}{" "}
+              <Toaster duration={1000} richColors position="top-right" />{" "}
+            </Suspense>
+          </body>
+        </CartProvider>
+      </GuestTracker>
     </html>
   );
 }

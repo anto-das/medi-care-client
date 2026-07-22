@@ -1,4 +1,5 @@
 import { env } from "@/env";
+import { cookies } from "next/headers";
 
 export const cartService = {
   addToCart: async (payload: {
@@ -26,10 +27,20 @@ export const cartService = {
   },
   getCartItems: async (payload: { user_id?: string; guest_id?: string }) => {
     try {
+      const cookieStore = await cookies();
+      const allCookies = cookieStore.toString();
       const res = await fetch(
         `${env.BACKEND_URL}/api/cart?guest_id=${payload.guest_id}`,
-        { cache: "no-store" },
+        {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            Cookie: allCookies,
+          },
+          cache: "no-store",
+        },
       );
+
       const { data } = await res.json();
       return data;
     } catch (error) {

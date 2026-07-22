@@ -14,15 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <div>
-      <GuestTracker>
-        <CartProvider>
-          <Navbar />
-          <Suspense >
-            {children}
-          </Suspense>
-          <Footer></Footer>
-        </CartProvider>
-      </GuestTracker>
+      <Navbar />
+      <Suspense>{children}</Suspense>
+      <Footer></Footer>
     </div>
   );
 }

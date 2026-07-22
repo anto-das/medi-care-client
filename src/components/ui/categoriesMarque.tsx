@@ -18,7 +18,7 @@ const CategoriesMarque = async () => {
       {/* Marquee Track */}
       <Marquee className="[--duration:30s] hover:[--play-state:paused]">
         <MarqueeContent className="gap-4">
-          {data.map((category: category) => (
+          {data?.map((category: category) => (
             <Link href={"/medicine"} key={category.category_id}>
               <MarqueeItem>
                 <div className="flex items-center gap-4 bg-white border border-slate-100 rounded-2xl p-4 w-[280px] md:w-[320px] shadow-sm shadow-slate-100/40 hover:shadow-md hover:border-emerald-100/80 transition-all duration-300 cursor-pointer group select-none">
