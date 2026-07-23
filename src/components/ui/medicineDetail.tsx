@@ -15,6 +15,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Medicine } from "@/types";
 import { handleAddToCart } from "@/app/utilis/handleAddToCart";
+import { useCart } from "@/hooks/MedicineContext";
+import { authClient } from "@/lib/auth-client";
 
 export default function MedicineDetailsClient({
   medicine,
@@ -22,6 +24,9 @@ export default function MedicineDetailsClient({
   medicine: Medicine;
 }) {
   const [quantity, setQuantity] = useState(1);
+  const { setCarts, guest_id } = useCart();
+  const { data: session } = authClient.useSession();
+  const user_id = session?.user.id;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -109,7 +114,15 @@ export default function MedicineDetailsClient({
 
         <div className="flex gap-3">
           <Button
-            onClick={() => handleAddToCart(medicine.medicine_id, quantity)}
+            onClick={() =>
+              handleAddToCart(
+                medicine.medicine_id,
+                quantity,
+                setCarts,
+                user_id as string,
+                guest_id,
+              )
+            }
             className="flex-1 bg-[#0b5e4e] hover:bg-[#084a3e] h-14 text-lg font-bold rounded-xl shadow-lg"
           >
             Add to Cart
