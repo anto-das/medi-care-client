@@ -161,7 +161,11 @@ export default function MyMedicines() {
                   <td className="py-4 px-6">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center border border-gray-100 font-semibold text-lg">
-                        💊
+                        <img
+                          src={medicine.medi_img}
+                          alt={medicine.medicine_name}
+                          className="w-full"
+                        />
                       </div>
                       <div>
                         <p className="text-[#0F291E] font-bold text-sm">

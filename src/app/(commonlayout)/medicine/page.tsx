@@ -36,9 +36,7 @@ const MedicinePage = () => {
     if (searchMedi) {
       currentPayload.search = searchMedi;
     }
-    const medicinePromise = getMedicine(currentPayload, {
-      revalidate: 10,
-    });
+    const medicinePromise = getMedicine(currentPayload);
     const [catRes, medRes] = await Promise.all([
       categoryPromise,
       medicinePromise,
