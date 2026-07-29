@@ -3,7 +3,10 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
-
+  experimental: {
+    // FIX: Tailwind v4 stylesheet compilation build latency dynamically reduce korbe
+    optimizeCss: true,
+  },
   // better-auth proxy
   async rewrites() {
     return [
