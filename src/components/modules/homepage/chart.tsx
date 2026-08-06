@@ -31,7 +31,7 @@ export function ChartBarDemoLegend() {
   };
   const fetchMedicines = async () => {
     const result = await getMedicine();
-    setMedicines(result.data || []);
+    setMedicines(result?.data || []);
   };
   useEffect(() => {
     fetchCategory();

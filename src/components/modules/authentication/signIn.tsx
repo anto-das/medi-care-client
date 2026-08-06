@@ -92,7 +92,7 @@ const SignInPage = ({
         } else if (user?.role === Roles.ADMIN) {
           window.location.href = "/admin-dashboard";
         } else {
-          router.push("/");
+         window.location.href = "/";
         }
       } catch (e) {
         setIsPending(false);
