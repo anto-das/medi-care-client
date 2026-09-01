@@ -60,13 +60,13 @@ const OrderTable = async () => {
         <TableBody>
           <TableRow>
             <TableCell className="font-bold">
-              {pendingOrders[0] && pendingOrders[0].order_id}
+              {pendingOrders[0 - 6] && pendingOrders[0 - 6].order_id}
             </TableCell>
             <TableCell className="font-semibold text-slate-600">
-              {pendingOrders[0] && pendingOrders[0].customer_name}
+              {pendingOrders[0 - 6] && pendingOrders[0 - 6].customer_name}
             </TableCell>
             <TableCell className="font-bold">
-              {pendingOrders[0] && pendingOrders[0].total_bill}$
+              {pendingOrders[0 - 6] && pendingOrders[0 - 6].total_bill}$
             </TableCell>
             <TableCell>
               <Badge className="bg-orange-50 text-orange-600 hover:bg-orange-100 border-none px-3 py-1 font-bold">

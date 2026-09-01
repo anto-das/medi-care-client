@@ -25,18 +25,14 @@ import { sellerRoutes } from "@/routes/sellerRoutes";
 import { adminRoutes } from "@/routes/adminRoutes";
 import { Roles } from "@/constants/Roles";
 import { Routes } from "@/types";
-import { Input } from "../ui/input";
+
 import { usePathname, useRouter } from "next/navigation";
 import { Inter } from "next/font/google";
 
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter", // Tailwind-এ ব্যবহারের জন্য CSS variable
-  display: "swap",
-});
+import { cn } from "@/lib/utils";
+import { ChevronRight, LogOut, Sparkles } from "lucide-react";
 
 const SidebarLogo = ({ userInfo }: { userInfo: any }) => {
   return (
@@ -89,51 +85,8 @@ const AppSidebar = ({
     default:
       break;
   }
-  const baseClasses =
-    "inline-flex h-10 w-full justify-start rounded-md px-4 py-2 text-lg font-bold transition-colors duration-300 mx-1 text-md font-bold";
-  const inactiveClasses =
-    "text-[#7a8d8d] hover:text-[#1f6b5d] hover:bg-[#e6f4f1]";
-  const pathname = usePathname();
-  return (
-    <Sidebar {...props}>
-      <SidebarHeader>
-        <SidebarLogo userInfo={userInfo} />
-      </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup key={routes.title}>
-          <SidebarGroupLabel className="font-bold tracking-widest uppercase">
-            {routes.title}
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {routes.items.map((item) => (
-                <SidebarMenuItem key={item.label}>
-                  <SidebarMenuButton asChild>
-                    <Link
-                      href={item.href}
-                      className={`${baseClasses} ${inter.variable} ${pathname === item.href ? "px-4 py-2 text-md text-[#1f6b5d] bg-[#e6f4f1]" : inactiveClasses}`}
-                    >
-                      {item.label}
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-      <SidebarRail />
-    </Sidebar>
-  );
-};
 
-const Sidebar1 = ({
-  children,
-  userInfo,
-}: {
-  children: React.ReactNode;
-  userInfo: any;
-}) => {
+  const pathname = usePathname();
   const handleDashSignOut = async () => {
     const toastId = toast.loading("Signing out...");
     try {
@@ -147,6 +100,94 @@ const Sidebar1 = ({
       toast.error("Failed to sign out. Please try again.", { id: toastId });
     }
   };
+  return (
+    <Sidebar
+      className="border-r border-slate-200/60 dark:border-slate-800/60 bg-gradient-to-b from-slate-50 via-white to-slate-50/50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 shadow-xl shadow-slate-200/20 dark:shadow-none"
+      {...props}
+    >
+      {/* Header with Glass Effect */}
+      <SidebarHeader className="border-b border-slate-200/50 dark:border-slate-800/50 px-4 py-4 backdrop-blur-md">
+        <SidebarLogo userInfo={userInfo} />
+      </SidebarHeader>
+
+      {/* Main Content Area */}
+      <SidebarContent className="px-3 py-4 space-y-6 scrollbar-none">
+        <SidebarGroup key={routes.title} className="p-0">
+          <SidebarGroupLabel className="flex items-center gap-2 text-[10px] font-bold tracking-widest text-slate-400 dark:text-slate-500 uppercase px-3 mb-3">
+            <span className="h-1 w-1 rounded-full bg-[#1f6b5d]" />
+            {routes.title}
+          </SidebarGroupLabel>
+
+          <SidebarGroupContent>
+            <SidebarMenu className="space-y-1.5">
+              {routes.items.map((item) => {
+                const isActive = pathname === item.href;
+
+                return (
+                  <SidebarMenuItem key={item.label}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isActive}
+                      className={cn(
+                        "group relative w-full h-10 transition-all duration-300 ease-out rounded-xl px-3.5 font-medium text-sm overflow-hidden",
+                        isActive
+                          ? "bg-gradient-to-r from-[#1f6b5d] to-[#175247] text-white shadow-lg shadow-[#1f6b5d]/25 font-semibold"
+                          : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-800/50",
+                      )}
+                    >
+                      <Link
+                        href={item.href}
+                        className="flex items-center justify-between w-full"
+                      >
+                        <div className="flex items-center gap-3 z-10">
+                          <span>{item.label}</span>
+                        </div>
+
+                        {/* Subtle Active Pillar */}
+                        {isActive && (
+                          <div className="absolute right-0 top-1/2 -translate-y-1/2 h-5 w-1 bg-white/40 rounded-l-full blur-[0.5px]" />
+                        )}
+
+                        {/* Hover Arrow Indicator */}
+                        <ChevronRight
+                          className={cn(
+                            "h-3.5 w-3.5 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 z-10",
+                            isActive ? "text-white/80" : "text-slate-400",
+                          )}
+                        />
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+
+      {/* Premium Call-to-Action Footer */}
+      <SidebarFooter className="p-3 mt-auto">
+         <button
+            onClick={handleDashSignOut}
+            className="group relative flex w-full items-center justify-center gap-2 rounded-lg bg-red-500/10 px-4 py-2.5 text-sm font-semibold text-red-600 transition-all duration-200 ease-in-out hover:bg-red-600 hover:text-white hover:shadow-md hover:shadow-red-500/20 active:scale-[0.98] dark:bg-red-500/20 dark:text-red-400 dark:hover:bg-red-600 dark:hover:text-white mb-5"
+          >
+            <LogOut className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-0.5" />
+            <span>Sign Out</span>
+          </button>
+      </SidebarFooter>
+
+      <SidebarRail />
+    </Sidebar>
+  );
+};
+
+const Sidebar1 = ({
+  children,
+  userInfo,
+}: {
+  children: React.ReactNode;
+  userInfo: any;
+}) => {
   return (
     <SidebarProvider>
       <AppSidebar userInfo={userInfo} />
@@ -167,14 +208,6 @@ const Sidebar1 = ({
                     ? "Admin Dashboard"
                     : "Dashboard"}
             </h1>
-            <div className="w-1/2 flex items-center justify-end gap-4">
-              <button
-                onClick={handleDashSignOut}
-                className="rounded-md capitalize bg-[#e22929] px-4 py-2 text-sm max-w-full font-bold text-[#e2fff0] font-[Sans-serif]"
-              >
-                Sign Out
-              </button>
-            </div>
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">

@@ -1,4 +1,3 @@
-import React from "react";
 import { Store, Bike, FileText, ShieldCheck, ArrowUpRight } from "lucide-react";
 
 const featureData = [
@@ -39,10 +38,7 @@ const featureData = [
 
 const WhyMedicineCare = () => {
   return (
-    <section
-      data-aos="fade-up"
-      className="w-full py-16 bg-slate-50/50 relative overflow-hidden select-none"
-    >
+    <section className="w-full py-16 bg-slate-50/50 relative overflow-hidden select-none">
       <div className="mx-auto w-11/12 max-w-7xl space-y-12 relative z-10">
         {/* Section Title Header */}
         <div className="text-center max-w-xl mx-auto space-y-2">

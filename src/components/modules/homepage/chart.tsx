@@ -30,7 +30,7 @@ export function ChartBarDemoLegend() {
     setCategories(result?.data || []);
   };
   const fetchMedicines = async () => {
-    const result = await getMedicine();
+    const result = await getMedicine({}, { cache: "no-store" });
     setMedicines(result?.data || []);
   };
   useEffect(() => {
@@ -82,7 +82,7 @@ export function ChartBarDemoLegend() {
           {/* লাইভ কাউন্ট ব্যাজ (ফ্যান্সি লুকের জন্য) */}
           <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/30 w-fit">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-            Active Categories: 12
+            Active Categories: {categories.length}
           </div>
         </CardHeader>
 

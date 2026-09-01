@@ -17,7 +17,7 @@ const Homepage = () => {
       <Banner />
       <CategoriesMarque></CategoriesMarque>
 
-      <div suppressHydrationWarning={true} className="my-10">
+      <div  className="my-10">
         <WhyMedicineCare />
       </div>
       <Medicines />

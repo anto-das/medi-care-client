@@ -81,6 +81,7 @@ const SignInPage = ({
         const { data, error } = result;
         if (error) {
           setIsPending(false);
+          console.log("Sign-in error:", error);
           return toast.error(error.message, { id: toastId });
         }
 
