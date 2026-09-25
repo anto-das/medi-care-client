@@ -1,3 +1,4 @@
+import DashboardLoading from "@/app/(dashboardLayout)/@customerSlot/customer-dashboard/loading";
 import { getSellerOrders } from "@/app/actions/seller.action";
 import {
   handleConfirmOrder,
@@ -13,14 +14,18 @@ import { useEffect, useState } from "react";
 
 const OrdersTable = () => {
   const [orders, setOrders] = useState<Order[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const fetchOrder = async () => {
     const res = await getSellerOrders({ cache: "no-store" });
     setOrders(res.data);
+    setIsLoading(false);
   };
   useEffect(() => {
     fetchOrder();
   }, []);
-
+  if (isLoading) {
+    return <DashboardLoading />;
+  }
   if (orders.length === 0) {
     return <NoOrdersState />;
   }

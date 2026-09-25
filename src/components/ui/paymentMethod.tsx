@@ -10,16 +10,16 @@ import { toast } from "sonner";
 
 import { createOrder } from "@/app/utilis/CreateOrder";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { deleteAllCart } from "@/app/actions/cart.action";
 import ReviewModal from "./ReviewModal";
 import PaymentModal from "./PaymentModal";
 import { CartItem } from "@/types";
+import { CartContext } from "@/hooks/MedicineContext";
 
 const PaymentMethod = ({
   subtotal,
   orderedItems,
-  carts,
 }: {
   subtotal: number;
   orderedItems: any;
@@ -28,6 +28,7 @@ const PaymentMethod = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [guest_id, setGuestId] = useState<string | null>(null);
+  const { carts, setCarts } = useContext(CartContext);
   const payload = {
     guest_id: guest_id as string,
   };
@@ -45,16 +46,16 @@ const PaymentMethod = ({
     const loadingId = toast.loading("confirming your order..");
     try {
       const result = await createOrder({ subtotal, orderedItems });
-      // console.log("confirm ordered: ", result);
+      console.log("confirm ordered: ", result);
       if (result.success) {
-        toast.success(result.message, { id: loadingId });
-        setIsModalOpen(true);
         await deleteAllCart(payload);
+        toast.success(result.message, { id: loadingId });
+        setCarts([]);
+        setIsModalOpen(true);
       } else {
         toast.error(result.message, { id: loadingId });
       }
     } catch (error: any) {
-      
       throw new Error(error);
     }
   };

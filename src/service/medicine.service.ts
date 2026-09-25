@@ -11,6 +11,8 @@ interface params {
 interface options {
   cache?: RequestCache;
   revalidate?: number;
+  page?: string;
+  limit?: number;
 }
 
 export const medicineService = {
@@ -36,7 +38,9 @@ export const medicineService = {
   },
   getMedicines: async (params?: params, options?: options) => {
     try {
-      const url = new URL(`${env.BACKEND_URL}/api/medicine`);
+      const url = new URL(
+        `${env.BACKEND_URL}/api/medicine?page=${options?.page}&limit=${options?.limit}`,
+      );
       if (params) {
         Object.entries(params).forEach(([key, value]) => {
           if (value !== undefined && value !== null && value !== "") {
@@ -55,7 +59,7 @@ export const medicineService = {
       config.next = { ...config, tags: ["medicines"] };
       const res = await fetch(url.toString(), config);
       const { data } = await res.json();
-      return { data, error: null };
+      return { data: data, error: null };
     } catch (error) {
       return {
         data: null,

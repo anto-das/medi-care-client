@@ -6,7 +6,7 @@ import Testimonial from "@/components/ui/testimonial";
 const CustomerVoiceSection = () => {
   return (
     <div
-      data-aos="fade-up"
+      // data-aos="fade-up"
       className="w-full my-16 py-20 bg-linear-to-b from-white via-emerald-50/15 to-white border-y border-emerald-950/5 select-none relative overflow-hidden space-y-20"
     >
       {/* Premium Aurora Background Light Rays */}

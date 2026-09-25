@@ -13,6 +13,8 @@ interface Params {
 interface Options {
   cache?: RequestCache;
   revalidate?: number;
+  page?: string;
+  limit?: number;
 }
 export const getMedicine = async (payload?: Params, options?: Options) => {
   return await medicineService.getMedicines(payload, options);

@@ -9,13 +9,12 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
 import { authClient } from "@/lib/auth-client";
-import { loadStripe } from "@stripe/stripe-js/pure";
+
 import { useRouter } from "next/navigation";
 
-import { CartItem, OrderItem } from "@/types";
+import { CartItem } from "@/types";
 
 import { handlePayment } from "@/app/actions/payment.action";
 import { createOrder } from "@/app/utilis/CreateOrder";

@@ -75,7 +75,7 @@ export default function PaymentSuccessPage() {
             <CardTitle className="text-2xl font-bold text-slate-900 tracking-tight">
               Payment Successful!
             </CardTitle>
-            <p className="text-sm text-slate-500 mt-2 max-w-[300px] mx-auto">
+            <p className="text-sm text-slate-500 mt-2 max-w-75 mx-auto">
               Your prescription order has been confirmed and forwarded to our
               pharmacy.
             </p>
@@ -125,9 +125,9 @@ export default function PaymentSuccessPage() {
             {/* ৪. অ্যাকশন বাটনসমূহ (shadcn/ui Button) */}
             <Button
               asChild
-              className="w-full bg-blue-600 hover:bg-blue-700 h-11 text-sm font-medium rounded-xl group transition-all duration-200"
+              className="w-full bg-green-600 hover:bg-green-700 h-11 text-sm font-medium rounded-xl group transition-all duration-200"
             >
-              <Link href="/orders">
+              <Link href="/customer-dashboard/orders">
                 Track Medicine Delivery
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>

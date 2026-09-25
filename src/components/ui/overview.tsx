@@ -1,9 +1,4 @@
-import {
-  AlertTriangle,
-  Banknote,
-  Package,
-  ShoppingCart,
-} from "lucide-react";
+import { AlertTriangle, Banknote, Package, ShoppingCart } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -17,14 +12,14 @@ const Overview = async () => {
     sellerService.getSellerOrders({ revalidate: 60 }),
   ]);
 
-  const medicines: Medicine[] = products.data || [];
+  const medicines: Medicine[] = products.data?.data || [];
   const order = orders.data || [];
 
   // ==============================
   // Current Stats
   // ==============================
 
-  const totalProducts = medicines.length;
+  const totalProducts = products.data.pagination.totalMedicine;
 
   const totalOrders = order.length;
 
@@ -74,42 +69,32 @@ const Overview = async () => {
   // Current Revenue
   // ==============================
 
-  const currentRevenue = currentOrders.reduce(
-    (acc: number, ord: any) => {
-      if (ord.status !== "DELIVERED") {
-        return acc;
-      }
+  const currentRevenue = currentOrders.reduce((acc: number, ord: any) => {
+    if (ord.status !== "DELIVERED") {
+      return acc;
+    }
 
-      return acc + Number(ord.total_bill || 0);
-    },
-    0,
-  );
+    return acc + Number(ord.total_bill || 0);
+  }, 0);
 
   // ==============================
   // Previous Revenue
   // ==============================
 
-  const previousRevenue = previousOrders.reduce(
-    (acc: number, ord: any) => {
-      if (ord.status !== "DELIVERED") {
-        return acc;
-      }
+  const previousRevenue = previousOrders.reduce((acc: number, ord: any) => {
+    if (ord.status !== "DELIVERED") {
+      return acc;
+    }
 
-      return acc + Number(ord.total_bill || 0);
-    },
-    0,
-  );
-
+    return acc + Number(ord.total_bill || 0);
+  }, 0);
 
   const orderGrowth = calculatePercentage(
     currentOrders.length,
     previousOrders.length,
   );
 
-  const revenueGrowth = calculatePercentage(
-    currentRevenue,
-    previousRevenue,
-  );
+  const revenueGrowth = calculatePercentage(currentRevenue, previousRevenue);
 
   // Low stock comparison
   // Current low-stock products বনাম previous period-এর ধারণা

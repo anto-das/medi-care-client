@@ -4,8 +4,10 @@ import { getMedicine } from "@/app/actions/medicine.action";
 import FilteredSection from "@/components/modules/medicine/filtered";
 
 import MediCard from "@/components/ui/mediCard";
+import PaginationControls from "@/components/ui/PaginationSorting";
 
 import { Medicine } from "@/types";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface Categories {
@@ -13,11 +15,21 @@ interface Categories {
   category_type: string;
 }
 
+interface PaginationData {
+  total: number;
+  page: number;
+  limit: number;
+  totalPage: number;
+}
+
 const MedicinePage = () => {
   const [medicines, setMedicines] = useState([]);
+  const [pagination, setPagination] = useState<PaginationData>();
   const [selectedCategories, setSelectedCategories] = useState<string>("");
   const [categories, setCategories] = useState<Categories[]>([]);
   const [searchMedi, setSearchMedi] = useState<string>("");
+  const params = useSearchParams();
+  const page = params.get("page");
   const payload = {
     search: "",
     category_name: "",
@@ -36,18 +48,22 @@ const MedicinePage = () => {
     if (searchMedi) {
       currentPayload.search = searchMedi;
     }
-    const medicinePromise = getMedicine(currentPayload);
+    const medicinePromise = getMedicine(currentPayload, {
+      revalidate: 10,
+      page: page as string,
+      limit: 20,
+    });
     const [catRes, medRes] = await Promise.all([
       categoryPromise,
       medicinePromise,
     ]);
     setCategories(catRes.data);
-    setMedicines(medRes.data);
+    setPagination(medRes.data?.pagination);
+    setMedicines(medRes.data?.medicines);
   };
   useEffect(() => {
     fetchData();
-  }, [selectedCategories || searchMedi]);
-
+  }, [selectedCategories || searchMedi || page]);
   return (
     <div>
       <h1 className="text-3xl w-11/14 mx-auto lg:py-8  md:text-4xl lg:text-5xl font-bold">
@@ -71,6 +87,14 @@ const MedicinePage = () => {
             ))}
           </div>
         </div>
+        <PaginationControls
+          meta={{
+            limit: pagination?.limit ?? 5,
+            page: pagination?.page ?? 1,
+            total: pagination?.total ?? 0,
+            totalPages: pagination?.totalPage ?? 0,
+          }}
+        />
       </div>
     </div>
   );

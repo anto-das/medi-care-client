@@ -20,7 +20,7 @@ const FeaturedProduct = () => {
   useEffect(() => {
     (async () => {
       const { data: medi } = await getMedicine({}, { revalidate: 10 });
-      setData(medi);
+      setData(medi?.medicines);
     })();
   }, []);
 

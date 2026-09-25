@@ -9,10 +9,10 @@ import { Medicine } from "@/types";
 
 const Medicines = async () => {
   const { data } = await medicineService.getMedicines();
-  const medicines = data || [];
-  const filteredMedicines = medicines
-    ?.filter((medicine: Medicine) => medicine.approval_status === "APPROVED")
-    .slice(0, 10);
+const medicines = data?.medicines || [];
+  const filteredMedicines = medicines?.filter(
+    (medicine: Medicine) => medicine.approval_status === "APPROVED",
+  );
 
   if (filteredMedicines.length === 0) {
     return <EmptyMedicineState />;
@@ -21,6 +21,7 @@ const Medicines = async () => {
   return (
     <section
       data-aos="fade-up"
+      suppressHydrationWarning
       className="w-full py-16 bg-linear-to-b from-white via-emerald-50/10 to-white border-y border-emerald-950/5 select-none overflow-hidden relative"
     >
       {/* Soft Brand Glow Spheres */}

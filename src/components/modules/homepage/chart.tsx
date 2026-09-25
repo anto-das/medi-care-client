@@ -26,12 +26,12 @@ export function ChartBarDemoLegend() {
   const [medicines, setMedicines] = useState([]);
 
   const fetchCategory = async () => {
-    const result = await getCategories({ cache: "no-store" });
+    const result = await getCategories({ revalidate: 10 });
     setCategories(result?.data || []);
   };
   const fetchMedicines = async () => {
-    const result = await getMedicine({}, { cache: "no-store" });
-    setMedicines(result?.data || []);
+    const result = await getMedicine({}, { revalidate: 10 });
+    setMedicines(result?.data.medicines || []);
   };
   useEffect(() => {
     fetchCategory();
@@ -62,7 +62,7 @@ export function ChartBarDemoLegend() {
   } satisfies ChartConfig;
 
   return (
-    <div data-aos="fade-right" className="w-full max-w-5xl mx-auto p-4 md:p-6">
+    <div className="w-full max-w-5xl mx-auto p-4 md:p-6">
       {/* ফ্যান্সি মেইন কার্ড কন্টেইনার */}
       <Card className="border border-slate-200/60 dark:border-slate-800/60 bg-white/70 dark:bg-slate-950/70 backdrop-blur-xl shadow-xl shadow-slate-100/40 dark:shadow-none rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-slate-100/60 dark:hover:border-slate-700/60">
         {/* হেডার সেকশন */}

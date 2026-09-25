@@ -6,6 +6,8 @@ import { toast } from "sonner";
 interface options {
   cache?: RequestCache;
   revalidate?: number;
+  page?: string;
+  limit?: number;
 }
 
 export const sellerService = {
@@ -40,14 +42,16 @@ export const sellerService = {
         config.next = { revalidate: options.revalidate };
       }
       config.next = { ...config, tags: ["medicines"] };
-      const res = await fetch(`${env.BACKEND_URL}/api/seller/medicine`, {
-        headers: {
-          Cookie: allCookies.toString(),
+      const res = await fetch(
+        `${env.BACKEND_URL}/api/seller/medicine?page=${options?.page}&limit=${options?.limit}`,
+        {
+          headers: {
+            Cookie: allCookies.toString(),
+          },
+          ...config,
         },
-        ...config,
-      });
+      );
       const { data } = await res.json();
-  
       return { data, error: null };
     } catch (error) {
       return {
@@ -74,7 +78,7 @@ export const sellerService = {
         ...config,
       });
       const { data } = await res.json();
-     
+
       return { data, error: null };
     } catch (error) {
       return {
@@ -101,7 +105,7 @@ export const sellerService = {
         ...config,
       });
       const { data } = await res.json();
-      
+
       return { data, error: null };
     } catch (error) {
       return {
@@ -148,7 +152,7 @@ export const sellerService = {
         body: JSON.stringify(payload),
       });
       const data = await res.json();
-     
+
       return { data };
     } catch (error: any) {
       toast.error("something wrong in service");
@@ -191,7 +195,7 @@ export const sellerService = {
         },
       });
       const data = res.json();
-      
+
       return data;
     } catch (error) {
       return { data: null, error };

@@ -6,6 +6,8 @@ import { orderStatus } from "@/types";
 interface options {
   cache?: RequestCache;
   revalidate?: number;
+  page?: string;
+  limit?: number;
 }
 export const getSellerMedicines = async (options?: options) => {
   return await sellerService.getSellerMedicines(options);

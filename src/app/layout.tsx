@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 };
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-inter", // Tailwind-এ ব্যবহারের জন্য CSS variable
+  variable: "--font-inter", 
   display: "swap",
 });
 

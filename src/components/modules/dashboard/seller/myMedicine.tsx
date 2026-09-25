@@ -13,26 +13,44 @@ import UpdateMedicineInfo from "@/components/ui/UpdateMedicineModal";
 import { toast } from "sonner";
 
 import EmptySellerMedicine from "@/components/ui/EmptySellerMedicine";
+import DashboardLoading from "@/app/(dashboardLayout)/loading";
+import { useSearchParams } from "next/navigation";
+import PaginationControls from "@/components/ui/PaginationSorting";
 
 // ১. টাইপ ডেফিনিশন (Type Safety)
 export type StockStatus = "In Stock" | "Low Stock" | "Out of Stock";
-
+interface PaginationData {
+  totalMedicine: number;
+  page: number;
+  limit: number;
+  totalPage: number;
+}
 export default function MyMedicines() {
   const [medicines, setMedicines] = useState<Medicine[]>([]);
+  const [pagination, setPagination] = useState<PaginationData>();
   const [selectedMedicine, setSelectedMedicine] = useState<any>(null);
   const [activeFilter, setActiveFilter] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const params = useSearchParams();
+  const page = params.get("page");
 
   const fetchData = async () => {
-    const { data } = await getSellerMedicines({ cache: "no-store" });
-    setMedicines(data || []);
+    const { data } = await getSellerMedicines({
+      cache: "no-store",
+      page: page as string,
+      limit: 10,
+    });
+    setMedicines(data.data || []);
+    setPagination(data.pagination);
+    setIsLoading(false);
   };
 
   useEffect(() => {
     (async () => {
       fetchData();
     })();
-  }, []);
+  }, [page]);
 
   // ৩. পারফরম্যান্স অপ্টিমাইজড ফিল্টারিং (Memoized Filter & Search)
   const filteredMedicines = useMemo(() => {
@@ -68,6 +86,10 @@ export default function MyMedicines() {
 
     return result;
   }, [medicines, activeFilter, searchQuery]);
+
+  if (isLoading) {
+    return <DashboardLoading />;
+  }
 
   if (medicines.length === 0) {
     return <EmptySellerMedicine />;
@@ -262,6 +284,14 @@ export default function MyMedicines() {
             </tbody>
           </table>
         </div>
+        <PaginationControls
+          meta={{
+            limit: pagination?.limit ?? 5,
+            page: pagination?.page ?? 1,
+            total: pagination?.totalMedicine ?? 0,
+            totalPages: pagination?.totalPage ?? 0,
+          }}
+        />
       </div>
     </div>
   );
