@@ -147,4 +147,25 @@ export const adminService = {
       return { data: null, error: error };
     }
   },
+
+  getAdminDayWiseWeeklyRevenue: async () => {
+    const allCookies = await cookies();
+    try {
+      const res = await fetch(`${env.BACKEND_URL}/api/admin/day-wise/revenue`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          Cookie: allCookies.toString(),
+        },
+      });
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      return {
+        data: null,
+        error: "retrieved weekly sale report failed!",
+        detail: error,
+      };
+    }
+  },
 };

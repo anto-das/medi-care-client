@@ -24,3 +24,7 @@ export const updateMedicineApprovalStatus = async (
 export const updateUserRole = async (newRole: string, email: string) => {
   return await adminService.updateUserRole(newRole, email);
 };
+
+export const getAdminDayWiseWeeklyRevenue = async () => {
+  return await adminService.getAdminDayWiseWeeklyRevenue();
+};

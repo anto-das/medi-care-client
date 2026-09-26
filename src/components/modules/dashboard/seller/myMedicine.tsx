@@ -42,7 +42,7 @@ export default function MyMedicines() {
       limit: 10,
     });
     setMedicines(data.data || []);
-    setPagination(data.pagination);
+    setPagination(data.pagination || {});
     setIsLoading(false);
   };
 

@@ -1,4 +1,6 @@
 import { Button } from "@/components/ui/button";
+import SellerChart from "@/components/ui/chartbar";
+import Chart from "@/components/ui/chartbar";
 import OrderTable from "@/components/ui/orderTable";
 import Overview from "@/components/ui/overview";
 
@@ -41,7 +43,7 @@ const SellerDashboard = () => {
       <Overview />
 
       {/* 3. Middle Section: Chart & Categories */}
-      {/* <Chart /> */}
+      <SellerChart />
 
       {/* 4. Recent Orders Table */}
       <OrderTable />

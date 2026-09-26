@@ -19,7 +19,7 @@ const Overview = async () => {
   // Current Stats
   // ==============================
 
-  const totalProducts = products.data.pagination.totalMedicine;
+  const totalProducts = products?.data?.pagination.totalMedicine;
 
   const totalOrders = order.length;
 

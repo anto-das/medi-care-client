@@ -16,16 +16,15 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { getDayWiseWeeklyRevenue } from "@/app/actions/seller.action";
-import { authClient } from "@/lib/auth-client";
+import { getAdminDayWiseWeeklyRevenue } from "@/app/actions/admin.action";
 
 // const chartData: any[] = [];
 
-const SellerChart = () => {
+const AdminChart = () => {
   const [revenue, setRevenue] = useState([]);
   useEffect(() => {
     (async () => {
-      const data = await getDayWiseWeeklyRevenue();
+      const data = await getAdminDayWiseWeeklyRevenue();
       if (data.success) {
         setRevenue(data.data);
       }
@@ -116,4 +115,4 @@ const SellerChart = () => {
   );
 };
 
-export default SellerChart;
+export default AdminChart;
