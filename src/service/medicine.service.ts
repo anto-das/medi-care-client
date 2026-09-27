@@ -28,7 +28,7 @@ export const medicineService = {
         body: JSON.stringify(medicine),
       });
       const data = await res.json();
-      return { data, error: null };
+      return { data: data, error: null };
     } catch (err: any) {
       return {
         data: null,

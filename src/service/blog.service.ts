@@ -5,7 +5,7 @@ const blogService = {
         `https://newsapi.org/v2/top-headlines?country=us&category=health&apiKey=1da81ec744504e2f8718866e131c647a`,
       );
       const data = await res.json();
-
+      // console.log(data)
       return data.articles;
     } catch (err) {
       return {

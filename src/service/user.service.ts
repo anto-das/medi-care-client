@@ -13,9 +13,8 @@ export const userService = {
         },
         cache: "no-store",
       });
-  
-      const data = await res.json();
 
+      const data = await res.json();
       if (data === null) {
         return { data: null, error: { message: "No active session found" } };
       }

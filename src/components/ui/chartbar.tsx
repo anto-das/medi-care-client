@@ -31,7 +31,6 @@ const SellerChart = () => {
       }
     })();
   }, []);
-  console.log(revenue);
   const maxRevenue = Math.max(
     ...revenue.map((item: any) => item.total_revenue),
   );

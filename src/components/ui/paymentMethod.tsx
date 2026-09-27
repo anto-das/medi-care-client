@@ -46,7 +46,7 @@ const PaymentMethod = ({
     const loadingId = toast.loading("confirming your order..");
     try {
       const result = await createOrder({ subtotal, orderedItems });
-      console.log("confirm ordered: ", result);
+      // console.log("confirm ordered: ", result);
       if (result.success) {
         await deleteAllCart(payload);
         toast.success(result.message, { id: loadingId });

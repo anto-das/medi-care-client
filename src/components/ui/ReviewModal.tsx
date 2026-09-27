@@ -60,7 +60,7 @@ const ReviewModal = ({
         comment: comment,
         seller_id: order.seller_id,
       };
-      console.log(payload);
+      // console.log(payload);
       const result = await postReview(payload);
       if (result.success) {
         toast.success("Thanks for your valuable opinion", { id: loadingId });

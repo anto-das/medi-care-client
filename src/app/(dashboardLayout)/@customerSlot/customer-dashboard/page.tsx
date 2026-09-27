@@ -11,7 +11,7 @@ const DashboardMedicinePage = async () => {
 
   // ২. ফিল্টারিং লজিক
   const filteredMedicines =
-    data?.filter(
+    data?.medicines?.filter(
       (medicine: Medicine) => medicine.approval_status === "APPROVED",
     ) || [];
 
